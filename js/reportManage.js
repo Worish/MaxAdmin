@@ -5,6 +5,7 @@ $(document).ready(function() {
 function baseClick() {
     $('body').on('click', function() {
         $('.pathUlContianer').hide();
+        $('.allTableUlContainerShow').removeClass('allTableUlContainerShow');
         if (checkEditFold(true)) {}
     })
     $('.closeEditReportContainer').on('click', function() {
@@ -232,6 +233,43 @@ function baseClick() {
     })
     $('.editReportContainer').on('click', function(e) {
         $('.dataTableOper').hide();
+    })
+    $('.newDataSource').on('click', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $('.allTableUlContainer').addClass('allTableUlContainerShow');
+    })
+    $('.allTableUlContainer').on('click', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+    })
+    //添加数据表li的操作
+    $('.allTableUl').on('click', 'li', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var ca = $(this).attr('class');
+        if (ca == null) {
+            ca = '';
+        }
+        ca = ca.split(' ');
+        if ($.inArray('hasSelectTable', ca) > -1) {
+            //当前表已选中
+        } else {
+            //当前表未选中
+            var tname = $(this).text();
+            $(this).addClass('hasSelectTable');
+            var str = "<tr tb='" + tname + "'>";
+            str += "<td>" + tname + "</td>";
+            str += "<td>" + tname + "</td>";
+            str += "<td><span>-</span></td>";
+            str += "<td><i class='fa fa-pencil edittablejoin'>" + "</i><i class='fa fa-remove removetablejoin'></i> </td>";
+            str += "</tr>";
+            if ($('.joinTable tbody tr').length == 0) {
+                $('.joinTable tbody').html(str);
+            } else {
+                $('.joinTable tbody tr').eq(0).before(str);
+            }
+        }
     })
     /*$('.addDataTable').on('click', function(e) {
         $('.dataTableOper').hide();

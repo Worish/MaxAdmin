@@ -187,7 +187,16 @@
                                 编辑数据源
                             </div> -->
                             <div active="editJoin" class="addTag dataTableOperItem editJoin">
-                                编辑关联
+                                编辑表与关联
+                            </div>
+                            <div active="editDimen" class="addTag dataTableOperItem editDimen">
+                                编辑维度
+                            </div>
+                            <div active="editDuliang" class="addTag dataTableOperItem editDuliang">
+                                编辑度量
+                            </div>
+                            <div active="editFilter" class="addTag dataTableOperItem editFilter">
+                                编辑筛选
                             </div>
                         </div>
                         <div class="showkeycontainer showdatatableContainer">
@@ -269,12 +278,23 @@
                         </tbody>
                     </table>
                 </div> -->
-                <div class="editJoinContainer">
+                <div class="editItemContainer editJoinContainer">
                     <table class="table joinTable">
                         <caption>
-                            <!-- <span class="btn newDataSource">
-                                保存关联
-                            </span> -->
+                            <span class="btn newDataSource">
+                                添加表
+                            </span> 
+                        <div class='allTableUlContainer'>
+                            <input class='searchTable' type="text" name="searchTable" 
+                            placeholder="搜索现有表" /> <i class='fa fa-refresh'></i>
+                            <ul class='allTableUl'>
+                                <li>dw_db.xxx</li>
+                                <li>dw_db.xxx</li>
+                                <li>dw_db.xxx</li>
+                                <li>dw_db.xxx</li>
+                                <li>dw_db.xxx</li>
+                            </ul>
+                        </div>
                         </caption>
                         <thead>
                             <tr>
@@ -283,24 +303,16 @@
                                 </th>
                                 <th>
                                     别名
-                                </th>
-                                <th>
-                                    事实表/维度表
-                                </th>
+                                </th> 
                                 <th>
                                     关联关系
                                 </th>
-                                <th>
+                                <th class='optable'>
                                     编辑
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="nodatajoin">
-                                <td colspan="5">
-                                    暂时没有关联哦
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
