@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta content="width=device-width,initial-scale=1" name="viewPort"/>
+        <meta content="Rosen" name="author"/>
+        <title>
+            MAX5.0
+        </title>
+        <link href="css/font-awesome.min.css" rel="stylesheet"/>
+        <link href="img/favicon.ico" rel="shortcut icon"/>
+        <link href="css/sweetalert.css" rel="stylesheet"/>
+        <link href="css/iziToast.min.css" rel="stylesheet"/>
+        <link href="css/all.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <div id="navContainer">
+            <div id="nav-top">
+                <div class="toptitle" id="toptile">
+                    MAX5.0 Admin
+                </div>
+                <ul class="topnav">
+                    <li class="active">
+                        <a href="./publicDimension.html">
+                            公用维度
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="./reportManage.html">
+                            报表管理
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#">
+                            筛选设计
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#">
+                            配置管理
+                        </a>
+                    </li>
+                </ul>
+                <div class="userContainer">
+                    <span class="user">
+                        <i class="fa fa-user-circle fa-2x">
+                        </i>
+                        <span class="userInfo">
+                            欢迎您,XXX
+                        </span>
+                    </span>
+                    <span class="out">
+                        <i class="fa fa-sign-out fa-2x">
+                        </i>
+                        <span class="logoutInfo">
+                            退出
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="contentContainer">
+            <!-- 页面内容在此处开始 -->
+            <div class="tableContainer">
+                <table class="table">
+                    <caption>
+                        <span class="btn addDimensionTable">
+                            新建维表
+                        </span>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th>
+                                表名
+                            </th>
+                            <th>
+                                创建人
+                            </th>
+                            <th>
+                                创建时间
+                            </th>
+                            <th>
+                                修改时间
+                            </th>
+                            <th class='optable'>
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class='notddata' colspan="5">暂无数据,请点左上角新增维度</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="editDimensionOutContainer">
+            <div class="editDimensionContainer">
+                <div class="closeContainer">
+                    x
+                </div>
+                <div class="edittitle">
+                    <span class="edittitlespan">
+                        数据源:
+                    </span>
+                    <select class="edittitleselect">
+                        <option value="">
+                            149dw_db
+                        </option>
+                        <option value="">
+                            150
+                        </option>
+                        <option value="">
+                            90
+                        </option>
+                    </select> 
+                    <input class="edittitleinput" name="tablename" placeholder="请输入表名" type="text"/>
+                    <span class="titlespan editTable">
+                        修改
+                    </span>
+                    <span class="titlespan saveTable">
+                        保存
+                    </span>
+                    <span class="titlespan cancelsaveTable">
+                        取消
+                    </span>
+                </div>
+                <div>
+                    <span class="btn addDimension btn-forbidden">
+                        新增维度
+                    </span>
+                </div>
+                <div class="dimensionList">
+                    <ul class="ul dimensionListUl">
+                        
+
+                    </ul>
+                    <div class="editDimension">
+                        <div class="editDimensionC">
+                            <span>
+                                名称
+                            </span>
+                            <input class="keyname" placeholder="请输入维度名称" type="text"/>
+                        </div>
+                        <div class="editDimensionC">
+                            <span>
+                                key
+                            </span>
+                            <input class="keykey" placeholder="请输入维度key" type="text"/>
+                        </div>
+                        <div class="editDimensionC">
+                            <span>
+                                value
+                            </span>
+                            <textarea class="keyvalue">
+                            </textarea>
+                        </div>
+                        <div class="editDimensionC">
+                            <span class="btn saveDimension">
+                                保存
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="./js/jquery-3.3.1.min.js" type="text/javascript">
+        </script>
+        <script src="./js/iziToast.min.js" type="text/javascript">
+        </script>
+        <script src="./js/sweetalert-dev.js" type="text/javascript">
+        </script>
+        <script src="./js/common.js" type="text/javascript">
+        </script>
+        <script src="./js/publicDimension.js" type="text/javascript">
+        </script>
+    </body>
+</html>

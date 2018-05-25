@@ -1,0 +1,447 @@
+html,body{
+    height: 100%;
+    background: #f8f8f8;
+    margin: 0;
+}
+*{
+    box-sizing: border-box; 
+}
+span.user span,
+span.out span,
+span.user i,
+span.out i,
+span.titlespan,
+.edittitleinput,
+ul.subNavUl{
+    transition:all .3s ease-in-out;
+    -webkit-transition:all .3s ease-in-out;
+    -ms-transition:all .3s ease-in-out;
+    -o-transition:all .3s ease-in-out;
+}
+.editDimensionOutContainer,
+.rmnliarrow span,
+input.reportNameInput
+{
+    transition: all .3s cubic-bezier(.645,.045,.355,1);
+    -webkit-transition: all .3s cubic-bezier(.645,.045,.355,1);
+    -ms-transition: all .3s cubic-bezier(.645,.045,.355,1);
+    -o-transition: all .3s cubic-bezier(.645,.045,.355,1);
+}
+div#nav-top,
+div#nav-left,
+.toptitle,
+span.userInfo,
+span.logoutInfo ,
+.rmn.rootNav,
+.tableTreeContainer
+{
+    -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
+    box-shadow: 2px 0 6px rgba(0,21,41,.35);
+}
+table.table {
+    width: 95%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    /* border: solid 1px #ddd; */
+    /* border-radius: 15px; */
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+table.table th{
+    background: #fafafa;
+    -webkit-transition: background .3s ease;
+    transition: background .3s ease;
+}
+table.table th,
+table.table td{
+    
+text-align: left;
+    
+color: rgba(0,0,0,.85);
+    
+padding: 16px;
+    
+border-bottom: 1px solid #e8e8e8;
+    
+word-break: break-all;
+    
+font-weight: 500;
+    
+color: rgba(0,0,0,.65);
+}
+
+table.table>tr:first-child>th:first-child {
+    border-top-left-radius: 4px
+}
+table.table tr:hover td{
+    background: #e6f7ff;
+}
+table.table>tr:first-child>th:last-child {
+    border-top-right-radius: 4px
+}
+table.table caption{
+    text-align: left;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+span.btn{
+    line-height: 1.5;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 0 15px;
+    font-size: 14px;
+    border-radius: 4px;
+    height: 32px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-transition: all .3s cubic-bezier(.645,.045,.355,1);
+    transition: all .3s cubic-bezier(.645,.045,.355,1);
+    position: relative;
+    color: rgba(0,0,0,.65);
+    line-height: 32px;
+    background: #1890ff;
+    color: #fff;
+}
+div#nav-top {
+    height: 60px;
+    background: #454c59;
+    color: #000;
+}
+
+.toptitle{
+    font-size: 24px;
+    color: #fff;
+    /* padding-left: 10px; */
+    position: absolute;
+    line-height: 60px;
+    background: #454c59;
+    /* padding-right: 14px; */
+    text-align: center;
+    width: 220px;
+    left: 0;
+}
+
+.userContainer {
+    float: right;
+    margin-right: 0.5%;
+    margin-top: 18px;
+    color: #001529;
+}
+a:hover ,a:hover span,a:focus{
+    text-decoration: none!important;
+}
+
+span.user,span.out {
+    margin-right: 27px;
+    cursor: pointer;
+    /* color: #fff; */
+}
+
+span.user i,span.out i {
+    opacity: 0.65;
+    color: #fff;
+}
+span.user:hover i,span.out:hover i {
+    opacity: 0.95; 
+}
+span.user:hover span,span.out:hover span {
+   top:55px;
+   display:block;
+   z-index:999;
+   opacity: .95;
+}
+span.userInfo,span.logoutInfo {
+    position: absolute;
+    margin-top: 20px;
+    /* background: #b8e2fb; */
+    border-radius: 5px;
+    text-align: center;
+    padding: 5px;
+    color: #666;
+    top: 65px;
+    z-index: -1;
+    opacity: .1;
+    background-color: #fff;
+    border-radius: 4px; 
+}
+ span.userInfo{
+    width: 200px;
+    margin-left: -125px; 
+ }
+
+span.logoutInfo {
+    width: 60px;
+    margin-left: 46px;
+}
+
+span.logoutInfo:before ,span.userInfo:before{
+    content: "";
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-bottom-color: #fff;
+    margin: 0 auto;
+    position: absolute;
+    top: -12px;
+}
+
+span.logoutInfo:before {
+
+    left: 24px;
+}
+span.userInfo:before{
+
+    left: 98px;
+}
+ul.topnav {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    left: 220px;
+    right: 160px;
+    list-style: none;
+}
+ul.topnav li{
+    width: 120px;
+    float: left;
+    font-size: 16px;
+    text-align: center;
+    padding: 0 20px;
+}
+ul.topnav a{
+    color:#fff;
+    text-decoration: none;
+    line-height: 60px;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+}
+
+li.active {
+    background: rgb(46, 54, 74);
+}
+.editDimensionOutContainer {
+    position: fixed;
+    top: 60px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* background: rgba(0,0,0,.86); */
+    transform: translate3d(0,-0%,0);
+    z-index: -1;
+    opacity: 0;
+}
+
+.editDimensionContainer {
+    width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 5px;
+    min-height: 400px;
+    margin-top: 6%;
+    padding-top: 15px;
+    padding-left: 30px;
+    padding-right: 24px;
+    border: solid 1px #ddd;
+}
+
+.edittitle {
+    margin-top: 10px;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: solid 1px #f0f0f0;
+    margin-bottom: 14px;
+}
+.edittitlespan { 
+    color: rgba(0,0,0,.65);
+}
+select.edittitleselect {
+    width: 100px;
+    border: none;
+    border: solid 1px #ddd;
+    color: rgba(0,0,0,.65);
+    height: 27px;
+    outline: none!important;
+    border-radius: 5px;
+    text-align: center;
+}
+
+input.edittitleinput {
+    border: none;
+    border-bottom: solid 1px #ddd;
+    color: rgba(0,0,0,.65);
+    padding-left: 5px;
+    outline: none!important;
+    border-radius: 5px;
+    line-height: 23px;
+}
+ul.ul {
+    padding: 0;
+    list-style: none;
+}
+
+ul.ul.dimensionListUl {
+    max-height: 280px;
+    border-top: solid 1px #ddd;
+    width: 49%;
+    text-align: center;
+    overflow: auto;
+    border-radius: 5px;
+    float: left;
+    border-bottom: solid 1px #ddd;
+    min-height: 280px;
+    border: solid 1px #ddd;
+}
+span.titlespan {
+    color: rgba(0,0,0,.65);
+    font-size: 13px;
+    cursor: pointer;
+    border: solid 1px #ddd;
+    border-radius: 5px;
+    padding: 0 5px;
+    position: relative;
+    top: 1px;
+}
+span.saveTable:hover{
+    border-color: #62ab00;
+}
+ 
+ul.ul.dimensionListUl li {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: solid 1px #ddd;
+    border-top: none;
+    user-select: none;
+    cursor: pointer;
+    border-left: none;
+    border-right: none;
+    position: relative;
+}
+ul.ul.dimensionListUl li:hover{
+    background:#e6f7ff;
+}
+.closeContainer {
+    position: absolute;
+    margin-left: 720px;
+    /* margin-top: -8px; */
+    color: #d66061;
+    /* padding: 6px; */
+    font-size: 17px;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    line-height: 15px;
+    border: solid 1px #d66061;
+    /* line-height: 10px; */
+    text-align: center;
+    border-radius: 50%;
+    padding: 3px 4px;
+}
+
+.editDimensionOutContainershow{
+    z-index: 99;
+    opacity: 1;
+}
+.editDimension {
+    width: 335px;
+    float: left;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    padding-left: 20px;
+    border: solid 1px #ddd;
+    height: 280px;
+    margin-left: 33px;
+    border-radius: 5px;
+    padding-top: 30px;
+    /* margin-right: 18px; */
+    padding-right: 37px;
+}
+
+.dimensionList {
+    overflow: auto;
+}
+.editDimensionC span {
+    display: inline-block;
+    width: 61px;
+    text-align: right;
+    padding-right: 5px;
+    color: rgba(0,0,0,.65);
+    font-size: 13px;
+}
+
+.editDimensionC input {
+    border: none;
+    outline: none!important;
+    border-bottom: solid 1px #ddd;
+}
+
+.editDimensionC {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.editDimensionC textarea {
+    display: inline-block;
+    height: 94px;
+    border: solid 1px #ddd;
+    width: 169px;
+    vertical-align: middle;
+    resize: none;
+}
+.editDimensionC,.editDimensionC .btn {
+    text-align: center;
+}
+.editDimensionC .btn {
+   padding:0;
+   color:#fff;
+}
+td.notddata{
+    text-align: center!important;
+    font-size: 14px;
+}
+span.btn-forbidden {
+    background: #eee;
+}
+.inputerror {
+    border-bottom: solid 1px #d66061!important;
+    border-radius: 5px;
+}
+span.removeDimension { 
+    position: absolute;
+    right: 5px;
+    padding: 5px;
+    top: 2px;
+    cursor: pointer;
+    color: #d66061;
+    opacity: 1;
+    z-index: -1;
+}
+
+ul.ul.dimensionListUl li:hover span.removeDimension {
+    opacity: 1;
+    z-index: 11;
+} 
+td.optable i.fa.fa-remove ,
+td.optable i.fa.fa-edit {
+    margin-left: 5px;
+    margin-right: 5px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+}
+
+th.optable, 
+td.optable {
+    width: 100px;
+}
