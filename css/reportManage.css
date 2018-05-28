@@ -289,16 +289,6 @@ span.pagenav {
 .dataTableOperItem.addDataTable {
     border-bottom: solid 1px #ddd;
 }
-.editDataSource,
-.editJoinContainer{
-    position: absolute;
-    left: 301px;
-    right: 0;
-    top: 69px;
-    bottom: 0;
-    overflow: auto;
-    display: none;
-}
 .tableshowname {
     font-size: 14px;
     padding: 3px 0;
@@ -594,4 +584,45 @@ i.fa.fa-remove.removetablejoin {
 }
 ul.allTableUl li.hasSelectTable {
     background: #efefef;
+}
+
+.editDataSource,
+.editJoinContainer,
+.editItemContainer{
+    position: absolute;
+    left: 301px;
+    right: 0;
+    top: 69px;
+    bottom: 0;
+    overflow: auto;
+    display: none;
+} 
+table.GroupTable i{
+    margin-right:15px;
+    cursor:pointer;
+}
+table.GroupTable i:hover{
+    color: #d66061;
+}
+input.tableinput {
+    border: none;
+    border-bottom: solid 1px #ddd;
+    line-height: 30px;
+    outline: none;
+}
+input.tableinput:focus { 
+    border-bottom: solid 1px #1890ff; 
+}
+input.tableinput.Dimensiontable,
+input.tableinput.dimensionShowColumn,
+input.tableinput.dimensionName,
+input.tableinput.dimensionid,
+input.tableinput.dimensionShowName,
+input.tableinput.dimensionShowColumn {
+    width: 80px;
+} 
+.editDimenTable select{
+    height: 33px;
+    border: none;
+    border-bottom: solid 1px #ddd;
 }

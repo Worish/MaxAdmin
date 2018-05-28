@@ -8,14 +8,17 @@ function baseClick() {
         $('.allTableUlContainerShow').removeClass('allTableUlContainerShow');
         if (checkEditFold(true)) {}
     })
+    //点击关闭新建按钮的操作
     $('.closeEditReportContainer').on('click', function() {
         $('.editReportContainer').hide();
     })
+    //点击报表路径框的操作
     $('.pathShowContainer').on('click', function(e) {
         e.stopPropagation();
         e.preventDefault();
         $('.pathUlContianer').show();
     })
+    //点击编辑报表标题的操作
     $('.titleNameContainer').on('click', 'i', function(e) {
         var ca = $(this).attr('class').split(' ');
         var p = $(this).parent();
@@ -219,26 +222,32 @@ function baseClick() {
             showMessage('Warning!', '请先保存当前正在编辑的内容');
         }
     });
+    //新建报表按钮的操作
     $('.newReport').on('click', function(e) {
         $('.editReportContainer').show();
     })
+    //点击编辑数据源后面的小三角弹出编辑维度等选项
     $('.datasourcejoinContainer').on('click', '.fa-caret-down', function(e) {
         e.stopPropagation();
         e.preventDefault();
         $('.dataTableOper').show();
     })
+    //禁用向上冒泡事件
     $('.editReportContainer').on('click', '.dataTableOper', function(e) {
         e.stopPropagation();
         e.preventDefault();
     })
+    //隐藏编辑维度等选项的框
     $('.editReportContainer').on('click', function(e) {
         $('.dataTableOper').hide();
     })
+    //新增数据表事件
     $('.newDataSource').on('click', function(e) {
         e.stopPropagation();
         e.preventDefault();
         $('.allTableUlContainer').addClass('allTableUlContainerShow');
     })
+    //禁用向上冒泡事件
     $('.allTableUlContainer').on('click', function(e) {
         e.stopPropagation();
         e.preventDefault();
@@ -271,42 +280,248 @@ function baseClick() {
             }
         }
     })
-    /*$('.addDataTable').on('click', function(e) {
+    //编辑关联的事件
+    $('.dataTableOper').on('click', '.dataTableOperItem', function() {
         $('.dataTableOper').hide();
-        $('.editJoinContainer').hide();
-        $('.editDataSource').show();
-        // if ()
-    })*/
-    /*$('.newDataSource').on('click', function() {
-        var str = addDataSourceTr();
-        if ($('.DataSourceTable .nodatasource').length > 0) {
-            $('.nodatasource').remove();
-            $('.DataSourceTable tbody').html(str);
-        } else {
-            $('.DataSourceTable tbody tr').eq(0).before(str);
+        $('.editItemContainer').hide();
+        var ac = $(this).attr('active');
+        $('.' + ac + 'Container').show();
+        if (ac == 'editJoin') { //当点击编辑关联的时候
+            fullJoinTable();
+        } else if (ac == 'editGroup') { //当点击分组的时候
         }
-    })*/
-    /*$('.DataSourceTable').on('click', '.fa-save', function() {
-        var tr = $(this).parent().parent();
-        var db = tr.find('select.db').val();
-        var table = tr.find('input.tablenameinput').val();
-        var df = tr.find('select.dfsel').val();
-        var str = fullDataTr(db, table, df);
-        $('tr.addDataSourceTr').remove();
-        if ($('.DataSourceTable tbody tr').length == 0) {
-            $('.DataSourceTable tbody').html(str);
-        } else {
-            $('.DataSourceTable tbody tr').eq(0).before(str);
-        }
-        var dstr = "<div class='tableshowname'>" + db + "." + table + "</div>";
-        $('.showdatatableContainer').append(dstr);
-    })*/
-    $('.editJoin').on('click', function() {
-        $('.dataTableOper').hide();
-        $('.editDataSource').hide();
-        $('.editJoinContainer').show();
-        fullJoinTable();
     })
+    //新建分组
+    $('.newGroup').on('click', function(e) {
+        $('.GroupTable').attr('action', 'new');
+        if ($('.groupNameInput').length == 0) {
+            var str = "<tr class='newGroupTr'>";
+            str += '<td><input class="tableinput groupNameInput" type="text" placeholder="在此处输入组名" /></td>';
+            str += '<td><select><option>单选</option><option>多选</option></select</td>';
+            str += '<td>保存后可修改顺序</td>';
+            str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>'
+            str += "</tr>";
+            if ($('.GroupTable tbody tr').length == 0) {
+                $('.GroupTable tbody').html(str);
+            } else {
+                $('.GroupTable tbody tr').eq(0).before(str);
+            }
+        } else {
+            showMessage('请先保存', '当前正在编辑的内容');
+        }
+    })
+    //保存分组信息
+    $('.GroupTable').on('click', '.fa-save', function(e) {
+        var p = $(this).parent().parent();
+        var gn = p.find('td').eq(0).find('input').val();
+        var gs = p.find('td').eq(1).find('select').val();
+        //如果是新增状态下
+        if ($('.GroupTable').attr('action') == 'new') {
+            var str = "<tr groupid='" + (Math.random() * 10000).toFixed(0) + "'>";
+            str += '<td>' + gn + '</td>';
+            str += '<td>' + gs + '</td>';
+            str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
+            str += '<td><i class="fa fa-edit"></i><i class="fa fa-remove"></i></td>'
+            str += "</tr>";
+            if ($('.GroupTable tbody tr').length == 0) {
+                $('.GroupTable tbody').html(str);
+            } else {
+                $('.GroupTable tbody tr').eq(0).before(str);
+            }
+            $('tr.newGroupTr').remove();
+            showMessage(gn, '新增成功');
+        } else if ($('.GroupTable').attr('action') == 'edit') {
+            //如果是修改状态下
+            p.find('td').eq(0).html(gn);
+            p.find('td').eq(1).html(gs);
+            p.find('td').eq(2).html('<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>');
+            p.find('td').eq(3).html('<i class="fa fa-edit"></i><i class="fa fa-remove"></i>');
+            showMessage(gn, '修改成功');
+        }
+        $('.GroupTable').attr('action', '');
+    })
+    //编辑分组信息
+    $('.GroupTable').on('click', '.fa-edit', function(e) {
+        $('.GroupTable').attr('action', 'edit');
+        var p = $(this).parent().parent();
+        var gn = p.find('td').eq(0).html().replace(/[/r/n/ ]/g, '');
+        var gt = p.find('td').eq(1).html().replace(/[/r/n/ ]/g, '');
+        window.gn = gn;
+        window.gt = gt;
+        var inputgn = '<input class="tableinput groupNameInput" type="text" placeholder="在此处输入组名" value="' + gn + '"/>';
+        var fse = '',
+            mse = '';
+        if (gt == '单选') {
+            fse = 'selected'
+        } else if (gt == '多选') {
+            mse = 'selected'
+        }
+        var selectgt = '<select><option ' + fse + '>单选</option><option ' + mse + '>多选</option></select>';
+        p.find('td').eq(0).html(inputgn);
+        p.find('td').eq(1).html(selectgt);
+        p.find('td').eq(2).html('保存后可修改顺序');
+        p.find('td').eq(3).html('<i class="fa fa-save"></i><i class="fa fa-remove"></i>');
+    })
+    //取消保存分组信息和删除行
+    $('.GroupTable').on('click', '.fa-remove', function(e) {
+        if ($('.GroupTable').attr('action') == 'new') {
+            $('.newGroupTr').remove();
+            $('.GroupTable').attr('action', '')
+        } else if ($('.GroupTable').attr('action') == 'edit') {
+            var p = $(this).parent().parent();
+            var fse = '',
+                mse = '';
+            if (window.gt == '单选') {
+                fse = 'selected'
+            } else if (window.gt == '多选') {
+                mse = 'selected'
+            }
+            var gn = p.find('input').eq(0).val();
+            var sn = p.find('option:selected').text();
+            if (gn == window.gn && sn == window.gt) {
+                var selectgt = '<select><option ' + fse + '>单选</option><option ' + mse + '>多选</option></select>';
+                p.find('td').eq(0).html(window.gn);
+                p.find('td').eq(1).html(window.gt);
+                p.find('td').eq(2).html('<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>');
+                p.find('td').eq(3).html('<i class="fa fa-edit"></i><i class="fa fa-remove"></i>');
+                $('.GroupTable').attr('action', '');
+                window.gn = null;
+                window.gt = null;
+            } else {
+                swal({
+                    title: "修改未保存哦",
+                    text: window.gn + '->' + gn + '     ' + window.gt + '->' + sn,
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确定不保存！",
+                    cancelButtonText: "再去改改！",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                }, function(isConfirm) {
+                    if (isConfirm) {
+                        p.find('td').eq(0).html(window.gn);
+                        p.find('td').eq(1).html(window.gt);
+                        p.find('td').eq(2).html('<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>');
+                        p.find('td').eq(3).html('<i class="fa fa-edit"></i><i class="fa fa-remove"></i>');
+                        $('.GroupTable').attr('action', '');
+                        window.gn = null;
+                        window.gt = null;
+                        swal.close();
+                    } else {
+                        swal.close();
+                    }
+                });
+            }
+        } else if ($('.GroupTable').attr('action') == '') {
+            var p = $(this).parent().parent();
+            var gn = p.find('td').eq(0).text();
+            gid = p.attr('groupid');
+            swal({
+                title: "确定删除组",
+                text: p.find('td').eq(0).html().replace(/[/r/n/ ]/g, ''),
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定删除！",
+                cancelButtonText: "取消删除！",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    swal.close();
+                    $('tr[groupid="' + gid + '"]').remove();
+                    showMessage('组' + gn, '删除成功');
+                } else {
+                    swal.close();
+                }
+            });
+        }
+    })
+    //组顺序上
+    $('.GroupTable').on('click', '.fa-chevron-circle-up', function(e) {
+        if ($('.groupNameInput').length > 0) {
+            showMessage('', '请先完成当前编辑内容');
+            $('.groupNameInput').focus();
+        } else {
+            var p = $(this).parent().parent();
+            var gn = p.find('td').eq(0).html();
+            var index = p.index();
+            var gid = p.attr('groupid');
+            if (index == 0) {
+                showMessage('组' + gn, '已经在最上面哦');
+            } else {
+                var htmlstr = '<tr groupid="' + gid + '">' + p.html() + '</tr>';
+                $('tr[groupid="' + gid + '"]').remove();
+                $('.GroupTable tbody tr').eq(index - 1).before(htmlstr);
+            }
+        }
+    })
+    //组顺序下
+    $('.GroupTable').on('click', '.fa-chevron-circle-down', function(e) {
+        if ($('.groupNameInput').length > 0) {
+            showMessage('', '请先完成当前编辑内容');
+            $('.groupNameInput').focus();
+        } else {
+            var p = $(this).parent().parent();
+            var gn = p.find('td').eq(0).html();
+            var index = p.index();
+            var gid = p.attr('groupid');
+            if (index == $('.GroupTable tbody tr').length - 1) {
+                showMessage('组' + gn, '已经在最下面哦');
+            } else {
+                var htmlstr = '<tr groupid="' + gid + '">' + p.html() + '</tr>';
+                $('tr[groupid="' + gid + '"]').remove();
+                $('.GroupTable tbody tr').eq(index).after(htmlstr);
+            }
+        }
+    })
+    //添加私有维度
+    $('.newPrivateDimen').on('click', function() {
+        var str = "<tr>";
+        str+='<td><input class="tableinput Dimensiontable"</td>';
+        str+='<td>独有</td>';
+        str+='<td><input class="tableinput dimensionName" </td>';
+        str+='<td><input class="tableinput dimensionid" </td>';
+        str+='<td><select><option value="是">是</option><option value="否">否</option></select></td>';
+        str+='<td><select><option value="是">是</option><option value="否">否</option></select></td>';
+        str+='<td><input class="tableinput dimensionShowName" </td>'; 
+        str+='<td><select><option value="是">是</option><option value="否">否</option></select></td>';
+        str+='<td><input class="tableinput dimensionShowColumn" /></td>';
+        str+='<td>'+getDataFormat()+'</td>';
+        str+='<td>-</td>';
+        str+='<td>'+getGroupSelect()+'</td>'; 
+        str+='<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
+        str += '</str>';
+        if ($('.editDimenTable tbody tr').length == 0) {
+            $('.editDimenTable tbody').html(str);
+        } else {
+            $('.editDimenTable tbody tr').eq(0).before(str);
+        }
+    })
+}
+//获取分组
+function getGroupSelect(){
+    var a =[];
+    $('.GroupTable tbody tr').each(function(){
+        a.push($(this).find('td').eq(0).text());
+    })
+    var str="<select>";
+       a.map(function(i,v){
+        str+='<option>'+a[i]+'</option>'
+       })
+    str+="</select>";
+    return str;
+}
+//获取数据格式
+function getDataFormat(){
+    var a =['百分比','1位小数','2位小数','整数','4位小数']; 
+    var str="<select>";
+       a.map(function(i,v){
+        str+='<option value="'+i+'">'+i+'</option>'
+       })
+    str+="</select>";
+    return str;
 }
 
 function addDataSourceTr() {
