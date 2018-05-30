@@ -291,13 +291,66 @@ function baseClick() {
         } else if (ac == 'editGroup') { //当点击分组的时候
         }
     })
+    //编辑关联
+    $('.joinTable').on('click', '.fa-pencil', function() {
+        $('.editJoinContainer').attr('active', 'edit');
+        var p = $(this).parent().parent();
+        var jointext = p.find('td').eq(2).text();
+        window.jointext = jointext;
+        var str = '<textarea class="tablejoinedit"></textarea>';
+        p.find('td').eq(2).html(str);
+        $('textarea.tablejoinedit').val(jointext);
+        p.find('td').eq(3).html('<i class="fa fa-save"></i><i class="fa fa-remove"></i>');
+    })
+    //保存关联
+    $('.joinTable').on('click', '.fa-save', function() {
+        var p = $(this).parent().parent();
+        var jointext = $('textarea.tablejoinedit').val();
+        var db = p.find('td').eq(0).html();
+        p.find('td').eq(2).html(jointext);
+        p.find('td').eq(3).html('<i class="fa fa-pencil"></i><i class="fa fa-remove"></i>');
+        showMessage(db, '修改成功');
+    })
+    //取消保存关联或者删除表
+    $('.joinTable').on('click', '.fa-remove', function() {
+        var p = $(this).parent().parent();
+        if ($('textarea.tablejoinedit').length > 0) {
+            $('.editJoinContainer').attr('active', '');
+            $('textarea.tablejoinedit').remove();
+            p.find('td').eq(2).html(window.jointext);
+            window.jointext = null;
+            p.find('td').eq(3).html('<i class="fa fa-pencil"></i><i class="fa fa-remove"></i>');
+        } else {
+            var tb = p.find('td').eq(0).html();
+            p.addClass('readyremovetable');
+            swal({
+                title: "确定删除吗?",
+                text: tb,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定！",
+                cancelButtonText: "再想想！",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    $('tr.readyremovetable').remove();
+                    swal.close();
+                } else {
+                    $('tr.readyremovetable').removeClass('readyremovetable');
+                    swal.close();
+                }
+            });
+        }
+    })
     //新建分组
     $('.newGroup').on('click', function(e) {
         $('.GroupTable').attr('action', 'new');
         if ($('.groupNameInput').length == 0) {
             var str = "<tr class='newGroupTr'>";
             str += '<td><input class="tableinput groupNameInput" type="text" placeholder="在此处输入组名" /></td>';
-            str += '<td><select><option>单选</option><option>多选</option></select</td>';
+            str += '<td><select><option>单选</option><option>多选</option></select></td>';
             str += '<td>保存后可修改顺序</td>';
             str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>'
             str += "</tr>";
@@ -321,7 +374,7 @@ function baseClick() {
             str += '<td>' + gn + '</td>';
             str += '<td>' + gs + '</td>';
             str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
-            str += '<td><i class="fa fa-edit"></i><i class="fa fa-remove"></i></td>'
+            str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>'
             str += "</tr>";
             if ($('.GroupTable tbody tr').length == 0) {
                 $('.GroupTable tbody').html(str);
@@ -335,13 +388,13 @@ function baseClick() {
             p.find('td').eq(0).html(gn);
             p.find('td').eq(1).html(gs);
             p.find('td').eq(2).html('<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>');
-            p.find('td').eq(3).html('<i class="fa fa-edit"></i><i class="fa fa-remove"></i>');
+            p.find('td').eq(3).html('<i class="fa fa-pencil"></i><i class="fa fa-remove"></i>');
             showMessage(gn, '修改成功');
         }
         $('.GroupTable').attr('action', '');
     })
     //编辑分组信息
-    $('.GroupTable').on('click', '.fa-edit', function(e) {
+    $('.GroupTable').on('click', '.fa-pencil', function(e) {
         $('.GroupTable').attr('action', 'edit');
         var p = $(this).parent().parent();
         var gn = p.find('td').eq(0).html().replace(/[/r/n/ ]/g, '');
@@ -383,7 +436,7 @@ function baseClick() {
                 p.find('td').eq(0).html(window.gn);
                 p.find('td').eq(1).html(window.gt);
                 p.find('td').eq(2).html('<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>');
-                p.find('td').eq(3).html('<i class="fa fa-edit"></i><i class="fa fa-remove"></i>');
+                p.find('td').eq(3).html('<i class="fa fa-pencil"></i><i class="fa fa-remove"></i>');
                 $('.GroupTable').attr('action', '');
                 window.gn = null;
                 window.gt = null;
@@ -403,7 +456,7 @@ function baseClick() {
                         p.find('td').eq(0).html(window.gn);
                         p.find('td').eq(1).html(window.gt);
                         p.find('td').eq(2).html('<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>');
-                        p.find('td').eq(3).html('<i class="fa fa-edit"></i><i class="fa fa-remove"></i>');
+                        p.find('td').eq(3).html('<i class="fa fa-pencil"></i><i class="fa fa-remove"></i>');
                         $('.GroupTable').attr('action', '');
                         window.gn = null;
                         window.gt = null;
@@ -478,20 +531,21 @@ function baseClick() {
     })
     //添加私有维度
     $('.newPrivateDimen').on('click', function() {
-        var str = "<tr>";
-        str+='<td><input class="tableinput Dimensiontable"</td>';
-        str+='<td>独有</td>';
-        str+='<td><input class="tableinput dimensionName" </td>';
-        str+='<td><input class="tableinput dimensionid" </td>';
-        str+='<td><select><option value="是">是</option><option value="否">否</option></select></td>';
-        str+='<td><select><option value="是">是</option><option value="否">否</option></select></td>';
-        str+='<td><input class="tableinput dimensionShowName" </td>'; 
-        str+='<td><select><option value="是">是</option><option value="否">否</option></select></td>';
-        str+='<td><input class="tableinput dimensionShowColumn" /></td>';
-        str+='<td>'+getDataFormat()+'</td>';
-        str+='<td>-</td>';
-        str+='<td>'+getGroupSelect()+'</td>'; 
-        str+='<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
+        $('.editDimenContainer').attr('active', 'new');
+        var str = "<tr class='newPrivateDimentr'>";
+        str += '<td>' + getTableSelect() + '</td>';
+        str += '<td>独有</td>';
+        str += '<td><input class="tableinput dimensionName" /> </td>';
+        str += '<td><input class="tableinput dimensionid" > </td>';
+        str += '<td><select class="showop"><option value="是">是</option><option value="否">否</option></select></td>';
+        str += '<td><select class="isneed"><option value="是">是</option><option value="否">否</option></select></td>';
+        str += '<td><input class="tableinput dimensionShowName" /> </td>';
+        str += '<td><select class="isgroupby"><option value="是">是</option><option value="否">否</option></select></td>';
+        str += '<td><input class="tableinput dimensionShowColumn" /></td>';
+        str += '<td>' + getDataFormat() + '</td>';
+        str += '<td>-</td>';
+        str += '<td>' + getGroupSelect() + '</td>';
+        str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
         str += '</str>';
         if ($('.editDimenTable tbody tr').length == 0) {
             $('.editDimenTable tbody').html(str);
@@ -499,28 +553,202 @@ function baseClick() {
             $('.editDimenTable tbody tr').eq(0).before(str);
         }
     })
+    //取消保存或者删除
+    $('.editDimenTable').on('click', '.fa-remove', function() {
+        if ($('.editDimenContainer').attr('active') == 'new') {
+            $('tr.newPrivateDimentr').remove();
+            $('.editDimenContainer').attr('active', '');
+        } else if ($('.editDimenContainer').attr('active') == 'edit') {} else if ($('.editDimenContainer').attr('active') == '') {
+            var p = $(this).parent().parent();
+            var did = p.attr('dimensionid');
+            var diname = p.find('td').eq(2).html();;
+            swal({
+                title: "确定删除组",
+                text: diname,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定删除！",
+                cancelButtonText: "取消删除！",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    swal.close();
+                    $('tr[dimensionid="' + did + '"]').remove();
+                    showMessage('维度' + diname, '删除成功');
+                } else {
+                    swal.close();
+                }
+            });
+        }
+    })
+    //保存按钮操作
+    $('.editDimenTable').on('click', '.fa-save', function() {
+        var p = $(this).parent().parent();
+        if ($('.editDimenContainer').attr('active') == 'new') {
+            var dt = p.find('select.tableselect option:selected').text();
+            var tp = p.find('td').eq(1).html();
+            var dn = p.find('input.dimensionName').val();
+            var did = p.find('input.dimensionid').val();
+            var showop = p.find('select.showop option:selected').text();
+            var isneed = p.find('select.isneed option:selected').text();
+            var showdn = p.find('.dimensionShowName').val();
+            var isgroupby = p.find('select.isgroupby option:selected').text();
+            var showcol = p.find('input.dimensionShowName').val();
+            var df = p.find('select.dataformatselect option:selected').text();
+            var ord = '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>';
+            var group = p.find('select.groupselect option:selected').text();;
+            var op = '<i class="fa fa-pencil"></i><i class="fa fa-remove"></i>';
+            var gid = (Math.random() * 10000).toFixed(0);
+            var str = "<tr dimensionid='" + gid + "'>";
+            str += "<td>" + dt + "</td>";
+            str += "<td>" + tp + "</td>";
+            str += "<td>" + dn + "</td>";
+            str += "<td>" + did + "</td>";
+            str += "<td>" + showop + "</td>";
+            str += "<td>" + isneed + "</td>";
+            str += "<td>" + showdn + "</td>";
+            str += "<td>" + isgroupby + "</td>";
+            str += "<td>" + showcol + "</td>";
+            str += "<td>" + df + "</td>";
+            str += "<td>" + ord + "</td>";
+            str += "<td>" + group + "</td>";
+            str += "<td>" + op + "</td>";
+            str += "</tr>";
+            $('tr.newPrivateDimentr').remove();
+            if ($('.editDimenTable tbody tr').length == 0) {
+                $('.editDimenTable tbody').html(str);
+            } else {
+                $('.editDimenTable tbody tr').eq(0).before(str);
+            }
+            showMessage('维度' + dn, '新增成功');
+            $('.editDimenContainer').attr('active', '');
+        }
+    })
+    //添加指标操作
+    $('.newDuliang').on('click',function(){
+        if($('.editDuliangContainer').attr('active')=='' ||
+            $('.editDuliangContainer').attr('active')==null ){
+            $('.editDuliangContainer').attr('active','new');
+            var str = "<tr class='newDuliangtr'>";
+            str +="<td><input class='tableinput DuliangName' type='text' /></td>";
+            str +="<td><input class='tableinput DuliangGongshi' type='text' /></td>";
+            str +="<td><input class='tableinput func' type='text' /></td>";
+            str +="<td><textarea class='DuliangInfo'></textarea></td>";
+            str +="<td></td>";
+            str +="<td>"+ getGroupSelect() +"</td>";
+            str +="<td>"+ getDataFormat() +"</td>";
+            str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
+            str += "</tr>";
+            if ($('.DuliangTable tbody tr').length == 0) {
+                $('.DuliangTable tbody').html(str);
+            } else {
+                $('.DuliangTable tbody tr').eq(0).before(str);
+            }
+        }else{
+            showMessage('请先完成当前编辑内容','')
+        }
+    })
+    //指标度量取消保存或者删除
+    $('.DuliangTable').on('click', '.fa-remove', function() {
+        if ($('.editDuliangContainer').attr('active') == 'new') {
+            $('tr.newDuliangtr').remove();
+            $('.editDuliangContainer').attr('active', '');
+        } else if ($('.editDuliangContainer').attr('active') == 'edit') {
+
+        } else if ($('.editDuliangContainer').attr('active') == '') {
+            var p = $(this).parent().parent();
+            var did = p.attr('Duliangid');
+            var duname = p.find('td').eq(0).html();;
+            swal({
+                title: "确定删除度量",
+                text: duname,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定删除！",
+                cancelButtonText: "取消删除！",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    swal.close();
+                    $('tr[Duliangid="' + did + '"]').remove();
+                    showMessage('维度' + duname, '删除成功');
+                } else {
+                    swal.close();
+                }
+            });
+        }
+    })
+    //指标度量保存按钮操作
+    $('.DuliangTable').on('click', '.fa-save', function() {
+        var p = $(this).parent().parent();
+        if ($('.editDuliangContainer').attr('active') == 'new') {
+            var duname = p.find('input.DuliangName').val();
+            var dugongshi = p.find('input.DuliangGongshi').val();
+            var dufunc = p.find('input.func').val();
+            var duinfo = p.find('textarea.DuliangInfo').val();
+            var ord = '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>';
+            var group = p.find('select.groupselect option:selected').text();;
+            var df = p.find('select.dataformatselect option:selected').text();
+            var did = (Math.random() * 10000).toFixed(0);
+            var str = "<tr Duliangid='" + did + "'>";
+            str += "<td>" + duname + "</td>";
+            str += "<td>" + dugongshi + "</td>";
+            str += "<td>" + dufunc + "</td>";
+            str += "<td>" + duinfo + "</td>";
+            str += "<td>" + ord + "</td>";
+            str += "<td>" + group + "</td>"; 
+            str += "<td>" + df + "</td>"; 
+            str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>'; 
+            str += "</tr>";
+            $('tr.newDuliangtr').remove();
+            if ($('.DuliangTable tbody tr').length == 0) {
+                $('.DuliangTable tbody').html(str);
+            } else {
+                $('.DuliangTable tbody tr').eq(0).before(str);
+            }
+            showMessage('维度' + duname, '新增成功');
+            $('.editDuliangContainer').attr('active', '');
+        }
+    })
 }
 //获取分组
-function getGroupSelect(){
-    var a =[];
-    $('.GroupTable tbody tr').each(function(){
-        a.push($(this).find('td').eq(0).text());
+function getGroupSelect() {
+    var a = [];
+    $('.GroupTable tbody tr').each(function() {
+        a.push($(this).find('td').eq(0).html());
     })
-    var str="<select>";
-       a.map(function(i,v){
-        str+='<option>'+a[i]+'</option>'
-       })
-    str+="</select>";
+    var str = "<select class='groupselect'>";
+    a.map(function(i, v) {
+        str += '<option>' + i + '</option>'
+    })
+    str += "</select>";
     return str;
 }
 //获取数据格式
-function getDataFormat(){
-    var a =['百分比','1位小数','2位小数','整数','4位小数']; 
-    var str="<select>";
-       a.map(function(i,v){
-        str+='<option value="'+i+'">'+i+'</option>'
-       })
-    str+="</select>";
+function getDataFormat() {
+    var a = ['百分比', '1位小数', '2位小数', '整数', '4位小数'];
+    var str = "<select class='dataformatselect'>";
+    a.map(function(i, v) {
+        str += '<option value="' + i + '">' + i + '</option>'
+    })
+    str += "</select>";
+    return str;
+}
+//获取表格select
+function getTableSelect() {
+    var a = [];
+    $('.joinTable tbody tr').each(function() {
+        a.push($(this).find('td').eq(0).html());
+    })
+    var str = "<select class='tableselect'>";
+    for (var i = 0; i < a.length; i++) {
+        str += '<option value="' + a[i] + '">' + a[i] + '</option>';
+    }
+    str += "</select>";
     return str;
 }
 
@@ -541,7 +769,7 @@ function fullDataTr(db, table, df) {
     str += '<td class="db">' + db + '</td>';
     str += '<td class="table">' + table + '</td>';
     str += '<td class="df">' + df + '</td>';
-    str += '<td class="optable"><i class="fa fa-edit"></i><i class="fa fa-minus" ></i></td>';
+    str += '<td class="optable"><i class="fa fa-pencil"></i><i class="fa fa-minus" ></i></td>';
     str += '</tr>';
     return str;
 }

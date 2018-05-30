@@ -12,6 +12,7 @@
         <link href="css/sweetalert.css" rel="stylesheet"/>
         <link href="css/iziToast.min.css" rel="stylesheet"/>
         <link href="css/all.css" rel="stylesheet"/>
+        <link href="css/publicDimension.css" rel="stylesheet"/>
     </head>
     <body>
         <div id="navContainer">
@@ -20,7 +21,12 @@
                     MAX5.0 Admin
                 </div>
                 <ul class="topnav">
-                    <li class="active">
+                    <li class="">
+                        <a href="./datasets.html">
+                            添加数据表
+                        </a>
+                    </li>
+                    <li class="">
                         <a href="./publicDimension.html">
                             公用维度
                         </a>
@@ -110,13 +116,33 @@
                             149dw_db
                         </option>
                         <option value="">
-                            150
-                        </option>
-                        <option value="">
-                            90
-                        </option>
+                            69maxportal
+                        </option> 
                     </select> 
-                    <input class="edittitleinput" name="tablename" placeholder="请输入表名" type="text"/>
+                    <!-- <input class="edittitleinput" name="tablename" placeholder="请输入表名" type="text"/> -->
+                    <span class='tablename'></span>
+                    <div class="allTableUlContainer">
+                                <input class="searchTable" name="searchTable" placeholder="搜索现有表" type="text">
+                                <i class="fa fa-refresh">
+                                </i>
+                                <ul class="allTableUl">
+                                    <li>
+                                        dw_db.xxx
+                                    </li>
+                                    <li>
+                                        dw_db.xxx
+                                    </li>
+                                    <li>
+                                        dw_db.xxx
+                                    </li>
+                                    <li>
+                                        dw_db.xxx
+                                    </li>
+                                    <li>
+                                        dw_db.xxx
+                                    </li>
+                                </ul>
+                            </div>
                     <span class="titlespan editTable">
                         修改
                     </span>

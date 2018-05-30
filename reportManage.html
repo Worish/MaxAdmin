@@ -22,11 +22,16 @@
                 </div>
                 <ul class="topnav">
                     <li class="">
+                        <a href="./datasets.html">
+                            添加数据表
+                        </a>
+                    </li>
+                    <li class="">
                         <a href="./publicDimension.html">
                             公用维度
                         </a>
                     </li>
-                    <li class="active">
+                    <li class="">
                         <a href="./reportManage.html">
                             报表管理
                         </a>
@@ -528,7 +533,7 @@
                                 编辑维度
                             </div>
                             <div active="editDuliang" class="addTag dataTableOperItem editDuliang">
-                                编辑度量
+                                编辑指标
                             </div>
                             <div active="editFilter" class="addTag dataTableOperItem editFilter">
                                 编辑筛选
@@ -565,6 +570,78 @@
                         </div>
                     </div>
                 </div>
+                <div class="editItemContainer editFilterContainer">
+                    <table class="table FilterTable">
+                        <caption>
+                            <span class="btn newFilter">
+                                添加筛选
+                            </span>
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th>
+                                    筛选名称
+                                </th>
+                                <th>
+                                    关联表
+                                </th>
+                                <th>
+                                    关联字段
+                                </th>
+                                <th>
+                                    是否显示
+                                </th>
+                                <th>
+                                    显示名称
+                                </th>
+                                <th class="optable">
+                                    编辑
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="editItemContainer editDuliangContainer">
+                    <table class="table DuliangTable">
+                        <caption>
+                            <span class="btn newDuliang">
+                                添加指标
+                            </span>
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th>
+                                    指标名称
+                                </th>
+                                <th>
+                                    指标公式
+                                </th>
+                                <th>
+                                    总计函数
+                                </th>
+                                <th>
+                                    字段注释
+                                </th>
+                                <th>
+                                    前端展现顺序
+                                </th>
+                                <th>
+                                    所属组名
+                                </th>
+                                <th>
+                                    数据格式
+                                </th>
+                                <th class="optable">
+                                    编辑
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
                 <div class="editItemContainer editDimenContainer">
                     <table class="table editDimenTable">
                         <caption>
@@ -577,7 +654,9 @@
                         </caption>
                         <thead>
                             <tr>
-                                <th>表</th>
+                                <th>
+                                    表
+                                </th>
                                 <th>
                                     类型
                                 </th>
@@ -588,29 +667,51 @@
                                     id
                                 </th>
                                 <th>
-                                    是否<br />显示<br />可选
+                                    是否
+                                    <br/>
+                                    显示
+                                    <br/>
+                                    可选
                                 </th>
                                 <th>
-                                    是否<br />必选
+                                    是否
+                                    <br/>
+                                    必选
                                 </th>
                                 <th>
-                                    显示<br />名称
+                                    显示
+                                    <br/>
+                                    名称
                                 </th>
                                 <th>
-                                    子查询<br />必须<br />groupby
+                                    子查询
+                                    <br/>
+                                    必须
+                                    <br/>
+                                    groupby
                                 </th>
                                 <th>
-                                    数据<br />展示<br />字段
+                                    数据
+                                    <br/>
+                                    展示
+                                    <br/>
+                                    字段
                                 </th>
                                 <th>
-                                    数据<br />格式
+                                    数据
+                                    <br/>
+                                    格式
                                 </th>
                                 <th>
-                                    前端<br />展现<br />顺序
+                                    前端
+                                    <br/>
+                                    展现
+                                    <br/>
+                                    顺序
                                 </th>
                                 <th>
                                     所属组
-                                </th> 
+                                </th>
                                 <th class="optable">
                                     编辑
                                 </th>
@@ -619,7 +720,8 @@
                         <tbody>
                         </tbody>
                     </table>
-                    <div class='editPublicCon'></div>
+                    <div class="editPublicCon">
+                    </div>
                 </div>
                 <div class="editItemContainer editGroupContainer">
                     <table class="table GroupTable">

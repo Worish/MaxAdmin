@@ -29,6 +29,28 @@ function showMessage(title, message) {
 }
 
 function baseClick() {
+    //点击显示表列表
+    $('.tablename').on('click',function(e){
+        e.preventDefault();
+         e.stopPropagation();
+         $('.allTableUlContainer').addClass('allTableUlContainerShow');
+    })
+    $('.editDimensionContainer').on('click',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        $('.allTableUlContainerShow').removeClass('allTableUlContainerShow');
+    })
+    $('.allTableUlContainer').on('click',function(e){
+        e.preventDefault();
+        e.stopPropagation(); 
+    })
+
+    $('.allTableUl').on('click','li',function(e){
+        e.preventDefault();
+        e.stopPropagation(); 
+        $('.tablename').text($(this).text().replace(/[/r/n/ ]/g,''));
+    })
+
     //点击新建维表的事件
     $('.addDimensionTable').on('click', function() {
         $ec.addClass('editDimensionOutContainershow');

@@ -1,0 +1,95 @@
+
+.allTableUlContainer {
+    position: absolute;
+    border: solid 1px #ddd;
+    width: 260px;
+    max-height: 300px;
+    margin-top: 5px;
+    margin-left: 166px;
+    background: #fff;
+    border-radius: 4px;
+    opacity: 0;
+    z-index: -1;
+    overflow: auto;
+    transition: all .3s cubic-bezier(.645, .045, .355, 1);
+    -webkit-transition: all .3s cubic-bezier(.645, .045, .355, 1);
+    -ms-transition: all .3s cubic-bezier(.645, .045, .355, 1);
+    -o-transition: all .3s cubic-bezier(.645, .045, .355, 1);
+    transform: translate3d(0, 50px, 0);
+    -webkit-transform: translate3d(0, 50px, 0);
+    -o-transform: translate3d(0, 50px, 0);
+    -ms-transform: translate3d(0, 50px, 0);
+}
+
+.allTableUlContainerShow {
+    opacity: 1;
+    z-index: 99;
+    transform: translate3d(0, 0px, 0);
+    -webkit-transform: translate3d(0, 0px, 0);
+    -o-transform: translate3d(0, 0px, 0);
+    -ms-transform: translate3d(0, 0px, 0);
+}
+
+ul.allTableUl {
+    width: 224px;
+    margin-left: 11px;
+    /* padding-left: 6px; */
+    padding: 0;
+    list-style: none;
+    /* padding-left: 6px; */
+    color: #444;
+    border: solid 1px #ddd;
+    border-radius: 3px;
+    margin-top: 4px;
+    /* padding-right: 6px; */
+    border-bottom: none;
+    /* margin-right: 5px; */
+}
+
+input.searchTable {
+    width: 198px;
+    margin-left: 11px;
+}
+
+input.searchTable {
+    margin-top: 15px;
+    height: 30px;
+    border-radius: 4px;
+    border: solid 1px #ddd;
+    padding-left: 6px;
+}
+
+.allTableUlContainer i.fa-refresh {
+    color: #888;
+    font-size: 13px;
+    padding: 4px;
+    cursor: pointer;
+}
+
+ul.allTableUl li {
+    padding: 6px 6px;
+    border-bottom: solid 1px #ddd;
+    cursor: pointer;
+    word-break: break-all;
+}
+
+ul.allTableUl li:hover {
+    background: #f9f8f8;
+}
+
+
+span.tablename {
+    display: inline-block;
+    width: 263px;
+    border-bottom: solid 1px #ddd;
+    /* height: 27px; */
+    margin-left: 5px;
+    margin-right: 5px;
+    position: relative;
+    /* top: 8px; */
+    border-radius: 5px;
+    cursor: pointer;
+    line-height: 27px;
+    color: #444;
+    padding-left: 10px;
+}
