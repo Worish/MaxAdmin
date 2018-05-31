@@ -20,7 +20,8 @@ ul.subNavUl{
 }
 .editDimensionOutContainer,
 .rmnliarrow span,
-input.reportNameInput
+input.reportNameInput,
+input.keyname
 {
     transition: all .3s cubic-bezier(.645,.045,.355,1);
     -webkit-transition: all .3s cubic-bezier(.645,.045,.355,1);
