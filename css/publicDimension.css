@@ -79,17 +79,23 @@ ul.allTableUl li:hover {
 
 
 span.tablename {
-    display: inline-block;
-    width: 263px;
-    border-bottom: solid 1px #ddd;
+    /* display: inline-block; */
+    /* width: 263px; */
+    /* border-bottom: solid 1px #ddd; */
     /* height: 27px; */
-    margin-left: 5px;
-    margin-right: 5px;
-    position: relative;
+    /* margin-left: 5px; */
+    /* margin-right: 5px; */
+    /* position: relative; */
     /* top: 8px; */
-    border-radius: 5px;
-    cursor: pointer;
-    line-height: 27px;
-    color: #444;
-    padding-left: 10px;
+    /* border-radius: 5px; */
+    /* cursor: pointer; */
+    /* line-height: 27px; */
+    /* color: #444; */
+    /* padding-left: 10px; */
+    display: inline-block;
+    width: 150px;
+    border-bottom: solid 1px #ddd;
+    height: 27px;
+    padding-bottom: 5px;
+    padding-top: 5px;
 }

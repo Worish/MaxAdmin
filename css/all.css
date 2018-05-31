@@ -252,7 +252,7 @@ li.active {
     border-radius: 5px;
     min-height: 400px;
     margin-top: 6%;
-    padding-top: 15px;
+    padding-top: 31px;
     padding-left: 30px;
     padding-right: 24px;
     border: solid 1px #ddd;
@@ -265,18 +265,28 @@ li.active {
     border-bottom: solid 1px #f0f0f0;
     margin-bottom: 14px;
 }
-.edittitlespan { 
+.edittitlespan {
     color: rgba(0,0,0,.65);
+    font-size: 14px;
+    margin-right: 10px;
+    position: relative;
+    top: 5px;
 }
 select.edittitleselect {
-    width: 100px;
+    /* width: 100px; */
+    /* border: none; */
     border: none;
-    border: solid 1px #ddd;
     color: rgba(0,0,0,.65);
-    height: 27px;
+    /* height: 27px; */
     outline: none!important;
-    border-radius: 5px;
     text-align: center;
+    width: 150px;
+    border-bottom: solid 1px #ddd;
+    background: #f8f8f8;
+    border-radius: 5px 5px 0 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-right: 5px;
 }
 
 input.edittitleinput {
@@ -349,6 +359,7 @@ ul.ul.dimensionListUl li:hover{
     text-align: center;
     border-radius: 50%;
     padding: 3px 4px;
+    margin-top: -15px;
 }
 
 .editDimensionOutContainershow{
@@ -475,4 +486,7 @@ table.table i{
 }
 table.table i:hover{
     color:#d66061;
+}
+th.widthth{
+    width:300px;
 }

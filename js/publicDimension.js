@@ -1,54 +1,63 @@
 $(document).ready(function() {
     baseClick();
     window.alldata = {};
+    initDB();
     $ec = $('.editDimensionOutContainer'); //editcontainer
     $dl = $('.dimensionList'); //dimensionlist
 })
 
-function showMessage(title, message) {
-    iziToast.show({
-        class: 'test',
-        titleColor: '#fff',
-        color: '#d66061',
-        icon: 'icon-contacts',
-        title: title,
-        message: message,
-        position: 'topCenter',
-        transitionIn: 'flipInX',
-        transitionOut: 'flipOutX',
-        progressBarColor: 'rgb(0, 255, 184)',
-        image: './img/avatar.jpg',
-        timeout: 1000,
-        imageWidth: 70,
-        layout: 2,
-        onClose: function() {
-            console.info('onClose');
-        },
-        iconColor: 'rgb(0, 255, 184)'
-    });
+function initDB() {
+    var q = {};
+    q.next = getAllDataSets;
+    getDBb(q);
 }
+
+function getAllDataSets() {
+    var url = 'dataset/getDatasetList';
+    var p = {};
+    p.datasetType = 1;
+    var q = {};
+    q.success = function(r) {
+        var str = "";
+        if (r == null || r.length == 0) {
+            str += "<tr class='nodata'><td colspan='4'>还没添加数据源,请按左上角按钮添加</td></tr>";
+        } else {
+            var df = new DateFormat();
+            //填充所有数据表格
+            for (var i = 0; i < r.length; i++) {
+                str += "<tr actionid='"+r[i].id+"'>";
+                str += "<td class='dbn' datasourceId ='"+r[i].datasourceId+"' dbName='"+r[i].dbName
+                +"' tableName='"+r[i].tableName+"' >" ;
+                str += window.db[r[i].datasourceId].name + r[i].dbName + "." + r[i].tableName + "</td>";
+                str += "<td>" + r[i].trueName + "</td>";
+                str += "<td>" + df.convertimestamp(r[i].createTime, 'yyyy-mm-dd') + "</td>";
+                if (r[i].updateTime == 321465600000) {
+                    str += "<td>" + df.convertimestamp(r[i].createTime, 'yyyy-mm-dd') + "</td>";
+                } else {
+                    str += "<td>" + df.convertimestamp(r[i].updateTime, 'yyyy-mm-dd') + "</td>";
+                }
+                str += "<td><i class='fa fa-edit' actionid='" + r[i].id + "'></i>";
+                str += "<i class='fa fa-remove' actionid='" + r[i].id + "'></i></td>";
+                str += "</tr>";
+            }
+        }
+        $('.tableContainer tbody').html(str);
+    }
+    $.api(url, p, q);
+}
+
 
 function baseClick() {
     //点击显示表列表
-    $('.tablename').on('click',function(e){
-        e.preventDefault();
-         e.stopPropagation();
-         $('.allTableUlContainer').addClass('allTableUlContainerShow');
-    })
-    $('.editDimensionContainer').on('click',function(e){
+    $('.editDimensionContainer').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         $('.allTableUlContainerShow').removeClass('allTableUlContainerShow');
     })
-    $('.allTableUlContainer').on('click',function(e){
-        e.preventDefault();
-        e.stopPropagation(); 
-    })
 
-    $('.allTableUl').on('click','li',function(e){
+    $('.allTableUlContainer').on('click', function(e) {
         e.preventDefault();
-        e.stopPropagation(); 
-        $('.tablename').text($(this).text().replace(/[/r/n/ ]/g,''));
+        e.stopPropagation();
     })
 
     //点击新建维表的事件
@@ -103,50 +112,6 @@ function baseClick() {
             $dl.show();
             $('.keyname').focus();
             $('.editDimension').attr('action', 'new');
-        }
-    })
-    //点击保存数据源的事件
-    $('.saveTable').on('click', function() {
-        var tbval = $('input[name="tablename"]').val().replace('[/ /r/n]/g', '');
-        if (tbval == '') {
-            //弹窗此处不能为空
-            if (tbval == '') {
-                $('input[name="tablename"]').addClass('inputerror');
-                setTimeout(function() {
-                    $('input[name="tablename"]').removeClass('inputerror');
-                }, 1000)
-            }
-        } else {
-            var val = tbval;
-            if ($ec.attr('action') == 'new') {
-                $('.saveTable').hide();
-                $('.editTable').show();
-                $('.cancelsaveTable').hide();
-                $('.edittitleinput').attr('disabled', '');
-                $('.addDimension').removeClass('btn-forbidden');
-                var id = (Math.random() * (10000000 - 0)).toFixed(0);
-                window.alldata[id] = {};
-                window.alldata[id].name = val;
-                $ec.attr('action', 'edit');
-                appendTable(id, $('.edittitleinput').val().replace('[/ /r/n]/g', ''), '-', '-', '-');
-                $ec.attr('actionid', id);
-                $ec.attr('actionid', id);
-                showMessage('数据源' + val, '新增成功');
-            } else if ($ec.attr('action') == 'edit') {
-                $('.edittitleinput').attr('disabled', '');
-                $('.addDimension').removeClass('btn-forbidden');
-                $('.saveTable').hide();
-                $('.editTable').show();
-                $('.cancelsaveTable').hide();
-                if (val == window.tb) {
-                    showMessage('数据源' + val, '未变化哦');
-                } else { //db和表名未发生变化
-                    var id = $ec.attr('actionid');
-                    $('tr[actionid="' + id + '"]').find('td').eq(0).text(val);
-                    // alert('修改成功');
-                    showMessage('数据源' + val, '修改成功');
-                }
-            }
         }
     })
     //点击编辑数据源的事件
@@ -266,21 +231,20 @@ function baseClick() {
         }, function(isConfirm) {
             if (isConfirm) {
                 swal.close();
-                $('tr[actionid="'+tableid+'"]').remove();
+                $('tr[actionid="' + tableid + '"]').remove();
                 showMessage('表' + str, '删除成功');
-            }else{
-                 swal.close();
-            }  
+            } else {
+                swal.close();
+            }
         });
     })
-
     //删除维度
-    $('.dimensionListUl').on('click','.removeDimension',function(e){
-         e.preventDefault();
-         e.stopPropagation();
-         var id = $(this).parent().attr('actionid');
-         var dimensiontext =$(this).parent().html().replace('<span class="removeDimension">x</span>','');
-         swal({
+    $('.dimensionListUl').on('click', '.removeDimension', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var id = $(this).parent().attr('actionid');
+        var dimensiontext = $(this).parent().html().replace('<span class="removeDimension">x</span>', '');
+        swal({
             title: "确定删除维度",
             text: dimensiontext,
             type: "warning",
@@ -293,19 +257,19 @@ function baseClick() {
         }, function(isConfirm) {
             if (isConfirm) {
                 swal.close();
-                $('li[actionid="'+id+'"]').remove();
+                $('li[actionid="' + id + '"]').remove();
                 showMessage('维度' + dimensiontext, '删除成功');
                 var editid = $('.editDimension').attr('actionid');
-                if(id == editid){
-                    $('.editDimension').attr('action','new');
+                if (id == editid) {
+                    $('.editDimension').attr('action', 'new');
                     $('.editDimension').removeaAttr('actionid');
                     $('.keyname').val('');
                     $('.keykey').val('');
                     $('.keyvalue').val('');
                 }
-            } else{
-                 swal.close();
-            }   
+            } else {
+                swal.close();
+            }
         });
     })
 }

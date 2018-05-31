@@ -1,3 +1,45 @@
+window.db = {};
+//指定数据源对应的数据库,目前只有149上的dw_db和maxportal
+window.dbmap = {
+    '149数据源':{"dw_db":"dw_db"},
+    '90数据源':{"maxportal":"maxportal"},
+}
+function getDBb(oq) {
+    var url = 'datasource/getDatasourceList';
+    var p = {};
+    var q = {};
+    q.success = function(r) {
+        for (var i = 0; i < r.length; i++) {
+            var o = r[i];
+            window.db[o.id] = o;
+            window.db[o.id].db = window.dbmap[o.name];
+        }
+        oq.next();
+    }
+    $.api(url, p, q);
+}
+function returndbSelect(dbobj,co){
+    //dbobj是window.db,所有db列表 格式如{datasourceid:{id:xx,name:xx}}
+    //co是当前选中的源+库
+    var str = "<select class='tableselect db'>";
+    for (var i in dbobj) {
+        var n = dbobj[i].name;
+        if(!window.dbmap.hasOwnProperty(n)){
+            console.log('js中未配置这个库');
+            console.log(n);
+        }else{
+            for(var j in window.dbmap[n]){
+                var fl = '';
+                if(co !=null && co== (i+j)){
+                    fl = ' selected ';
+                }
+               str += "<option value='" + i + "' " + fl + " db='"+j+"'>"+(dbobj[i].name+j)+'</option>'; 
+            }
+        }
+    }
+    str += "</select>";
+    return str;
+}
 function showMessage(title, message) {
     iziToast.show({
         class: 'test',
@@ -31,8 +73,19 @@ $.api = function(url, params, q) {
     o.error = function(a){
         console.log(url+'请求数据失败')
         console.log(a.status);
-        console.log(a.responseText);
-        console.log(a.statusText);
+        var st = "";
+        if(a.status == 500){
+            st="后台api错误,请按F12具体查看内容"
+        }
+        console.log(a.responseText); 
+        swal({
+            title: url+'请求数据失败',
+            text: st,
+            type: 'error',
+            timer: 7000,
+            showCloseButton: true,
+            showCancelButton: true,
+        })
     }
     var ajaxOption = {
         'url': basepath + url,
@@ -210,6 +263,13 @@ class copyObjectProperty {
 
 class DateFormat{
   constructor() {}
+  convertimestamp(d,format){
+    if(format == null){
+        format='yyyy-mm-dd';
+    }
+    var df = new DateFormat();
+    return df.changeformat(format,new Date(d));
+  }
    initdate(type,tempdate,days){
      /*
       ** type 格式 'yyyy/mm/dd'
