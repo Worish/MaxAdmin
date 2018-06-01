@@ -298,8 +298,8 @@ class DateFormat{
       ** type 格式 'yyyy/mm/dd'
       ** tdate 日期类型
       */ 
-     console.log('要转换的日期是');
-     console.log(tdate);
+     //console.log('要转换的日期是');
+     //console.log(tdate);
      var year = tdate.getFullYear();
      var month = parseInt(tdate.getMonth()) + 1 >= 10 ? parseInt(tdate.getMonth()) + 1 : "0" + (parseInt(tdate.getMonth()) + 1);
      var day = tdate.getDate() >= 10 ? tdate.getDate() : "0" + tdate.getDate();

@@ -2,6 +2,7 @@ html,body{
     height: 100%;
     background: #f8f8f8;
     margin: 0;
+    overflow-y: auto!important;
 }
 *{
     box-sizing: border-box; 
@@ -73,6 +74,8 @@ word-break: break-all;
 font-weight: 500;
     
 color: rgba(0,0,0,.65);
+    
+font-size: 14px;
 }
 
 table.table>tr:first-child>th:first-child {
@@ -120,6 +123,7 @@ div#nav-top {
     height: 60px;
     background: #454c59;
     color: #000;
+    position: relative;
 }
 
 .toptitle{
@@ -214,6 +218,7 @@ ul.topnav {
     left: 220px;
     right: 160px;
     list-style: none;
+    z-index: 999;
 }
 ul.topnav li{
     width: 120px;
@@ -341,7 +346,8 @@ ul.ul.dimensionListUl li {
     border-right: none;
     position: relative;
 }
-ul.ul.dimensionListUl li:hover{
+ul.ul.dimensionListUl li:hover,
+li.dimensionListUlliselect{
     background:#e6f7ff;
 }
 .closeContainer {

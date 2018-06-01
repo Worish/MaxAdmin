@@ -1,5 +1,7 @@
 $(document).ready(function() {
     baseClick();
+    clicktimer = setTimeout(function(r) {}, 300);
+    clearTimeout(clicktimer);
 })
 
 function baseClick() {
@@ -73,16 +75,48 @@ function baseClick() {
     $('.rootNavUl').on('click', '.subNavUli', function(e) {
         e.stopPropagation();
         e.preventDefault();
+        $(this).addClass('readychange')
+        clicktimer = setTimeout(function(e) {
+            // e.stopPropagation();
+            // e.preventDefault();
+            if (checkEditFold()) { //如果没有未编辑完成的folder时候
+                var uv = $(this).find('.subNavUl').eq(0);
+                var dtv = $(this).find('div.Table-Cell').eq(0);
+                if (uv.length > 0) { //如果当前文件夹有子元素的话
+                    if ($.inArray('subNavHide', uv.attr('class').split(' ')) == -1) {
+                        // uv.addClass('subNavHide');
+                        dtv.removeClass('rmnli-active');
+                    } else {
+                        // uv.removeClass('subNavHide');
+                        dtv.addClass('rmnli-active');
+                    }
+                } else { //如果当前文件夹没有子元素的话
+                }
+                $('.subNavUliActive').removeClass('subNavUliActive');
+                $('.readychange').addClass('subNavUliActive').removeClass('readychange');
+            } else { //如果有未编辑完成的folder时候
+                if ($.inArray('editFolderLi', $(this).attr('class').split(' ')) > -1) {} else {
+                    $('input.editFolder').addClass('editFolderWarn');
+                }
+                $('.readychange').removeClass('readychange');
+            }
+        }, 400)
+    })
+    //文件夹li dblclick双击事件
+    $('.rootNavUl').on('dblclick', '.subNavUli', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        clearTimeout(clicktimer);
         if (checkEditFold()) { //如果没有未编辑完成的folder时候
             var uv = $(this).find('.subNavUl').eq(0);
             var dtv = $(this).find('div.Table-Cell').eq(0);
             if (uv.length > 0) { //如果当前文件夹有子元素的话
                 if ($.inArray('subNavHide', uv.attr('class').split(' ')) == -1) {
                     uv.addClass('subNavHide');
-                    dtv.removeClass('rmnli-active');
+                    // dtv.removeClass('rmnli-active');
                 } else {
                     uv.removeClass('subNavHide');
-                    dtv.addClass('rmnli-active');
+                    // dtv.addClass('rmnli-active');
                 }
             } else { //如果当前文件夹没有子元素的话
             }
@@ -627,18 +661,17 @@ function baseClick() {
         }
     })
     //添加指标操作
-    $('.newDuliang').on('click',function(){
-        if($('.editDuliangContainer').attr('active')=='' ||
-            $('.editDuliangContainer').attr('active')==null ){
-            $('.editDuliangContainer').attr('active','new');
+    $('.newDuliang').on('click', function() {
+        if ($('.editDuliangContainer').attr('active') == '' || $('.editDuliangContainer').attr('active') == null) {
+            $('.editDuliangContainer').attr('active', 'new');
             var str = "<tr class='newDuliangtr'>";
-            str +="<td><input class='tableinput DuliangName' type='text' /></td>";
-            str +="<td><input class='tableinput DuliangGongshi' type='text' /></td>";
-            str +="<td><input class='tableinput func' type='text' /></td>";
-            str +="<td><textarea class='DuliangInfo'></textarea></td>";
-            str +="<td></td>";
-            str +="<td>"+ getGroupSelect() +"</td>";
-            str +="<td>"+ getDataFormat() +"</td>";
+            str += "<td><input class='tableinput DuliangName' type='text' /></td>";
+            str += "<td><input class='tableinput DuliangGongshi' type='text' /></td>";
+            str += "<td><input class='tableinput func' type='text' /></td>";
+            str += "<td><textarea class='DuliangInfo'></textarea></td>";
+            str += "<td></td>";
+            str += "<td>" + getGroupSelect() + "</td>";
+            str += "<td>" + getDataFormat() + "</td>";
             str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
             str += "</tr>";
             if ($('.DuliangTable tbody tr').length == 0) {
@@ -646,8 +679,8 @@ function baseClick() {
             } else {
                 $('.DuliangTable tbody tr').eq(0).before(str);
             }
-        }else{
-            showMessage('请先完成当前编辑内容','')
+        } else {
+            showMessage('请先完成当前编辑内容', '')
         }
     })
     //指标度量取消保存或者删除
@@ -655,9 +688,7 @@ function baseClick() {
         if ($('.editDuliangContainer').attr('active') == 'new') {
             $('tr.newDuliangtr').remove();
             $('.editDuliangContainer').attr('active', '');
-        } else if ($('.editDuliangContainer').attr('active') == 'edit') {
-
-        } else if ($('.editDuliangContainer').attr('active') == '') {
+        } else if ($('.editDuliangContainer').attr('active') == 'edit') {} else if ($('.editDuliangContainer').attr('active') == '') {
             var p = $(this).parent().parent();
             var did = p.attr('Duliangid');
             var duname = p.find('td').eq(0).html();;
@@ -700,9 +731,9 @@ function baseClick() {
             str += "<td>" + dufunc + "</td>";
             str += "<td>" + duinfo + "</td>";
             str += "<td>" + ord + "</td>";
-            str += "<td>" + group + "</td>"; 
-            str += "<td>" + df + "</td>"; 
-            str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>'; 
+            str += "<td>" + group + "</td>";
+            str += "<td>" + df + "</td>";
+            str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
             str += "</tr>";
             $('tr.newDuliangtr').remove();
             if ($('.DuliangTable tbody tr').length == 0) {

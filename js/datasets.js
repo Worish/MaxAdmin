@@ -20,13 +20,20 @@ function getAllDataSets() {
         if (r == null || r.length == 0) {
             str += "<tr class='nodata'><td colspan='4'>还没添加数据源,请按左上角按钮添加</td></tr>";
         } else {
-            //填充所有数据表格
+            var td = [];
             for (var i = 0; i < r.length; i++) {
                 aod[r[i].id] = r[i];
-                str += "<tr tid='" + r[i].id + "'>";
-                str += "<td>" + window.db[r[i].datasourceId].name+r[i].dbName + "</td>";
-                str += "<td>" + r[i].tableName + "</td>";
-                str += "<td>" + (r[i].type == 2 ? '事实表' : '维度表') + "</td>";
+                td.push(r[i].id);
+            }
+            td.sort();
+            td.reverse();
+            //填充所有数据表格
+            for (var i = 0; i < td.length; i++) {
+                var tempd = aod[td[i]];
+                str += "<tr tid='" + tempd.id + "'>";
+                str += "<td>" + window.db[tempd.datasourceId].name+tempd.dbName + "</td>";
+                str += "<td>" + tempd.tableName + "</td>";
+                str += "<td>" + (tempd.type == 2 ? '事实表' : '维度表') + "</td>";
                 str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></td>';
                 str += "</tr>";
             }
