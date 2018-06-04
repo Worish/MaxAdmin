@@ -12,7 +12,7 @@
         <link href="css/sweetalert.css" rel="stylesheet"/>
         <link href="css/iziToast.min.css" rel="stylesheet"/>
         <link href="css/all.css" rel="stylesheet"/>
-        <link href="css/reportManage.css" rel="stylesheet"/>
+        <link href="css/filterDesign.css" rel="stylesheet"/>
     </head>
     <body>
         <div id="navContainer">
@@ -65,7 +65,7 @@
                 </div>
             </div>
         </div>
-        <div class='contentContainer'>
+        <div class="contentContainer">
             <!-- 页面内容在此处开始 -->
             <div class="tableTreeContainer">
                 <div class="tableTree">
@@ -99,7 +99,7 @@
                                             <span class="foldName" style="width: 97px;">
                                                 时间
                                             </span>
-                                           <!--  <span class="rmnlioperate">
+                                            <!--  <span class="rmnlioperate">
                                                <i class="fa fa-pencil">
                                                </i>
                                                <i class="fa fa-plus" level="1">
@@ -109,7 +109,8 @@
                                            </span> -->
                                         </div>
                                     </div>
-                                </li><li class="subNavUli" keyname="汇总" level="1">
+                                </li>
+                                <li class="subNavUli" keyname="汇总" level="1">
                                     <div class="Center-Container is-Table">
                                         <div class="Table-Cell rmnli-active">
                                             <i class="folder fa fa-folder">
@@ -133,6 +134,200 @@
                     </ul>
                 </div>
             </div>
+            <div class="FilterTableContianer">
+                <table class="table filtertable">
+                    <caption>
+                        <span class="btn addFilter">
+                            添加筛选
+                        </span>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th>
+                                名称
+                            </th>
+                            <th>
+                                类型
+                            </th>
+                            <th>
+                                创建人
+                            </th>
+                            <th>
+                                创建时间
+                            </th>
+                            <th>
+                                修改时间
+                            </th>
+                            <th class="optable">
+                                编辑
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div action="new" class="filterEditOutContainer">
+                <div class="filterEditContainer">
+                    <span class="closeFilterContainer">
+                        x
+                    </span>
+                    <div class="editNamePath">
+                        <input id="filternameinput" name="filtername" placeholder="在此处输入筛选名称" type="text"/>
+                        <div class="pathContainer">
+                            <span id="pathnamespan">
+                            </span>
+                            <i class="fa fa-caret-down">
+                            </i>
+                        </div>
+                    </div>
+                    <div class="pathshowContainer">
+                        <ul class="pathShowUl">
+                            <li>
+                                <span class="selectpathnamespan">
+                                    <i class="folder fa fa-folder">
+                                    </i>
+                                    test
+                                </span>
+                                <ul class="subpathUl">
+                                    <li>
+                                        <span class="selectpathnamespan">
+                                            <i class="folder fa fa-folder">
+                                            </i>
+                                            test1
+                                        </span>
+                                        <ul class="subpathUl">
+                                            <li>
+                                                <span class="selectpathnamespan">
+                                                    <i class="folder fa fa-folder">
+                                                    </i>
+                                                    test11
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="selectpathnamespan">
+                                                    <i class="folder fa fa-folder">
+                                                    </i>
+                                                    test21
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <span class="selectpathnamespan">
+                                            <i class="folder fa fa-folder">
+                                            </i>
+                                            test2
+                                        </span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="selectpathnamespan">
+                                    <i class="folder fa fa-folder">
+                                    </i>
+                                    test2
+                                </span>
+                            </li>
+                            <li>
+                                <span class="selectpathnamespan">
+                                    <i class="folder fa fa-folder">
+                                    </i>
+                                    test2
+                                </span>
+                            </li>
+                            <li>
+                                <span class="selectpathnamespan">
+                                    <i class="folder fa fa-folder">
+                                    </i>
+                                    test2
+                                </span>
+                            </li>
+                        </ul>
+                        <div class="confirmPath">
+                            确定
+                        </div>
+                    </div>
+                    <div class="editContentContainer">
+                        <div class="editFilterDiv editLeftFilter ">
+                            <span class="editFilterInfo">
+                                数据源:
+                            </span>
+                            <span class="datasourceEdit">
+                            </span>
+                        </div>
+                        <div class="editFilterDiv editRightFilter showtype">
+                            <span class="editFilterInfo">
+                                展示方式:
+                            </span>
+                            <input name="showtype" type="radio" value="复选">
+                                <span class="showtypeInfo">
+                                    复选
+                                </span>
+                                <input name="showtype" type="radio" value="单选">
+                                    <span class="showtypeInfo">
+                                        单选
+                                    </span>
+                                </input>
+                            </input>
+                        </div>
+                        <div class="editFilterDiv editLeftFilter marginTopFilter">
+                            <span class="editFilterInfo datatableInfo">
+                                数据表:
+                            </span>
+                            <textarea class="datatable"></textarea>
+                        </div>
+                        <div class="editFilterDiv editRightFilter marginTopFilter">
+                            <span class="editFilterInfo showNumberInfo">
+                                展示条数:
+                            </span>
+                            <input class="showNumber" type="text"/>
+                        </div>
+                        <div class="editFilterDiv editLeftFilter">
+                            <span class="editFilterInfo">
+                                key:
+                            </span>
+                            <input class="key normalinput" type="text"/>
+                        </div>
+                        <div class="editFilterDiv editRightFilter">
+                            <span class="editFilterInfo">
+                                value:
+                            </span>
+                            <input class="kvalue normalinput" type="text"/>
+                        </div>
+                        <div class="editFilterDiv editLeftFilter">
+
+                            <span class="editFilterInfo">
+                                最多勾选条数:
+                            </span>
+                            <input class="maxselect normalinput" type="text"/>
+                        </div>
+                        <div class="editFilterDiv editRightFilter">
+                            <span class="editFilterInfo">
+                                最少勾选条数:
+                            </span>
+                            <input class="minselect normalinput" type="text"/>
+                        </div>
+                        <div class="editFilterDiv editLeftFilter">
+                            <span class="editFilterInfo parentFilterInfo">
+                                父筛选:
+                            </span>
+                            <select class="tableselect parentFilterSelect"><option value="1" db="dw_db">149数据源dw_db</option></select>
+                        </div>
+                        <div class="editFilterDiv editRightFilter">
+                        <span class="editFilterInfo">
+                                关联字段:
+                            </span>
+                            <input class="relativecolumn normalinput" type="text"/>
+                        </div> 
+                    </div>
+                    <div class="saveButtonContainer">
+                        <span class="btn saveFilter">
+                            保存
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
         <script src="./js/jquery-3.3.1.min.js" type="text/javascript">
         </script>
@@ -141,6 +336,8 @@
         <script src="./js/sweetalert-dev.js" type="text/javascript">
         </script>
         <script src="./js/common.js" type="text/javascript">
+        </script>
+        <script src="./js/filterDesign.js" type="text/javascript">
         </script>
     </body>
 </html>

@@ -1,7 +1,6 @@
 $(document).ready(function() {
     baseClick();
-    clicktimer = setTimeout(function(r) {}, 300);
-    clearTimeout(clicktimer);
+    clickFlag = null;
 })
 
 function baseClick() {
@@ -75,10 +74,12 @@ function baseClick() {
     $('.rootNavUl').on('click', '.subNavUli', function(e) {
         e.stopPropagation();
         e.preventDefault();
-        $(this).addClass('readychange')
-        clicktimer = setTimeout(function(e) {
-            // e.stopPropagation();
-            // e.preventDefault();
+        if (clickFlag) { //取消上次延时未执行的方法
+            clickFlag = clearTimeout(clickFlag);
+        }
+        $(this).addClass('readychange');
+        clickFlag = setTimeout(function() {
+            // click 事件的处理 
             if (checkEditFold()) { //如果没有未编辑完成的folder时候
                 var uv = $(this).find('.subNavUl').eq(0);
                 var dtv = $(this).find('div.Table-Cell').eq(0);
@@ -98,15 +99,20 @@ function baseClick() {
                 if ($.inArray('editFolderLi', $(this).attr('class').split(' ')) > -1) {} else {
                     $('input.editFolder').addClass('editFolderWarn');
                 }
-                $('.readychange').removeClass('readychange');
+                 $('.readychange').removeClass('readychange');
             }
-        }, 400)
+        }, 300); //延时300毫秒执行
     })
     //文件夹li dblclick双击事件
     $('.rootNavUl').on('dblclick', '.subNavUli', function(e) {
         e.stopPropagation();
         e.preventDefault();
-        clearTimeout(clicktimer);
+        console.log('dbclick')
+        if (clickFlag) { //取消上次延时未执行的方法
+            clickFlag = clearTimeout(clickFlag);
+        }
+
+        $('.readychange').removeClass('readychange');
         if (checkEditFold()) { //如果没有未编辑完成的folder时候
             var uv = $(this).find('.subNavUl').eq(0);
             var dtv = $(this).find('div.Table-Cell').eq(0);
@@ -120,8 +126,6 @@ function baseClick() {
                 }
             } else { //如果当前文件夹没有子元素的话
             }
-            $('.subNavUliActive').removeClass('subNavUliActive');
-            $(this).addClass('subNavUliActive');
         } else { //如果有未编辑完成的folder时候
             if ($.inArray('editFolderLi', $(this).attr('class').split(' ')) > -1) {} else {
                 $('input.editFolder').addClass('editFolderWarn');

@@ -13,7 +13,9 @@ span.user i,
 span.out i,
 span.titlespan,
 .edittitleinput,
-ul.subNavUl{
+ul.subNavUl,
+.pathshowContainer,
+.filterEditOutContainer{
     transition:all .3s ease-in-out;
     -webkit-transition:all .3s ease-in-out;
     -ms-transition:all .3s ease-in-out;
