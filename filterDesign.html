@@ -70,7 +70,7 @@
             <div class="tableTreeContainer">
                 <div class="tableTree">
                     <ul class="rootNavUl">
-                        <li class="rmnli">
+                        <li class="rmnli" folderId=0>
                             <div class="Center-Container is-Table">
                                 <div class="Table-Cell">
                                     <i class="folder fa fa-folder">
@@ -79,7 +79,7 @@
                                         筛选根目录
                                     </span>
                                     <span class="rmnlioperate">
-                                        <i class="fa fa-plus rootaddicon" level="0">
+                                        <i class="fa fa-plus rootaddicon" level="0" folderId=0>
                                         </i>
                                     </span>
                                     <!-- <span class="rmnliarrow">
@@ -91,7 +91,7 @@
                                 </div>
                             </div>
                             <ul class="subNavUl" level="1">
-                                <li class="subNavUli" keyname="汇总" level="1">
+                                <li class="subNavUli" keyname="汇总" level="1" folderId=1>
                                     <div class="Center-Container is-Table">
                                         <div class="Table-Cell rmnli-active">
                                             <i class="folder fa fa-folder">
@@ -110,22 +110,25 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="subNavUli" keyname="汇总" level="1">
+                                <li class="subNavUli" keyname="汇总" level="1" folderId=2>
                                     <div class="Center-Container is-Table">
                                         <div class="Table-Cell rmnli-active">
                                             <i class="folder fa fa-folder">
                                             </i>
                                             <span class="foldName" style="width: 97px;">
-                                                城市
+                                                地理
                                             </span>
-                                            <!-- <span class="rmnlioperate">
-                                                <i class="fa fa-pencil">
-                                                </i>
-                                                <i class="fa fa-plus" level="1">
-                                                </i>
-                                                <i class="fa fa-remove">
-                                                </i>
-                                            </span> -->
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="subNavUli" keyname="汇总" level="1" folderId=3>
+                                    <div class="Center-Container is-Table">
+                                        <div class="Table-Cell rmnli-active">
+                                            <i class="folder fa fa-folder">
+                                            </i>
+                                            <span class="foldName" style="width: 97px;">
+                                                其他
+                                            </span>
                                         </div>
                                     </div>
                                 </li>
@@ -176,6 +179,7 @@
                         <input id="filternameinput" name="filtername" placeholder="在此处输入筛选名称" type="text"/>
                         <div class="pathContainer">
                             <span id="pathnamespan">
+                                点击此处选择路径
                             </span>
                             <i class="fa fa-caret-down">
                             </i>
@@ -183,66 +187,6 @@
                     </div>
                     <div class="pathshowContainer">
                         <ul class="pathShowUl">
-                            <li>
-                                <span class="selectpathnamespan">
-                                    <i class="folder fa fa-folder">
-                                    </i>
-                                    test
-                                </span>
-                                <ul class="subpathUl">
-                                    <li>
-                                        <span class="selectpathnamespan">
-                                            <i class="folder fa fa-folder">
-                                            </i>
-                                            test1
-                                        </span>
-                                        <ul class="subpathUl">
-                                            <li>
-                                                <span class="selectpathnamespan">
-                                                    <i class="folder fa fa-folder">
-                                                    </i>
-                                                    test11
-                                                </span>
-                                            </li>
-                                            <li>
-                                                <span class="selectpathnamespan">
-                                                    <i class="folder fa fa-folder">
-                                                    </i>
-                                                    test21
-                                                </span>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <span class="selectpathnamespan">
-                                            <i class="folder fa fa-folder">
-                                            </i>
-                                            test2
-                                        </span>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <span class="selectpathnamespan">
-                                    <i class="folder fa fa-folder">
-                                    </i>
-                                    test2
-                                </span>
-                            </li>
-                            <li>
-                                <span class="selectpathnamespan">
-                                    <i class="folder fa fa-folder">
-                                    </i>
-                                    test2
-                                </span>
-                            </li>
-                            <li>
-                                <span class="selectpathnamespan">
-                                    <i class="folder fa fa-folder">
-                                    </i>
-                                    test2
-                                </span>
-                            </li>
                         </ul>
                         <div class="confirmPath">
                             确定
@@ -260,22 +204,33 @@
                             <span class="editFilterInfo">
                                 展示方式:
                             </span>
-                            <input name="showtype" type="radio" value="复选">
-                                <span class="showtypeInfo">
-                                    复选
-                                </span>
-                                <input name="showtype" type="radio" value="单选">
-                                    <span class="showtypeInfo">
-                                        单选
-                                    </span>
-                                </input>
-                            </input>
+                            <input name="showtype" type="radio" checked value="复选"/>
+                            <span class="showtypeInfo">
+                                复选
+                            </span>
+                            <input name="showtype" type="radio" value="单选"/>
+                            <span class="showtypeInfo">
+                                单选
+                            </span>
+                        </div>
+                        <div class="editFilterDiv editLeftFilter gouxuan">
+                            <span class="editFilterInfo maxselectinfo">
+                                最多勾选条数:
+                            </span>
+                            <input class="maxselect normalinput maxselectinput" type="text"/>
+                        </div>
+                        <div class="editFilterDiv editRightFilter gouxuan">
+                            <span class="editFilterInfo minselectinfo">
+                                最少勾选条数:
+                            </span>
+                            <input class="minselect normalinput minselectinput" type="text"/>
                         </div>
                         <div class="editFilterDiv editLeftFilter marginTopFilter">
                             <span class="editFilterInfo datatableInfo">
                                 数据表:
                             </span>
-                            <textarea class="datatable"></textarea>
+                            <textarea class="datatable">
+                            </textarea>
                         </div>
                         <div class="editFilterDiv editRightFilter marginTopFilter">
                             <span class="editFilterInfo showNumberInfo">
@@ -283,43 +238,49 @@
                             </span>
                             <input class="showNumber" type="text"/>
                         </div>
-                        <div class="editFilterDiv editLeftFilter">
-                            <span class="editFilterInfo">
-                                key:
+                        <div class="editFilterDiv editLeftFilter margintopse">
+                           <span class="editFilterInfo defaultshowinfo">
+                                默认展示:
                             </span>
-                            <input class="key normalinput" type="text"/>
-                        </div>
-                        <div class="editFilterDiv editRightFilter">
-                            <span class="editFilterInfo">
-                                value:
+                            <input name="defaultShow"  checked type="radio" value="all"/>
+                            <span class="showtypeInfo">
+                                全部
                             </span>
-                            <input class="kvalue normalinput" type="text"/>
-                        </div>
-                        <div class="editFilterDiv editLeftFilter">
-
-                            <span class="editFilterInfo">
-                                最多勾选条数:
+                            <input name="defaultShow" type="radio" value="first"/>
+                            <span class="showtypeInfo">
+                                第一条
                             </span>
-                            <input class="maxselect normalinput" type="text"/>
                         </div>
-                        <div class="editFilterDiv editRightFilter">
+                        <div class="editFilterDiv editRightFilter margintopse">
                             <span class="editFilterInfo">
-                                最少勾选条数:
+                                是否必选:
                             </span>
-                            <input class="minselect normalinput" type="text"/>
+                            <input name="mustrequire"  checked type="radio" value="yes"/>
+                            <span class="showtypeInfo">
+                                是
+                            </span>
+                            <input name="mustrequire" type="radio" value="no"/>
+                            <span class="showtypeInfo">
+                                否
+                            </span>
                         </div>
+                        
                         <div class="editFilterDiv editLeftFilter">
                             <span class="editFilterInfo parentFilterInfo">
                                 父筛选:
                             </span>
-                            <select class="tableselect parentFilterSelect"><option value="1" db="dw_db">149数据源dw_db</option></select>
+                            <select class="tableselect parentFilterSelect">
+                                <option db="dw_db" value="1">
+                                    149数据源dw_db
+                                </option>
+                            </select>
                         </div>
                         <div class="editFilterDiv editRightFilter">
-                        <span class="editFilterInfo">
+                            <span class="editFilterInfo">
                                 关联字段:
                             </span>
                             <input class="relativecolumn normalinput" type="text"/>
-                        </div> 
+                        </div>
                     </div>
                     <div class="saveButtonContainer">
                         <span class="btn saveFilter">

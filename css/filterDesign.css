@@ -146,7 +146,7 @@ li.rmnli span.arrowleft {
     -moz-transform: rotate(145deg);
     /* Firefox */
     -webkit-transform: rotate(145deg);
-    /* Safari å’Œ Chrome */
+    /* Safari Ã¥â€™Å’ Chrome */
     -o-transform: rotate(145deg);
     /* Opera */
 }
@@ -158,7 +158,7 @@ li.rmnli span.arrowRight {
     -moz-transform: rotate(45deg);
     /* Firefox */
     -webkit-transform: rotate(45deg);
-    /* Safari å’Œ Chrome */
+    /* Safari Ã¥â€™Å’ Chrome */
     -o-transform: rotate(45deg);
     /* Opera */
 }
@@ -171,7 +171,7 @@ div.Table-Cell.rmnli-active span.arrowleft {
     -moz-transform: rotate(45deg);
     /* Firefox */
     -webkit-transform: rotate(45deg);
-    /* Safari å’Œ Chrome */
+    /* Safari Ã¥â€™Å’ Chrome */
     -o-transform: rotate(45deg);
     /* Opera */
 }
@@ -184,7 +184,7 @@ div.Table-Cell.rmnli-active span.arrowRight {
     -moz-transform: rotate(145deg);
     /* Firefox */
     -webkit-transform: rotate(145deg);
-    /* Safari å’Œ Chrome */
+    /* Safari Ã¥â€™Å’ Chrome */
     -o-transform: rotate(145deg);
     /* Opera */
 }
@@ -243,6 +243,7 @@ ul.subNavUl {
     width: 1000px;
     margin: 0 auto;
     background: #fff;
+    padding-top: 52px;
 }
 
 .editFilterDiv {
@@ -277,7 +278,7 @@ ul.subNavUl {
 }
 
 input#filternameinput {
-    width: 260px;
+    width: 265px;
     height: 30px;
     float: left;
     border: none;
@@ -285,15 +286,13 @@ input#filternameinput {
     outline: none!important;
 }
 
-input#filternameinput:focus,
-input.showNumber:focus,
-input.normalinput:focus {
+input#filternameinput:focus, input.showNumber:focus, input.normalinput:focus {
     border-bottom: solid 1px #1890ff;
 }
 
 .pathContainer {
-    width: 280px;
-    float: left;
+    width: 271px;
+    float: right;
     margin-left: 20px;
     height: 30px;
     cursor: pointer;
@@ -301,30 +300,33 @@ input.normalinput:focus {
 
 .editNamePath {
     overflow: hidden;
-    width: 98%;
+    width: 622px;
     margin: 20px auto;
+    /* text-align: center; */
 }
 
 span#pathnamespan {
     display: inline-block;
-    width: 280px;
-    height: 30px;
+    width: 290px;
+    height: 26px;
     border-bottom: solid 1px #ddd;
     color: #444;
+    font-size: 14px;
+    color: #666;
 }
 
 .pathContainer .fa-caret-down {
     color: #aaa;
     position: absolute;
     margin-top: -22px;
-    margin-left: 269px;
+    margin-left: 262px;
 }
 
 .pathshowContainer {
     position: absolute;
-    margin-left: 290px;
+    margin-left: 540px;
     margin-top: -19px;
-    width: 280px;
+    width: 271px;
     background: #fff;
     border: solid 1px #ddd;
     opacity: 0;
@@ -362,7 +364,9 @@ ul.pathShowUl li {
     color: #444;
 }
 
-ul.pathShowUl span.selectpathnamespan:hover, ul.subpathUl span.selectpathnamespan:hover {
+ul.pathShowUl span.selectpathnamespan:hover,
+ul.subpathUl span.selectpathnamespan:hover,
+span.selectpathnamespanSelect  {
     background: #f8f8f8;
 }
 
@@ -413,14 +417,14 @@ span.closeFilterContainer {
 
 span.closeFilterContainer {
     position: absolute;
-    margin-left: 973px;
+    margin-left: 954px;
     width: 20px;
     height: 21px;
     cursor: pointer;
     text-align: center;
     color: #d66061;
     /* font-weight: bold; */
-    margin-top: 5px;
+    margin-top: -36px;
     font-size: 21px;
 }
 
@@ -444,6 +448,7 @@ span.closeFilterContainer {
 
 .editFilterDiv.editRightFilter {
     padding-left: 5px;
+    padding-top: 10px;
 }
 
 div.showtype {
@@ -457,6 +462,7 @@ textarea.datatable {
     /* outline: none; */
     /* border: none; */
     border: solid 1px #ddd;
+    color: #444;
 }
 
 .datatableInfo {
@@ -464,8 +470,7 @@ textarea.datatable {
     top: -2px;
 }
 
-input.showNumber,
-input.normalinput {
+input.showNumber, input.normalinput {
     border: none;
     border-bottom: solid 1px #ddd;
     /* height: 49px; */
@@ -477,10 +482,12 @@ span.editFilterInfo.showNumberInfo {
     position: relative;
     top: 2px;
 }
+
 .editFilterDiv select {
     width: 170px;
     box-shadow: none;
 }
+
 span.editFilterInfo.parentFilterInfo {
     position: relative;
     top: 18px;
@@ -496,4 +503,30 @@ span.showtypeInfo {
     color: #444;
     position: relative;
     top: -1px;
+}
+
+.editFilterDiv.gouxuan {
+    /*display: none;*/
+    margin-top: -18px;
+    margin-bottom: 24px;
+}
+
+.margintopse {
+    position: relative;
+    top: 24px;
+}
+
+.defaultshowinfo {
+    margin-right: 55px!important;
+}
+span.editFilterInfo.minselectinfo,
+input.minselect.normalinput.minselectinput {
+    position: relative;
+    top: -4px;
+}
+  
+span.editFilterInfo.maxselectinfo,
+input.maxselect.normalinput.maxselectinput {
+    position: relative;
+    top: 6px;
 }
