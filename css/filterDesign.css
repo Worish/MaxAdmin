@@ -146,7 +146,7 @@ li.rmnli span.arrowleft {
     -moz-transform: rotate(145deg);
     /* Firefox */
     -webkit-transform: rotate(145deg);
-    /* Safari Ã¥â€™Å’ Chrome */
+    /* Safari ÃƒÂ¥Ã¢â‚¬â„¢Ã…â€™ Chrome */
     -o-transform: rotate(145deg);
     /* Opera */
 }
@@ -158,7 +158,7 @@ li.rmnli span.arrowRight {
     -moz-transform: rotate(45deg);
     /* Firefox */
     -webkit-transform: rotate(45deg);
-    /* Safari Ã¥â€™Å’ Chrome */
+    /* Safari ÃƒÂ¥Ã¢â‚¬â„¢Ã…â€™ Chrome */
     -o-transform: rotate(45deg);
     /* Opera */
 }
@@ -171,7 +171,7 @@ div.Table-Cell.rmnli-active span.arrowleft {
     -moz-transform: rotate(45deg);
     /* Firefox */
     -webkit-transform: rotate(45deg);
-    /* Safari Ã¥â€™Å’ Chrome */
+    /* Safari ÃƒÂ¥Ã¢â‚¬â„¢Ã…â€™ Chrome */
     -o-transform: rotate(45deg);
     /* Opera */
 }
@@ -184,7 +184,7 @@ div.Table-Cell.rmnli-active span.arrowRight {
     -moz-transform: rotate(145deg);
     /* Firefox */
     -webkit-transform: rotate(145deg);
-    /* Safari Ã¥â€™Å’ Chrome */
+    /* Safari ÃƒÂ¥Ã¢â‚¬â„¢Ã…â€™ Chrome */
     -o-transform: rotate(145deg);
     /* Opera */
 }
@@ -195,7 +195,7 @@ ul.subNavUl {
     overflow: hidden;
 }
 
-.Center-Container.is-Table:hover .Table-Cell {
+.Center-Container.is-Table:hover .Table-Cell, .treeLiSelect .Table-Cell {
     background: #f8f8f8;
 }
 
@@ -243,12 +243,13 @@ ul.subNavUl {
     width: 1000px;
     margin: 0 auto;
     background: #fff;
-    padding-top: 52px;
+    padding-top: 36px;
+    border-radius: 5px;
 }
 
 .editFilterDiv {
     /*background: #ddd;*/
-    height: 50px;
+    /* height: 34px; */
     width: 47%;
     float: left;
     margin-bottom: 5px;
@@ -262,7 +263,7 @@ ul.subNavUl {
 }
 
 .editFilterDiv.editLeftFilter {
-    margin-right: 5%;
+    /* margin-right: 5%; */
     margin-left: 0.5%;
     text-align: right;
     padding-right: 12px;
@@ -277,8 +278,8 @@ ul.subNavUl {
     padding: 31px;
 }
 
-input#filternameinput {
-    width: 265px;
+input#filternameinput, input#pathnamespan {
+    width: 283px;
     height: 30px;
     float: left;
     border: none;
@@ -291,7 +292,7 @@ input#filternameinput:focus, input.showNumber:focus, input.normalinput:focus {
 }
 
 .pathContainer {
-    width: 271px;
+    /* width: 271px; */
     float: right;
     margin-left: 20px;
     height: 30px;
@@ -300,7 +301,7 @@ input#filternameinput:focus, input.showNumber:focus, input.normalinput:focus {
 
 .editNamePath {
     overflow: hidden;
-    width: 622px;
+    width: 768px;
     margin: 20px auto;
     /* text-align: center; */
 }
@@ -308,11 +309,14 @@ input#filternameinput:focus, input.showNumber:focus, input.normalinput:focus {
 span#pathnamespan {
     display: inline-block;
     width: 290px;
-    height: 26px;
+    height: 28px;
     border-bottom: solid 1px #ddd;
     color: #444;
     font-size: 14px;
     color: #666;
+    user-select: none;
+    cursor: pointer;
+    line-height: 29px;
 }
 
 .pathContainer .fa-caret-down {
@@ -324,9 +328,9 @@ span#pathnamespan {
 
 .pathshowContainer {
     position: absolute;
-    margin-left: 540px;
-    margin-top: -19px;
-    width: 271px;
+    margin-left: 570px;
+    margin-top: 46px;
+    width: 283px;
     background: #fff;
     border: solid 1px #ddd;
     opacity: 0;
@@ -364,9 +368,7 @@ ul.pathShowUl li {
     color: #444;
 }
 
-ul.pathShowUl span.selectpathnamespan:hover,
-ul.subpathUl span.selectpathnamespan:hover,
-span.selectpathnamespanSelect  {
+ul.pathShowUl span.selectpathnamespan:hover, ul.subpathUl span.selectpathnamespan:hover, span.selectpathnamespanSelect {
     background: #f8f8f8;
 }
 
@@ -417,14 +419,14 @@ span.closeFilterContainer {
 
 span.closeFilterContainer {
     position: absolute;
-    margin-left: 954px;
+    margin-left: 959px;
     width: 20px;
     height: 21px;
     cursor: pointer;
     text-align: center;
     color: #d66061;
     /* font-weight: bold; */
-    margin-top: -36px;
+    margin-top: -24px;
     font-size: 21px;
 }
 
@@ -451,23 +453,31 @@ span.closeFilterContainer {
     padding-top: 10px;
 }
 
-div.showtype {
-    padding-top: 3px;
+div.showtype,
+div.mustS,
+div.morenshow {
+    padding-top: 2px;
 }
 
 textarea.datatable {
-    width: 170px;
+    width: 283px;
     height: 50px;
     resize: none;
     /* outline: none; */
     /* border: none; */
     border: solid 1px #ddd;
     color: #444;
+    /* margin-bottom: -26px; */
+    /* margin-left: 11px; */
+    margin-top: -5px;
 }
 
 .datatableInfo {
     position: relative;
-    top: -2px;
+    top: -11px;
+    width: 49px;
+    margin-right: -2px;
+    left: -5px;
 }
 
 input.showNumber, input.normalinput {
@@ -475,16 +485,18 @@ input.showNumber, input.normalinput {
     border-bottom: solid 1px #ddd;
     /* height: 49px; */
     outline: none!important;
-    margin-top: 30px;
+    /* margin-top: 9px; */
+    /* width: 283px; */
 }
 
 span.editFilterInfo.showNumberInfo {
     position: relative;
     top: 2px;
+    left: 25px;
 }
 
 .editFilterDiv select {
-    width: 170px;
+    width: 283px;
     box-shadow: none;
 }
 
@@ -517,16 +529,248 @@ span.showtypeInfo {
 }
 
 .defaultshowinfo {
-    margin-right: 55px!important;
+    margin-right: 53px!important;
 }
-span.editFilterInfo.minselectinfo,
-input.minselect.normalinput.minselectinput {
+
+span.editFilterInfo.minselectinfo, input.minselect.normalinput.minselectinput,
+span.editFilterInfo.maxselectinfo, input.maxselect.normalinput.maxselectinput {
     position: relative;
-    top: -4px;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
 }
-  
-span.editFilterInfo.maxselectinfo,
+ 
+
+span.namepathinfo {
+    font-size: 14px;
+    color: #444;
+    float: left;
+    position: relative;
+    top: 5px;
+    margin-right: 20px;
+}
+
+input#pathnamespan {
+    width: 283px;
+}
+
+.editFilterDiv.editLeftFilter.editFilterDatasource {
+    margin-left: 23px;
+    margin-right: 0px;
+    /* padding-right: 7px; */
+}
+
+.editFilterDiv.editRightFilter.marginTopFilter.editFilterTable {
+    padding-top: 0;
+    margin-top: 10px;
+    padding-left: 47px;
+}
+
+span.editFilterInfo.databaseinfo {
+    margin-right: 18px;
+    /* padding-left: 8px; */
+}
+
+.mustSelContainer {
+    margin-left: 110px;
+}
+
+.showtypeContainer {
+    margin-left: 47px;
+    margin-top: 11px;
+}
+
+.editFilterDiv.editLeftFilter.editFilterMax {
+    margin-right: 0;
+    padding-right: 0;
+}
+
 input.maxselect.normalinput.maxselectinput {
+    width: 283px;
+    /* margin-right: -3px; */
+}
+
+span.editFilterInfo.maxselectinfo {
+    margin-right: 5px;
+    top: -1px;
+    left: -11px;
+}
+
+input.minselect.normalinput.minselectinput {
+    width: 283px;
+}
+
+.minContainer {
+    margin-left: 16px;
+    margin-top: 6px;
+}
+
+span.datasourceEdit {}
+.editFilterDiv.editLeftFilter.editFilterDefaultShow {
+    margin-right: 0;
+    /* width: 40%; */
+    /* float: left; */
+}
+
+.maxContainer {
+    /* margin-top: -8px; */
+}
+
+span.editFilterInfo.minselectinfo {
+    top: -7px;
+}
+.defaultshowContainer {
+    float: left;
+    margin-left: 61px;
+    margin-top: 30px;
+}
+ul.parentUl {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.parentListContainer {
+    position: absolute;
+}
+
+span.parentFilterSpanContainer {
     position: relative;
-    top: 6px;
+}
+.editFilterAllContainer {
+    width: 900px;
+    margin: 0 auto;
+    overflow: auto;
+}
+
+.editdiv {
+    /* float: left; */
+    width: 49%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: inline-block;
+}
+ 
+
+.info {
+    width: 120px;
+    float: left;
+    text-align: right;
+    padding-right: 20px;
+    line-height: 30px;
+    font-size: 14px;
+    color: #444;
+}
+
+.EditContainer {
+    float: left;
+}
+ 
+ div.editdiv select{
+    height:30px;
+    width:283px;
+    box-shadow: none;
+    text-align: left;
+    padding-left: 0;
+ }
+ .editdiv.highheight {
+    height: 50px;
+    line-height: 50px;
+}
+ .editdiv.highheight .info{
+    line-height: 50px;
+}
+.EditContainer.radioContainer {
+    line-height: 29px;
+}
+input.showNumber,
+input.relativecolumn{
+    width:283px;
+}
+span.parentFilterName {
+    display: block;
+    width: 283px;
+    border-bottom: solid 1px #ddd;
+    /* height: 29px; */
+    cursor: pointer;
+    /* line-height: 29px; */
+    font-size: 14px;
+    color: #444;
+    /* border: solid 1px #ddd; */
+    padding-left: 5px;
+    /* padding-top: 3px; */
+    /* padding-bottom: 3px; */
+    /* margin-bottom: 3px; */
+    min-height: 27px;
+}
+ 
+
+.parentFilterListContainer {
+    position: absolute;
+    width: 283px;
+    z-index: -1;
+    opacity: 0;
+}
+
+input.parentFilterInput {
+    width: 283px;
+    border: solid 1px #ddd;
+    height: 26px;
+    padding-left: 5px;
+}
+
+ul.parentFilterListUl {
+    margin: 0;
+    padding: 0;
+    max-height: 150px;
+    border: solid 1px #ddd;
+    list-style: none;
+    color: #444;
+    background: #fff;
+    border-bottom: none;
+    border-top: none;
+    overflow: auto;
+}
+ul.parentFilterListUl li {
+    cursor: pointer;
+    background: #fff;
+    border-bottom: solid 1px #ddd;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+ul.parentFilterListUl li:hover,
+ul.parentFilterListUl li.selected{
+    background:#eee;
+}
+.parentFilterListContainerShow {
+    z-index: 1;
+    opacity: 1;
+}
+input.relativecolumn.normalinput {
+    display: block;
+    color: #444;
+    padding: 0;
+}
+input#filternameinput {
+    color: #444;
+    height: 29px;
+    padding-top: 4px;
+}
+input.editfiltertextinput, 
+span.editfiltertext,
+.editfilterradio {
+    font-size: 14px!important;
+    line-height: 30px!important;
+    color: #444;
+    padding-left: 4px;
+}
+
+input.editfiltertextinput, 
+span.editfiltertext,
+.editfilterradio {
+    font-size: 14px!important;
+    line-height: 30px!important;
+    color: #444;
+    padding-left: 4px;
 }

@@ -70,16 +70,16 @@
             <div class="tableTreeContainer">
                 <div class="tableTree">
                     <ul class="rootNavUl">
-                        <li class="rmnli" folderId=0>
+                        <li class="rmnli" folderid="0">
                             <div class="Center-Container is-Table">
                                 <div class="Table-Cell">
                                     <i class="folder fa fa-folder">
                                     </i>
                                     <span class="foldName" style="width:124px">
-                                        筛选根目录
+                                        根目录
                                     </span>
                                     <span class="rmnlioperate">
-                                        <i class="fa fa-plus rootaddicon" level="0" folderId=0>
+                                        <i class="fa fa-plus rootaddicon" folderid="0" level="0">
                                         </i>
                                     </span>
                                     <!-- <span class="rmnliarrow">
@@ -91,7 +91,7 @@
                                 </div>
                             </div>
                             <ul class="subNavUl" level="1">
-                                <li class="subNavUli" keyname="汇总" level="1" folderId=1>
+                                <li class="subNavUli" folderid="1" keyname="汇总" level="1">
                                     <div class="Center-Container is-Table">
                                         <div class="Table-Cell rmnli-active">
                                             <i class="folder fa fa-folder">
@@ -110,7 +110,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="subNavUli" keyname="汇总" level="1" folderId=2>
+                                <li class="subNavUli" folderid="2" keyname="汇总" level="1">
                                     <div class="Center-Container is-Table">
                                         <div class="Table-Cell rmnli-active">
                                             <i class="folder fa fa-folder">
@@ -121,7 +121,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="subNavUli" keyname="汇总" level="1" folderId=3>
+                                <li class="subNavUli" folderid="3" keyname="汇总" level="1">
                                     <div class="Center-Container is-Table">
                                         <div class="Table-Cell rmnli-active">
                                             <i class="folder fa fa-folder">
@@ -175,14 +175,156 @@
                     <span class="closeFilterContainer">
                         x
                     </span>
-                    <div class="editNamePath">
+                    <div class="editFilterAllContainer">
+                        <div class="editdiv leftEdit">
+                            <div class="info">
+                                筛选名称:
+                            </div>
+                            <div class="EditContainer">
+                                <input id="filternameinput" class='editfiltertextinput' name="filtername" placeholder="在此处输入筛选名称" type="text">
+                                </input>
+                            </div>
+                        </div>
+                        <div class="editdiv rightEdit">
+                            <div class="info">
+                                路径:
+                            </div>
+                            <div class="EditContainer">
+                                <span id="pathnamespan" class='editfiltertext' name="filtername"  >
+                                </span>
+                            </div>
+                        </div>
+                        <div class="pathshowContainer">
+                            <ul class="pathShowUl">
+                            </ul>
+                            <div class="confirmPath">
+                                确定
+                            </div>
+                        </div>
+                        <div class="editdiv leftEdit highheight">
+                            <div class="info">
+                                数据源:
+                            </div>
+                            <div class="EditContainer datasourceEdit">
+                                <input id="filternameinput" name="filtername" placeholder="在此处输入筛选名称" type="text">
+                                </input>
+                            </div>
+                        </div>
+                        <div class="editdiv rightEdit highheight">
+                            <div class="info">
+                                数据表:
+                            </div>
+                            <div class="EditContainer">
+                                <textarea class="datatable">
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="editdiv leftEdit">
+                            <div class="info">
+                                是否必选:
+                            </div>
+                            <div class="EditContainer radioContainer editfilterradio mustS">
+                                <input checked="" name="mustrequire" type="radio" value="yes">
+                                    <span class="showtypeInfo">
+                                        是
+                                    </span>
+                                    <input name="mustrequire" type="radio" value="no">
+                                        <span class="showtypeInfo">
+                                            否
+                                        </span>
+                                    </input>
+                                </input>
+                            </div>
+                        </div>
+                        <div class="editdiv rightEdit">
+                            <div class="info">
+                                展示方式:
+                            </div>
+                            <div class="EditContainer radioContainer showtype editfilterradio">
+                                <input checked="" name="showtype" type="radio" value="复选">
+                                    <span class="showtypeInfo">
+                                        复选
+                                    </span>
+                                    <input name="showtype" type="radio" value="单选">
+                                        <span class="showtypeInfo">
+                                            单选
+                                        </span>
+                                    </input>
+                                </input>
+                            </div>
+                        </div>
+                        <div class="editdiv leftEdit gouxuanc">
+                            <div class="info">
+                                最多勾选条数:
+                            </div>
+                            <div class="EditContainer">
+                                <input class="maxselect normalinput maxselectinput editfiltertextinput" type="text"/>
+                            </div>
+                        </div>
+                        <div class="editdiv rightEdit gouxuanc">
+                            <div class="info">
+                                最少勾选条数:
+                            </div>
+                            <div class="EditContainer">
+                                <input class="minselect normalinput minselectinput editfiltertextinput" type="text"/>
+                            </div>
+                        </div>
+                        <div class="editdiv leftEdit">
+                            <div class="info">
+                                默认展示:
+                            </div>
+                            <div class="EditContainer radioContainer editfilterradio morenshow">
+                                <input checked="" name="defaultShow" type="radio" value="all"/>
+                                <span class="showtypeInfo">
+                                    全部
+                                </span>
+                                <input name="defaultShow" type="radio" value="first"/>
+                                <span class="showtypeInfo">
+                                    第一条
+                                </span>
+                            </div>
+                        </div>
+                        <div class="editdiv rightEdit">
+                            <div class="info">
+                                展示条数:
+                            </div>
+                            <div class="EditContainer">
+                                <input class="showNumber editfiltertextinput" type="text"/>
+                            </div>
+                        </div>
+                        <div class="editdiv leftEdit">
+                            <div class="info">
+                                父筛选:
+                            </div>
+                            <div class="EditContainer parentfilterEdit">
+                                <span class='parentFilterName editfiltertext'></span>
+                                <div class='parentFilterListContainer'>
+                                    <input class='parentFilterInput' type="text" name="" placeholder="在此处搜索父筛选">
+                                    <ul class='parentFilterListUl'>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="editdiv rightEdit">
+                            <div class="info">
+                                关联字段:
+                            </div>
+                            <div class="EditContainer">
+                                 <input class="relativecolumn normalinput editfiltertextinput" type="text"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="editNamePath">
+                        <span class="namepathinfo">
+                            筛选名称:
+                        </span>
                         <input id="filternameinput" name="filtername" placeholder="在此处输入筛选名称" type="text"/>
                         <div class="pathContainer">
-                            <span id="pathnamespan">
-                                点击此处选择路径
+                            <span class="namepathinfo">
+                                路径:
                             </span>
-                            <i class="fa fa-caret-down">
-                            </i>
+                            <input id="pathnamespan" name="filtername" placeholder="点击此处选择筛选路径" type="text"/>
                         </div>
                     </div>
                     <div class="pathshowContainer">
@@ -193,56 +335,72 @@
                         </div>
                     </div>
                     <div class="editContentContainer">
-                        <div class="editFilterDiv editLeftFilter ">
-                            <span class="editFilterInfo">
+                        <div class="editFilterDiv editLeftFilter editFilterDatasource">
+                            <span class="editFilterInfo databaseinfo">
                                 数据源:
                             </span>
                             <span class="datasourceEdit">
                             </span>
                         </div>
-                        <div class="editFilterDiv editRightFilter showtype">
-                            <span class="editFilterInfo">
-                                展示方式:
-                            </span>
-                            <input name="showtype" type="radio" checked value="复选"/>
-                            <span class="showtypeInfo">
-                                复选
-                            </span>
-                            <input name="showtype" type="radio" value="单选"/>
-                            <span class="showtypeInfo">
-                                单选
-                            </span>
-                        </div>
-                        <div class="editFilterDiv editLeftFilter gouxuan">
-                            <span class="editFilterInfo maxselectinfo">
-                                最多勾选条数:
-                            </span>
-                            <input class="maxselect normalinput maxselectinput" type="text"/>
-                        </div>
-                        <div class="editFilterDiv editRightFilter gouxuan">
-                            <span class="editFilterInfo minselectinfo">
-                                最少勾选条数:
-                            </span>
-                            <input class="minselect normalinput minselectinput" type="text"/>
-                        </div>
-                        <div class="editFilterDiv editLeftFilter marginTopFilter">
+                        <div class="editFilterDiv editRightFilter marginTopFilter editFilterTable">
                             <span class="editFilterInfo datatableInfo">
                                 数据表:
                             </span>
                             <textarea class="datatable">
                             </textarea>
                         </div>
-                        <div class="editFilterDiv editRightFilter marginTopFilter">
-                            <span class="editFilterInfo showNumberInfo">
-                                展示条数:
-                            </span>
-                            <input class="showNumber" type="text"/>
+                        <div class="editFilterDiv editleftFilter margintopse editFilterMustSel">
+                            <div class="mustSelContainer">
+                                <span class="editFilterInfo">
+                                    是否必选:
+                                </span>
+                                <input checked="" name="mustrequire" type="radio" value="yes"/>
+                                <span class="showtypeInfo">
+                                    是
+                                </span>
+                                <input name="mustrequire" type="radio" value="no"/>
+                                <span class="showtypeInfo">
+                                    否
+                                </span>
+                            </div>
                         </div>
-                        <div class="editFilterDiv editLeftFilter margintopse">
-                           <span class="editFilterInfo defaultshowinfo">
+                        <div class="editFilterDiv editRightFilter showtype">
+                            <div class="showtypeContainer">
+                                <span class="editFilterInfo">
+                                    展示方式:
+                                </span>
+                                <input checked="" name="showtype" type="radio" value="复选"/>
+                                <span class="showtypeInfo">
+                                    复选
+                                </span>
+                                <input name="showtype" type="radio" value="单选"/>
+                                <span class="showtypeInfo">
+                                    单选
+                                </span>
+                            </div>
+                        </div>
+                        <div class="editFilterDiv editLeftFilter editFilterMax">
+                            <div class="maxContainer">
+                                <span class="editFilterInfo maxselectinfo">
+                                    最多勾选条数:
+                                </span>
+                                <input class="maxselect normalinput maxselectinput" type="text"/>
+                            </div>
+                        </div>
+                        <div class="editFilterDiv editRightFilter editFilterMin">
+                            <div class="minContainer">
+                                <span class="editFilterInfo minselectinfo">
+                                    最少勾选条数:
+                                </span>
+                                <input class="minselect normalinput minselectinput" type="text"/>
+                            </div>
+                        </div>
+                        <div class="editFilterDiv editLeftFilter editFilterDefaultShow">
+                         <div class="defaultshowContainer">
+                            <span class="editFilterInfo defaultshowinfo">
                                 默认展示:
                             </span>
-                            <input name="defaultShow"  checked type="radio" value="all"/>
+                            <input checked="" name="defaultShow" type="radio" value="all"/>
                             <span class="showtypeInfo">
                                 全部
                             </span>
@@ -251,37 +409,36 @@
                                 第一条
                             </span>
                         </div>
-                        <div class="editFilterDiv editRightFilter margintopse">
-                            <span class="editFilterInfo">
-                                是否必选:
-                            </span>
-                            <input name="mustrequire"  checked type="radio" value="yes"/>
-                            <span class="showtypeInfo">
-                                是
-                            </span>
-                            <input name="mustrequire" type="radio" value="no"/>
-                            <span class="showtypeInfo">
-                                否
-                            </span>
                         </div>
-                        
-                        <div class="editFilterDiv editLeftFilter">
+                        <div class="editFilterDiv editRightFilter editFilterShowNum">
+                            <span class="editFilterInfo showNumberInfo">
+                                展示条数:
+                            </span>
+                            <input class="showNumber" type="text"/>
+                        </div>
+                        <div class="editFilterDiv editLeftFilter editFilterParent">
                             <span class="editFilterInfo parentFilterInfo">
                                 父筛选:
                             </span>
-                            <select class="tableselect parentFilterSelect">
-                                <option db="dw_db" value="1">
-                                    149数据源dw_db
-                                </option>
-                            </select>
+                            <span class='parentFilterSpanContainer'>
+                                <span class=''></span>
+                                <div class='parentListContainer'>
+                                         <input type="text" name="searchParent" />
+                                        <ul class='parentUl'>
+                                            <li>ddd</li>
+                                            <li>ddd</li>
+                                            <li>ddd</li>
+                                        </ul>
+                                </div>
+                            </span> 
                         </div>
-                        <div class="editFilterDiv editRightFilter">
+                        <div class="editFilterDiv editRightFilter editFilterJoinColumn">
                             <span class="editFilterInfo">
                                 关联字段:
                             </span>
                             <input class="relativecolumn normalinput" type="text"/>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="saveButtonContainer">
                         <span class="btn saveFilter">
                             保存

@@ -24,7 +24,8 @@ ul.subNavUl,
 .editDimensionOutContainer,
 .rmnliarrow span,
 input.reportNameInput,
-input.keyname
+input.keyname,
+.parentFilterListContainer
 {
     transition: all .3s cubic-bezier(.645,.045,.355,1);
     -webkit-transition: all .3s cubic-bezier(.645,.045,.355,1);
@@ -39,7 +40,8 @@ span.logoutInfo ,
 .rmn.rootNav,
 .tableTreeContainer,
 select.tableselect,
-input.tableinput
+input.tableinput,
+.filterEditContainer
 {
     -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
     box-shadow: 2px 0 6px rgba(0,21,41,.35);
