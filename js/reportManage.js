@@ -1,7 +1,98 @@
 $(document).ready(function() {
     baseClick();
     clickFlag = null;
+    initDB();
+    aod = {};
 })
+
+function initDB() {
+    var q = {};
+    q.next = initFolder;
+    getDBb(q);
+}
+
+//初始化文件夹
+function initFolder() {
+    var p = {},
+        q = {};
+    p.parentId = 0;
+    q.success = function(r) {
+        if (r.length > 0) {
+            var d = [];
+            var o = {},
+                to = {};
+            for (var i = 0; i < r.length; i++) {
+                to[r[i].categoryId] = r[i];
+                d[i] = r[i];
+                if (!o.hasOwnProperty(r[i].parentId)) {
+                    o[r[i].parentId] = [];
+                }
+                o[r[i].parentId].push(r[i].categoryId);
+            }
+            for(var i in o){
+                o[i].sort();
+                o[i].reverse();
+            }
+            aod.treedata = to;
+            if (o[0] != null) {
+                $('.subNavUl').html(loopTree(o, o[0], 1, "", to));
+            }
+        }
+    }
+    $.api('report/getReportCategoryList', p, q);
+}
+
+//循环生成数
+function loopTree(o, a, level, str, td) {
+    for (var i = 0; i < a.length; i++) {
+        if (o[a[i]] != null) {
+            var width = 190 - (level*1) * 15 - 44 - 24 - 10;
+            str += '<li actionid="' + a[i] + '" class="subNavUli" keyname="' + td[a[i]].categoryName + '" level="' + (level*1) + '">';
+            str += '<div class="Center-Container is-Table">';
+            str += '<div class="Table-Cell">';
+            str += '<i class="folder fa fa-folder">';
+            str += '</i>';
+            str += '<span class="foldName" style="width: ' + width + 'px;">';
+            str += td[a[i]].categoryName;
+            str += '</span>';
+            str += '<span class="rmnlioperate">';
+            str += '<i class="fa fa-pencil">';
+            str += '</i>';
+            str += '<i class="fa fa-plus" level="' + (level * 1) + '" folderId="'+a[i]+'">';
+            str += '</i>';
+            str += '<i class="fa fa-remove">';
+            str += '</i>';
+            str += '</span>';
+            str += '</div>';
+            str += '</div>';
+            str += '<ul class="subNavUl" level="'+(level*1+1)+'">';
+            str += loopTree(o, o[a[i]], (level*1 + 1),"",td);
+            str += '</ul></li>';
+        } else {
+            var width = 190 - (level*1) * 15 - 44 - 24 - 10;
+            str += '<li actionid="' + a[i] + '" class="subNavUli" keyname="' + td[a[i]].categoryName + '" level="' + (level*1) + '">';
+            str += '<div class="Center-Container is-Table">';
+            str += '<div class="Table-Cell">';
+            str += '<i class="folder fa fa-folder">';
+            str += '</i>';
+            str += '<span class="foldName" style="width: ' + width + 'px;">';
+            str += td[a[i]].categoryName;
+            str += '</span>';
+            str += '<span class="rmnlioperate">';
+            str += '<i class="fa fa-pencil">';
+            str += '</i>';
+            str += '<i class="fa fa-plus" level="'+ (level * 1) + '" folderId="'+a[i]+'">';
+            str += '</i>';
+            str += '<i class="fa fa-remove">';
+            str += '</i>';
+            str += '</span>';
+            str += '</div>';
+            str += '</div>';
+            str += '</li>';
+        }
+    }
+    return str;
+}
 
 function baseClick() {
     $('body').on('click', function() {
@@ -96,10 +187,10 @@ function baseClick() {
                 $('.subNavUliActive').removeClass('subNavUliActive');
                 $('.readychange').addClass('subNavUliActive').removeClass('readychange');
             } else { //如果有未编辑完成的folder时候
-                if ($.inArray('editFolderLi', $(this).attr('class').split(' ')) > -1) {} else {
+                if ($.inArray('editFolderLi', $('.readychange').attr('class').split(' ')) > -1) {} else {
                     $('input.editFolder').addClass('editFolderWarn');
                 }
-                 $('.readychange').removeClass('readychange');
+                $('.readychange').removeClass('readychange');
             }
         }, 300); //延时300毫秒执行
     })
@@ -111,7 +202,6 @@ function baseClick() {
         if (clickFlag) { //取消上次延时未执行的方法
             clickFlag = clearTimeout(clickFlag);
         }
-
         $('.readychange').removeClass('readychange');
         if (checkEditFold()) { //如果没有未编辑完成的folder时候
             var uv = $(this).find('.subNavUl').eq(0);
@@ -138,8 +228,9 @@ function baseClick() {
         e.preventDefault();
         if ($('input.editFolder').length == 0 && $('input.updateFolder').length == 0) {
             var p = $(this).parent().parent().parent().parent();
+            var pfid = $(this).attr('folderId');
             var level = $(this).attr('level') * 1 + 1;
-            var str = returnEditLi(level);
+            var str = returnEditLi(level, pfid);
             if (p.find('.subNavUl').length == 0) {
                 var str1 = '<ul class="subNavUl" level=' + level + '></ul>';
                 p.append(str1);
@@ -163,14 +254,9 @@ function baseClick() {
         var level = $(this).attr('level');
         if ($('input.editFolder').length > 0) {
             var folderName = $('input.editFolder').val();
-            var str = returnAfterEditLi(folderName, level);
             var p = $(this).parent().parent().parent().parent().parent();
-            if (p.find('li').length == 1) {
-                p.html(str);
-            } else {
-                $('.editFolderLi').remove();
-                p.find('li').eq(0).before(str);
-            }
+            var pfid = $(this).attr('pfid');
+            saveNewFolder(folderName, level, p, pfid);
         } else if ($('input.updateFolder').length > 0) {
             var p = $(this).parent().parent().parent().parent();
             var foldname = $('input.updateFolder').val();
@@ -199,7 +285,12 @@ function baseClick() {
         e.stopPropagation();
         e.preventDefault();
         if ($('input.editFolder').length > 0) { //还在新增状态
-            $('.editFolderLi').remove();
+            var p = $('.editFolderLi').parent();
+            if (p.find('li').length == 1) {
+                p.remove();
+            } else {
+                $('.editFolderLi').remove();
+            }
         } else if ($('input.updateFolder').length > 0) { //还在编辑状态
             var p = $(this).parent().parent().parent().parent();
             var span = "<span class='foldName' style='width:" + window.updatefoldwidth + "'>" + window.updatefoldname + "</span>";
@@ -786,6 +877,27 @@ function getTableSelect() {
     str += "</select>";
     return str;
 }
+//保存新的文件夹
+function saveNewFolder(foldername, level, p, pfid) {
+    var tp = {},
+        q = {};
+    tp.parentId = pfid;
+    tp.categoryName = foldername;
+    q.atype = 'POST';
+    q.success = function(r) {
+        if (r.status == 1 && r.msg == 'success') {
+            var str = returnAfterEditLi(r.id, foldername, level);
+            if (p.find('li').length == 1) {
+                p.html(str);
+            } else {
+                $('.editFolderLi').remove();
+                p.find('li').eq(0).before(str);
+            }
+            showMessage(foldername, '新增成功');
+        }
+    }
+    $.api('report/saveReportCategory', tp, q)
+}
 
 function addDataSourceTr() {
     var str = "";
@@ -830,7 +942,7 @@ function fullJoinTable() {
     $('.joinTable tbody').html(str);
 }
 
-function returnEditLi(level) {
+function returnEditLi(level, pid) {
     var width = 124 - level * 15;
     var str = "";
     str += '<li class="subNavUli editFolderLi">';
@@ -840,20 +952,20 @@ function returnEditLi(level) {
     str += '</i>';
     str += '<input class="editFolder" placeholder="请输入文件名" style="width:' + width + 'px"/>';
     str += '<span class="rmnlioperate">';
-    str += '<i class="fa fa-save" level="' + level + '">';
+    str += '<i class="fa fa-save" level="' + level + '" pfid="' + pid + '">';
     str += '</i>';
     str += '<i class="fa fa-remove">';
     str += '</i>';
     str += '</span>';
     str += '</div>';
-    str += '</div>';
+    str += '</div></li>';
     return str;
 }
 
-function returnAfterEditLi(name, level) {
+function returnAfterEditLi(id, name, level) {
     var width = 190 - level * 15 - 44 - 24 - 10;
     var str = "";
-    str += '<li class="subNavUli" keyname="' + name + '" level="' + level + '">';
+    str += '<li actionid="' + id + '" class="subNavUli" keyname="' + name + '" level="' + level + '">';
     str += '<div class="Center-Container is-Table">';
     str += '<div class="Table-Cell">';
     str += '<i class="folder fa fa-folder">';
@@ -869,15 +981,8 @@ function returnAfterEditLi(name, level) {
     str += '<i class="fa fa-remove">';
     str += '</i>';
     str += '</span>';
-    /*
-        str += '<span class="rmnliarrow">';
-        str += '<span class="arrowleft">';
-        str += '</span>';
-        str += '<span class="arrowRight">';
-        str += '</span>';
-        str += '</span>';*/
     str += '</div>';
-    str += '</div>';
+    str += '</div></li>';
     return str;
 }
 

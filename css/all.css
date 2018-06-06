@@ -47,15 +47,16 @@ input.tableinput,
     box-shadow: 2px 0 6px rgba(0,21,41,.35);
 }
 table.table {
-    width: 95%;
+    width: 95%!important;
     margin: 0 auto;
     border-collapse: collapse;
-    margin-top: 10px;
+    /* margin-top: 10px; */
     margin-bottom: 10px;
     /* border: solid 1px #ddd; */
     /* border-radius: 15px; */
     padding-top: 5px;
     padding-bottom: 5px;
+    /* margin-top: -20px!important; */
 }
 table.table th{
     background: #fafafa;
@@ -93,7 +94,7 @@ table.table>tr:first-child>th:last-child {
 }
 table.table caption{
     text-align: left;
-    margin-top: 16px;
+    /* margin-top: 16px; */
     margin-bottom: 16px;
 }
 span.btn{
@@ -500,4 +501,56 @@ table.table i:hover{
 }
 th.widthth{
     width:300px;
+}
+
+
+table.dataTable th,
+table.dataTable td {
+    border-bottom: solid 1px #ddd!important;
+    padding-top: 14px!important;
+    padding-bottom: 13px!important;
+    padding-left: 15px!important;
+    font-weight: 400!important;
+}
+div.dataTables_filter {
+    color: #444!important;
+    margin-right: 3%;
+    position: relative;
+    top: 43px;
+    font-size: 14px;
+}
+div.dataTables_filter input{
+    border: none;
+    border-bottom: solid 1px #ddd;
+    height: 27px;
+}
+
+div.dataTables_info {
+    font-size: 14px;
+    margin-left: 3%;
+    color: #444!important;
+}
+
+div.dataTables_paginate {
+    font-size: 14px;
+    margin-right: 3%;
+}
+
+a.paginate_button.current,
+a.paginate_button:hover {
+    background: none!important;
+    border-radius: 5px!important;
+    border: solid 1px #1890ff!important;
+    padding: 3px 10px!important;
+}
+div#DataTables_Table_0_filter {
+    position: absolute;
+    margin: 0;
+    right: 0;
+    margin-right: 3.0%;
+    margin-top: -35px;
+}
+
+.datasetsContainer {
+    margin-top: 40px;
 }

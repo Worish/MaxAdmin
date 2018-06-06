@@ -1,21 +1,20 @@
 $(document).ready(function() {
-    aod = {}; 
+    $table = $('table.datasettable'); 
+    aod = {};
     initDB();
-    baseClick();
 })
 
-function initDB(){
+function initDB() {
     var q = {};
     q.next = getAllDataSets;
-    getDBb(q); 
+    getDBb(q);
 }
 
-function getAllDataSets() {
+function getAllDataSets(refreshtable) {
     var url = 'dataset/getDatasetList';
-    var p = {}; 
+    var p = {};
     var q = {};
     q.success = function(r) {
-
         var str = "";
         if (r == null || r.length == 0) {
             str += "<tr class='nodata'><td colspan='4'>还没添加数据源,请按左上角按钮添加</td></tr>";
@@ -28,19 +27,64 @@ function getAllDataSets() {
             td.sort();
             td.reverse();
             //填充所有数据表格
+            var d = [];
             for (var i = 0; i < td.length; i++) {
+                var o = {};
                 var tempd = aod[td[i]];
-                str += "<tr tid='" + tempd.id + "'>";
-                str += "<td>" + window.db[tempd.datasourceId].name+tempd.dbName + "</td>";
-                str += "<td>" + tempd.tableName + "</td>";
-                str += "<td>" + (tempd.type == 2 ? '事实表' : '维度表') + "</td>";
-                str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></td>';
-                str += "</tr>";
+                o.id = tempd.id;
+                o.datasourceId = tempd.datasourceId;
+                o.db = window.db[tempd.datasourceId].name + tempd.dbName;
+                o.tn = tempd.tableName;
+                o.type = (tempd.type == 2 ? '事实表' : '维度表');
+                o.oper = '<i class="fa fa-pencil"></i><i class="fa fa-remove">';
+                /*
+                                str += "<tr tid='" + tempd.id + "'>";
+                                str += "<td>" + window.db[tempd.datasourceId].name + tempd.dbName + "</td>";
+                                str += "<td>" + tempd.tableName + "</td>";
+                                str += "<td>" + (tempd.type == 2 ? '事实表' : '维度表') + "</td>";
+                                str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></td>';
+                                str += "</tr>";*/
+                d.push(o);
             }
         }
-        $('table.datasettable tbody').html(str);
+        if(refreshtable){
+             $table.DataTable().destroy();
+        }
+        $table.DataTable({
+            rowId: 'id',
+            "lengthChange": false,
+            "language": {
+                "emptyTable": "暂时没有数据,请点击左上角添加按钮",
+                "info": " 共_TOTAL_(当前_START_ - _END_)  ",
+                "infoEmpty": "",
+                "thousands": ",",
+                "lengthMenu": "显示 _MENU_ 条",
+                "loadingRecords": "拼命加载中...",
+                "search": "搜索",
+                "zeroRecords": "未搜索到相关结果",
+                "paginate": {
+                    "first": "第一页",
+                    "last": "最后一页",
+                    "next": "下一页",
+                    "previous": "上一页"
+                },
+            }, 
+            "columns": [{
+                "data": "db"
+            }, {
+                "data": "tn"
+            }, {
+                "data": "type"
+            }, {
+                "data": "oper"
+            }],
+            data: d,
+        });
+        // $('table.datasettable tbody').html(str);
     }
     $.api(url, p, q);
+
+    baseClick();
 }
 
 function baseClick() {
@@ -84,7 +128,7 @@ function baseClick() {
                 } else {
                     swal.close();
                 }
-            });  
+            });
         } else if ($('.datasetsContainer').attr('active') == 'edit') {
             var p = $(this).parent().parent();
             swal({
@@ -115,6 +159,7 @@ function baseClick() {
         } else {
             $('.datasetsContainer').attr('active', 'delete');
             var p = $(this).parent().parent();
+            var data = $table.DataTable().row(p);
             var tn = p.find('td').eq(0).text() + '.' + p.find('td').eq(1).text();
             swal({
                 title: "确定删除表吗?",
@@ -130,13 +175,14 @@ function baseClick() {
                 if (isConfirm) {
                     var pa = {},
                         q = {};
-                    pa.datasetId = p.attr('tid');
+                     pa.datasetId = data.id;
                     q.success = function(r) {
                         if (r.msg == 'success') {
                             p.remove();
                             swal.close();
                             showMessage(tn, '删除成功');
                             $('.datasetsContainer').attr('active', '');
+                            $table.DataTable().row(p).remove().draw();
                         }
                     }
                     $.api('dataset/delete', pa, q)
@@ -149,7 +195,9 @@ function baseClick() {
     })
     //点击fa-save的操作
     $('table.datasettable').on('click', '.fa-save', function() {
+
         var p = $(this).parent().parent();
+         var data = $('table.datasettable').DataTable().row(p).data();
         var db = p.find('select.db option:selected').text();
         var type = p.find('select.ttype option:selected').text();
         var tn = p.find('input.tablename').val().replace('/[/r/n/ ]/g', '');
@@ -165,19 +213,19 @@ function baseClick() {
                 params.type = 1;
             }
             if ($('.datasetsContainer').attr('active') == 'new') { //新建维表的时候
-            params.datasourceId = $('.db option:selected').val();
-            var url = "dataset/save";
+                params.datasourceId = $('.db option:selected').val();
+                var url = "dataset/save";
                 var q = {};
                 q.atype = 'POST';
                 q.success = function(r) {
                     if (r.msg == 'success') {
                         aod[r.id] = {};
-                        aod[r.id].datasourceId = params.datasourceId ;
-                        aod[r.id].id = r.id ;
-                        aod[r.id].type =  params.type ;
-                        aod[r.id].tableName = params.tableName ;
-                        aod[r.id].dbName = params.dbName ;
-                        var str = "<tr tid ='" + r.id + "' > ";
+                        aod[r.id].datasourceId = params.datasourceId;
+                        aod[r.id].id = r.id;
+                        aod[r.id].type = params.type;
+                        aod[r.id].tableName = params.tableName;
+                        aod[r.id].dbName = params.dbName;
+                        /*var str = "<tr tid ='" + r.id + "' > ";
                         str += "<td>" + db + "</td>";
                         str += "<td>" + tn + "</td>";
                         str += "<td>" + type + "</td>";
@@ -187,10 +235,19 @@ function baseClick() {
                             $('.datasettable tbody').html(str);
                         } else {
                             $('.datasettable tbody tr').eq(0).before(str);
-                        }
-                        $('tr.newdt').remove();
+                        }*/
+                        //var o = {};
+                        //o.id = r.id;
+                        //o.datasourceId = params.datasourceId;
+                        //o.type = type;
+                        //o.tn = params.tableName;
+                        //o.db = db;
+                        //o.oper = '<i class="fa fa-pencil"></i><i class="fa fa-remove">';
+                        //$('.dataTable').DataTable().row.add(o).draw();
+                        //$('tr.newdt').remove();
+                        getAllDataSets(true);
                         $('.datasetsContainer').attr('active', '');
-                        showMessage('维度表'+db+'.'+tn,'新增成功');
+                        showMessage('维度表' + db + '.' + tn, '新增成功');
                     } else {
                         swal({
                             title: r.msg,
@@ -210,7 +267,7 @@ function baseClick() {
                 params.dbName = $('.db option:selected').attr('db');
                 params.tableName = tn;
                 params.datasetName = tn;
-                params.id = p.attr('tid');
+                params.id = data.id;
                 if (type == '事实表') {
                     params.type = 2;
                 } else if (type == '维度表') {
@@ -220,13 +277,17 @@ function baseClick() {
                 q.atype = 'POST';
                 q.success = function(r) {
                     if (r.msg == 'success') {
+                        data.db = db;
+                        data.tn = tn;
+                        data.type = type;
+                        data.datasourceId = params.datasourceId;
                         p.find('td').eq(0).html(db);
                         p.find('td').eq(1).html(tn);
                         p.find('td').eq(2).html(type);
                         // p.find('td').eq(3).html(info);
                         p.find('td').eq(3).html('<i class="fa fa-pencil"></i><i class="fa fa-remove"></i>');
                         $('.datasetsContainer').attr('active', '');
-                        showMessage('更新维表',db+'.'+tn+'成功')
+                        showMessage('更新维表', db + '.' + tn + '成功')
                     } else {
                         showMessage('更新维表失败', '请联系管理员')
                     }
@@ -240,13 +301,15 @@ function baseClick() {
     })
     //点击fa-pencil的操作
     $('table.datasettable').on('click', '.fa-pencil', function() {
-        $('.datasetsContainer').attr('active', 'edit');
+
         var p = $(this).parent().parent();
-        var tid = p.attr('tid');
-        var did = aod[tid].datasourceId;
-        var db = p.find('td').eq(0).html();
-        var tn = p.find('td').eq(1).html();
-        var type = p.find('td').eq(2).html();
+         var data = $('table.datasettable').DataTable().row(p).data();
+        $('.datasetsContainer').attr('active', 'edit');
+        var tid = data.id;
+        var did = data.datasourceId;
+        var db = data.db;
+        var tn = data.tn;
+        var type =data.type;
         // var info = p.find('td').eq(3).html();
         window.dbn = db;
         window.tn = tn;
@@ -260,11 +323,11 @@ function baseClick() {
     })
 }
 
-function getDb(db) { 
-    var str =  returndbSelect(window.db,db);
+function getDb(db) {
+    var str = returndbSelect(window.db, db);
     return str;
 }
- 
+
 function getDf(db) {
     var dbo = {
         1: '事实表',
