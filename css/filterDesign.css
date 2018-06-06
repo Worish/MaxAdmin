@@ -328,9 +328,9 @@ span#pathnamespan {
 
 .pathshowContainer {
     position: absolute;
-    margin-left: 570px;
-    margin-top: 46px;
-    width: 283px;
+    margin-left: 566px;
+    margin-top: -22px;
+    width: 290px;
     background: #fff;
     border: solid 1px #ddd;
     opacity: 0;
@@ -469,7 +469,7 @@ textarea.datatable {
     color: #444;
     /* margin-bottom: -26px; */
     /* margin-left: 11px; */
-    margin-top: -5px;
+    margin-top: -9px;
 }
 
 .datatableInfo {
