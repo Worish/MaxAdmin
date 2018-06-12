@@ -651,3 +651,12 @@ class initLoading{
     var spinner = new Spinner(p).spin(target);
   }
 }
+function swalinfo(title,type){
+    if(type ==null || type =='error'){
+        var type = 'error';
+    }
+    swal({
+        title:title,
+        type:type,
+    })
+}

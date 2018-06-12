@@ -774,3 +774,14 @@ span.editfiltertext,
     color: #444;
     padding-left: 4px;
 }
+.FilterTableContianer {
+    padding-top: 23px;
+} 
+
+.textareainfo {
+    position: absolute;
+    font-size: 12px;
+    color: #f27474;
+    line-height: 12px;
+    margin-top: -15px;
+}

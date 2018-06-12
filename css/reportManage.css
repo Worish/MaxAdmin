@@ -209,6 +209,7 @@ ul.subNavUl {
     right: 0;
     top: 60px;
     bottom: 0;
+    /* padding-top: 20px; */
 }
 
 .tableContainer {
@@ -217,6 +218,8 @@ ul.subNavUl {
     top: 0;
     left: 0;
     right: 0;
+    padding-top: 31px;
+    overflow-y: auto;
 }
 
 .navContainer {
@@ -307,6 +310,8 @@ span.pagenav {
     line-height: 21px;
     width: 20px;
     text-align: center;
+    color: #ff1111;
+    cursor: pointer;
 }
 
 .dataTableOperItem {
@@ -375,6 +380,8 @@ input.editFolder {
     border-radius: 5px 5px 0 0;
     font-size: 14px;
     border: solid 1px #ddd;
+    background: #e8e8e8;
+    /* color: #fff; */
 }
 
 .edittitleContainer span {
@@ -385,6 +392,7 @@ input.editFolder {
 
 .titleNameContainer i {
     cursor: pointer;
+    color: #999;
 }
 
 .titleNameContainer i:hover {
@@ -411,34 +419,36 @@ input.editFolder {
     border-bottom: solid 1px #ddd;
     /* float: left; */
     height: 25px;
+    line-height: 29px;
 }
 
 .pathUlContianer {
     width: 223px;
     position: absolute;
-    height: 170px;
-    background: #ddd;
+    height: 190px;
+    background: #F5F5F5;
     left: 38px;
     top: 44px;
     z-index: 9;
     display: none;
+    overflow-y: auto;
 }
 
 .savePath {
-    position: absolute;
-    bottom: 0;
-    height: 25px;
-    left: 0;
-    right: 0px;
-    text-align: center;
-    background: #f8f8f8;
-    line-height: 54px;
-    cursor: pointer;
-    border: solid 1px #ddd;
+    /* position: absolute; */
+    /* bottom: 0; */
+    /* height: 25px; */
+    /* left: 0; */
+    /* right: 0px; */
+    /* text-align: center; */
+    /* background: #f8f8f8; */
+    /* line-height: 54px; */
+    /* cursor: pointer; */
+    /* border: solid 1px #ddd; */
 }
 
 .savePath:hover {
-    background: #d66061;
+    /* background: #d66061; */
     color: #fff;
 }
 
@@ -540,8 +550,6 @@ ul.operationUl li:hover i.fa-remove {
     text-align: right;
     cursor: pointer;
 }
- 
- 
 
 .datasourcejoinContainer {
     overflow: auto;
@@ -557,7 +565,7 @@ ul.operationUl li:hover i.fa-remove {
     top: -15px;
 }
 
-li.subNavUli.subNavUliActive>.is-Table {
+li.subNavUli.subNavUliActive>.is-Table, li.rootli.subNavUliActive>.is-Table {
     background: #f8f8f8;
 }
 
@@ -603,6 +611,8 @@ ul.allTableUl {
     margin-top: 4px;
     /* padding-right: 6px; */
     border-bottom: none;
+    max-height: 140px;
+    overflow-y: auto;
 }
 
 input.searchTable {
@@ -630,6 +640,8 @@ ul.allTableUl li {
     border-bottom: solid 1px #ddd;
     cursor: pointer;
     word-break: break-all;
+    font-size: 14px;
+    color: #444;
 }
 
 ul.allTableUl li:hover {
@@ -662,10 +674,7 @@ ul.allTableUl li.hasSelectTable {
     display: none;
 }
 
-table.DuliangTable i,
-table.joinTable i, 
-table.editDimenTable i, 
-table.GroupTable i {
+table.DuliangTable i, table.joinTable i, table.editDimenTable i, table.GroupTable i {
     margin-right: 15px;
     cursor: pointer;
 }
@@ -674,10 +683,7 @@ table.joinTable i.fa-refresh {
     margin-right: 0px;
 }
 
-table.DuliangTable i:hover, 
-table.joinTable i:hover, 
-table.editDimenTable i:hover, 
-table.GroupTable i:hover {
+table.DuliangTable i:hover, table.joinTable i:hover, table.editDimenTable i:hover, table.GroupTable i:hover {
     color: #d66061;
 }
 
@@ -696,9 +702,215 @@ input.tableinput.Dimensiontable, input.tableinput.dimensionShowColumn, input.tab
     width: 80px;
 }
 
-.editDimenTable select {
+.editDimenTable select, .DuliangTable select, .FilterTable select, .GroupTable select {
     height: 33px;
     border: none;
     outline: none!important;
     border-bottom: solid 1px #ddd;
+}
+
+ul.pathUl li {
+    line-height: 20px;
+    padding-top: 5px;
+    padding-bottom: 2px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #444;
+}
+
+ul.pathUl li .folder {
+    color: #f8bb86;
+    margin-right: 15px;
+}
+
+ul.pathUl, ul.pathUl ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    padding-left: 15px;
+}
+
+ul.pathUl li {
+    line-height: 14px;
+    font-size: 14px;
+    color: #444;
+    /* padding-top: 11px; */
+    /* padding-bottom: 2px; */
+}
+
+ul.pathUl li .folder {
+    margin-right: 10px;
+    color: #f8bb86;
+}
+
+span.selectpathnamespan {
+    display: inline-block;
+    padding-top: 4px;
+    width: 100%;
+    padding-bottom: 3px;
+}
+
+span.selectpathnamespan:hover span.selectfoldername, span.selectpathnamespanSel span.selectfoldername {
+    color: #62ab00;
+}
+
+.pathUlCon {
+    position: absolute;
+    height: 160px;
+    overflow-y: auto;
+    left: 0;
+    right: 0;
+}
+
+.showIsSelectContainer {
+    float: left;
+    line-height: 57px;
+    display: none;
+}
+
+input[name="isSelected"] {
+    position: relative;
+    top: 2px;
+}
+
+.PathOperContainer {
+    position: absolute;
+    height: 30px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    line-height: 30px;
+    border-top: solid 1px #ddd;
+}
+
+.PathOperContainer span {
+    line-height: 25px;
+    width: 48%;
+    text-align: center;
+    display: inline-block;
+    line-height: 19px;
+    color: #999;
+    cursor: pointer;
+}
+
+.PathOperContainer span:hover {
+    /* background: #d66061; */
+    color: #444;
+}
+
+span.savePath {
+    border-right: solid 1px #ddd;
+    /* line-height: 18px; */
+}
+
+.editItemContainer table.table {
+    width: 99%!important;
+    margin: 0;
+    margin-top: 11px;
+}
+
+.reportdataset, .showkeycontainer .showkey {
+    color: #444;
+    font-size: 14px;
+    padding-left: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-bottom: solid 1px #ddd;
+    cursor: pointer;
+}
+
+.reportdataset:hover {
+    background: #eee;
+}
+
+.jointn {
+    width: 400px;
+}
+
+.joinal {
+    width: 120px;
+}
+
+.filterNameTd {
+    position: relative;
+    width: 300px;
+}
+
+.filterNameE {
+    position: absolute;
+    width: 95%;
+    height: 35px;
+    vertical-align: middle;
+    border-bottom: solid 1px #ddd;
+    margin: 0 auto;
+    margin-top: -13px;
+    cursor: pointer;
+}
+
+.filterSelectContainer {
+    position: absolute;
+    width: 95%;
+    height: 211px;
+    margin: 0 auto;
+    margin-top: 23px;
+    background: #fff;
+    overflow-y: auto;
+    border-bottom: solid 1px #ddd;
+}
+
+ul.fliterUl {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: #fff;
+    border: solid 1px #ddd;
+    height: 160px;
+    overflow-y: auto;
+}
+
+input.seachFilter {
+    border: none;
+    border-bottom: solid 1px #ddd;
+    width: 100%;
+    height: 25px;
+    padding-left: 5px;
+    border-left: solid 1px #ddd;
+}
+
+ul.fliterUl li {
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: solid 1px #ddd;
+    cursor: pointer;
+}
+
+ul.fliterUl li:hover, 
+ul.fliterUl li.filterliselected {
+    color: #62ab00;
+}
+
+.filternameoper {
+    height: 25px;
+    border-left: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+}
+
+.filternameoper span {
+    display: inline-block;
+    height: 24px;
+    width: 48%;
+    margin-left: 0.5%;
+    text-align: center;
+    line-height: 24px;
+    cursor: pointer;
+}
+
+.filternameoper span:hover {
+    color: #62ab00;
+}
+
+span.savefiln {
+    border-right: solid 1px #ddd;
 }

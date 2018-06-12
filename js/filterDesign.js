@@ -369,7 +369,7 @@ function showData(pathid) {
 function fullEditContent(p) {
     if (p == null) {
         $('.datasourceEdit').html(returndbSelect(window.db));
-        $('textarea.datatable').val('格式:select x as value,x as text from');
+        $('textarea.datatable').val('');
         $('input.showNumber').val('');
         $('input.key').val('');
         $('input.kvalue').val('');

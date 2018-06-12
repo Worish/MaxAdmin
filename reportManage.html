@@ -14,6 +14,7 @@
         <link href="css/jquery.dataTables.min.css" rel="stylesheet"/>
         <link href="css/iziToast.min.css" rel="stylesheet"/>
         <link href="css/all.css" rel="stylesheet"/>
+        <link href="css/reportManage.css" rel="stylesheet"/>
     </head>
     <body>
         <div id="navContainer">
@@ -22,6 +23,11 @@
                     MAX5.0 Admin
                 </div>
                 <ul class="topnav">
+                    <li class="">
+                        <a href="./reportManage.html">
+                            报表管理
+                        </a>
+                    </li>
                     <li class="">
                         <a href="./datasets.html">
                             添加数据表
@@ -35,16 +41,6 @@
                     <li class="">
                         <a href="./filterDesign.html">
                             筛选设计
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="#">
-                            配置管理
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="./reportManage.html">
-                            报表管理
                         </a>
                     </li>
                 </ul>
@@ -71,14 +67,16 @@
             <div class="tableTreeContainer">
                 <div class="tableTree">
                     <ul class="rootNavUl">
-                        <li class="rmnli">
+                        <li class="rmnli rootli subNavUliActive" folderid="0">
                             <div class="Center-Container is-Table">
                                 <div class="Table-Cell">
                                     <i class="folder fa fa-folder">
                                     </i>
-                                    <span class="foldName" style="width:124px">根目录</span>
+                                    <span class="foldName" style="width:124px">
+                                        根目录
+                                    </span>
                                     <span class="rmnlioperate">
-                                        <i class="fa fa-plus rootaddicon" level="0" folderId=0>
+                                        <i class="fa fa-plus rootaddicon" folderid="0" level="0">
                                         </i>
                                     </span>
                                     <!-- <span class="rmnliarrow">
@@ -90,14 +88,14 @@
                                 </div>
                             </div>
                             <ul class="subNavUl" level="1">
-                             </ul>
+                            </ul>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="tableShowContainer">
                 <div class="tableContainer">
-                    <table class="table">
+                    <table class="table reportList">
                         <caption>
                             <span class="btn newReport">
                                 新建报表
@@ -109,7 +107,7 @@
                                     名称
                                 </th>
                                 <th>
-                                    类型
+                                    路径
                                 </th>
                                 <th>
                                     是否展示指标可选
@@ -149,7 +147,7 @@
                         <span>
                             名称
                         </span>
-                        <input class="reportNameInput" disabled="disabled" placeholder="在此处输入报表名称哦"/>
+                        <input class="reportNameInput" disabled="disabled" placeholder="第一步:在此处输入报表名称并保存"/>
                         <i class="fa fa-pencil editReportNamePencil">
                         </i>
                         <i class="fa fa-save saveReportNamePencil">
@@ -164,14 +162,25 @@
                         <div class="pathShowContainer">
                         </div>
                         <div class="pathUlContianer">
-                            <ul class="pathUl">
-                            </ul>
-                            <div class="savePath">
-                                <span>
+                            <div class="pathUlCon">
+                                <ul class="pathUl">
+                                </ul>
+                            </div>
+                            <div class="PathOperContainer">
+                                <span class="savePath">
                                     保存路径
+                                </span>
+                                <span class="cancleSavePath">
+                                    取消
                                 </span>
                             </div>
                         </div>
+                    </div>
+                    <div class="showIsSelectContainer">
+                        <span>
+                            是否可选
+                        </span>
+                        <input name="isSelected" type="checkbox"/>
                     </div>
                     <div class="closeEditReportContainer">
                         <i class="fa fa-remove">
@@ -192,19 +201,19 @@
                                 编辑数据源
                             </div> -->
                             <div active="editJoin" class="addTag dataTableOperItem editJoin">
-                                编辑表与关联
+                                表与关联
                             </div>
                             <div active="editGroup" class="addTag dataTableOperItem editGroup">
-                                编辑分组
+                                分组
                             </div>
                             <div active="editDimen" class="addTag dataTableOperItem editDimen">
-                                编辑维度
+                                维度
                             </div>
                             <div active="editDuliang" class="addTag dataTableOperItem editDuliang">
-                                编辑指标
+                                指标
                             </div>
                             <div active="editFilter" class="addTag dataTableOperItem editFilter">
-                                编辑筛选
+                                筛选
                             </div>
                         </div>
                         <div class="showkeycontainer showdatatableContainer">
@@ -222,7 +231,7 @@
                     <div class="edittypeContainer factContainer">
                         <div class="editShow">
                             <span>
-                                度量
+                                指标
                             </span>
                         </div>
                         <div class="showkeycontainer showfacttableContainer">
@@ -251,16 +260,22 @@
                                     筛选名称
                                 </th>
                                 <th>
+                                    显示名称
+                                </th>
+                                <th>
+                                    是否显示
+                                </th>
+                                <th>
                                     关联表
                                 </th>
                                 <th>
                                     关联字段
                                 </th>
                                 <th>
-                                    是否显示
+                                    关联MAX权限
                                 </th>
                                 <th>
-                                    显示名称
+                                    顺序
                                 </th>
                                 <th class="optable">
                                     编辑
@@ -326,13 +341,19 @@
                                     表
                                 </th>
                                 <th>
-                                    类型
-                                </th>
-                                <th>
+                                    显示
+                                    <br/>
                                     名称
                                 </th>
                                 <th>
                                     id
+                                </th>
+                                <th>
+                                    数据
+                                    <br/>
+                                    展示
+                                    <br/>
+                                    字段
                                 </th>
                                 <th>
                                     是否
@@ -347,23 +368,11 @@
                                     必选
                                 </th>
                                 <th>
-                                    显示
-                                    <br/>
-                                    名称
-                                </th>
-                                <th>
                                     子查询
                                     <br/>
                                     必须
                                     <br/>
                                     groupby
-                                </th>
-                                <th>
-                                    数据
-                                    <br/>
-                                    展示
-                                    <br/>
-                                    字段
                                 </th>
                                 <th>
                                     数据
@@ -378,7 +387,7 @@
                                     顺序
                                 </th>
                                 <th>
-                                    所属组
+                                    组名
                                 </th>
                                 <th class="optable">
                                     编辑
@@ -429,33 +438,18 @@
                                 <i class="fa fa-refresh">
                                 </i>
                                 <ul class="allTableUl">
-                                    <li>
-                                        dw_db.xxx
-                                    </li>
-                                    <li>
-                                        dw_db.xxx
-                                    </li>
-                                    <li>
-                                        dw_db.xxx
-                                    </li>
-                                    <li>
-                                        dw_db.xxx
-                                    </li>
-                                    <li>
-                                        dw_db.xxx
-                                    </li>
                                 </ul>
                             </div>
                         </caption>
                         <thead>
                             <tr>
-                                <th>
+                                <th class="jointn">
                                     表
                                 </th>
-                                <th>
+                                <th class="joinal">
                                     别名
                                 </th>
-                                <th>
+                                <th class="jointn">
                                     关联关系
                                 </th>
                                 <th class="optable">

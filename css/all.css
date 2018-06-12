@@ -350,6 +350,8 @@ ul.ul.dimensionListUl li {
     border-left: none;
     border-right: none;
     position: relative;
+    font-size: 14px;
+    color: #444;
 }
 ul.ul.dimensionListUl li:hover,
 li.dimensionListUlliselect{
@@ -409,6 +411,7 @@ li.dimensionListUlliselect{
     border: none;
     outline: none!important;
     border-bottom: solid 1px #ddd;
+    color: #444;
 }
 
 .editDimensionC {
@@ -423,6 +426,8 @@ li.dimensionListUlliselect{
     width: 169px;
     vertical-align: middle;
     resize: none;
+    font-size: 14px;
+    color: #444;
 }
 .editDimensionC,.editDimensionC .btn {
     text-align: center;
