@@ -865,7 +865,7 @@ ul.fliterUl {
     list-style: none;
     background: #fff;
     border: solid 1px #ddd;
-    height: 160px;
+    height: 141px;
     overflow-y: auto;
 }
 
@@ -880,7 +880,7 @@ input.seachFilter {
 }
 
 ul.fliterUl li {
-    padding-left: 5px;
+    padding-left: 24px;
     padding-top: 5px;
     padding-bottom: 5px;
     border-bottom: solid 1px #ddd;
@@ -989,10 +989,17 @@ ul.pubDimUl li.pubSelected{
     padding-left: 4px;
 }
 .saveOrder,
-.cancelSaveOrder{
+.cancelSaveOrder,
+span.speinfo{
+    float:right;
     display:none;
+    margin-left:15px;
 }
 span.speinfo {
     font-size: 14px;
     color: #d66061;
+}
+.fliterInfo {
+    padding-left: 15px;
+    color: #999;
 }

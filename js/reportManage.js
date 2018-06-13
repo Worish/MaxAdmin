@@ -470,46 +470,79 @@ function baseClick() {
         e.preventDefault();
     })
     //保存排序功能
-    $('.editItemContainer').on('click','.saveOrder',function(e){
+    $('.editItemContainer').on('click', '.saveOrder', function(e) {
         e.stopPropagation();
         var url = '';
-        var p = {},q= {};
-        if(eo.action == 'editGroup'){
+        var p = {},
+            q = {};
+        if (eo.action == 'editGroup') {
             url = 'report/updateReportFieldCategorySeq';
-        }else if(eo.action == 'editFilter'){
-           url = '';
-        }else if(eo.action == 'editDuliang'){
-            url = 'updateReportFieldSeq';
-        }else if(eo.action == 'editDimen'){
-            url = 'updateReportFieldSeq';
+        } else if (eo.action == 'editFilter') {
+            url = '';
+        } else if (eo.action == 'editDuliang') {
+            url = 'report/updateReportFieldSeq';
+        } else if (eo.action == 'editDimen') {
+            url = 'report/updateReportFieldSeq';
         }
         p = [];
         q.atype = 'POST';
         var pa = $(this).parent().parent().find('tbody');
         var length = pa.find('tr').length;
-        pa.find('tr').each(function(i){
+        pa.find('tr').each(function(i) {
             var o = {};
-            o.itemId = $(this).attr('actionid')*1;
+            o.itemId = $(this).attr('actionid') * 1;
             o.sequence = length - i;
             p.push(o);
         })
         // console.log(p);
         // p = JSON.stringify(p);
-        q.success = function(r){
-            console.log(r);
-        }    
-        $.api(url,p,q);
+        q.success = function(r) {
+            if (r.status == 1 && r.msg == 'success') {
+                if (eo.action == 'editGroup') {
+                   for(var i=0;i<p.length;i++){
+                        var o = p[i];
+                        aod.rg[eo.id][o.itemId].sequence = o.sequence;
+                   }
+                   showGroup(eo.id);
+                } else if (eo.action == 'editFilter') {
+                    /*for(var i=0;i<p.length;i++){
+                        var o = p[i];
+                        aod.rg[eo.id][o.itemId].sequence = o.sequence;
+                   }
+                   showGroup();*/
+                } else if (eo.action == 'editDuliang') {
+                   for(var i=0;i<p.length;i++){
+                        var o = p[i];
+                        aod.rk[eo.id][o.itemId].sequence = o.sequence;
+                   }
+                   showDuliang(eo.id);
+                } else if (eo.action == 'editDimen') {
+                    for(var i=0;i<p.length;i++){
+                        var o = p[i];
+                        aod.rd[eo.id][o.itemId].sequence = o.sequence;
+                   }
+                   showDim(eo.id);
+                }
+                $('.saveOrder').hide();
+                $('.cancelSaveOrder').hide();
+                $('.speinfo').hide();
+                showMessage('保存顺序成功','');
+            } else {
+                swalinfo('修改顺序失败,请联系管理员');
+            }
+        }
+        $.api(url, p, q);
     })
     //取消保存排序功能
-    $('.editItemContainer').on('click','.cancelSaveOrder',function(e){
+    $('.editItemContainer').on('click', '.cancelSaveOrder', function(e) {
         e.stopPropagation();
-        if(eo.action == 'editGroup'){
+        if (eo.action == 'editGroup') {
             showGroup();
-        }else if(eo.action == 'editFilter'){
+        } else if (eo.action == 'editFilter') {
             showFilter(eo.id);
-        }else if(eo.action == 'editDuliang'){
+        } else if (eo.action == 'editDuliang') {
             showDuliang(eo.id);
-        }else if(eo.action == 'editDimen'){
+        } else if (eo.action == 'editDimen') {
             showDim(eo.id);
         }
         $('.cancelSaveOrder').hide();
@@ -557,7 +590,7 @@ function baseClick() {
         $('.saveOrder').hide();
         $('.cancelSaveOrder').hide();
         $('.speinfo').hide();
-        $('.'+eo.action+ 'Container tbody tr').remove();
+        $('.' + eo.action + 'Container tbody tr').remove();
         var ac = $(this).attr('active');
         $('.' + ac + 'Container').show();
         eo.action = ac;
@@ -570,7 +603,6 @@ function baseClick() {
             showGroupById(eo.id);
         }
     })
-
     //编辑关联
     $('.joinTable').on('click', '.fa-edit', function() {
         // $('.editJoinContainer').attr('active', 'edit');
@@ -763,9 +795,9 @@ function baseClick() {
             pa.sequence = 9999;
             q.success = function(r) {
                 if (r.status == 1 && r.msg == 'success') {
-                    if(!aod.rg.hasOwnProperty(eo.id)){
-                            aod.rg[eo.id] = {};
-                        }
+                    if (!aod.rg.hasOwnProperty(eo.id)) {
+                        aod.rg[eo.id] = {};
+                    }
                     aod.rg[eo.id][r.id] = {};
                     aod.rg[eo.id][r.id].categoryName = gn;
                     aod.rg[eo.id][r.id].showStyle = gs;
@@ -908,7 +940,7 @@ function baseClick() {
             var index = p.index();
             var gid = p.attr('actionid');
             if (index == 0) {
-                showMessage( '不能再往上啦','啊啊啊啊啊啊啊');
+                showMessage('不能再往上啦', '啊啊啊啊啊啊啊');
             } else {
                 p.parent().parent().find('.saveOrder').show();
                 p.parent().parent().find('.cancelSaveOrder').show();
@@ -931,8 +963,8 @@ function baseClick() {
             var gn = p.find('td').eq(0).html();
             var index = p.index();
             var gid = p.attr('actionid');
-            if (index == p.parent().find('tr').length -1) {
-                showMessage( '不能再往下啦','啊啊啊啊啊啊啊');
+            if (index == p.parent().find('tr').length - 1) {
+                showMessage('不能再往下啦', '啊啊啊啊啊啊啊');
             } else {
                 p.parent().parent().find('.saveOrder').show();
                 p.parent().parent().find('.cancelSaveOrder').show();
@@ -952,6 +984,7 @@ function baseClick() {
             eo.actiontype = 'new';
             //$('.editDuliangContainer').attr('active', 'new');
             var str = "<tr class='newDuliangtr'>";
+            str += "<td></td>";
             str += "<td><input class='tableinput DuliangName' type='text' /></td>";
             str += "<td><input class='tableinput DuliangGongshi' type='text' /></td>";
             str += "<td><input class='tableinput func' type='text' /></td>";
@@ -1042,16 +1075,16 @@ function baseClick() {
             eo.actiontype = 'edit';
             eo.actionid = p.attr('actionid') * 1;
             var d = aod.rk[eo.id][eo.actionid];
-            p.find('td').eq(0).html('<input class="tableinput DuliangName" type="text" value="' + d.displayName + '"/>');
-            p.find('td').eq(1).html('<input class="tableinput DuliangGongshi" type="text" value="' + d.columnName + '"/>');
-            p.find('td').eq(2).html('<input class="tableinput func" type="text" value="' + d.aggregateFunction + '"/>');
-            p.find('td').eq(3).html('<textarea class="DuliangInfo">' + d.comment + '</textarea>');
-            p.find('td').eq(4).html('');
-            p.find('td').eq(5).html(getGroupSelect(d.fieldCategoryId));
+            p.find('td').eq(1).html('<input class="tableinput DuliangName" type="text" value="' + d.displayName + '"/>');
+            p.find('td').eq(2).html('<input class="tableinput DuliangGongshi" type="text" value="' + d.columnName + '"/>');
+            p.find('td').eq(3).html('<input class="tableinput func" type="text" value="' + d.aggregateFunction + '"/>');
+            p.find('td').eq(4).html('<textarea class="DuliangInfo">' + d.comment + '</textarea>');
+            p.find('td').eq(5).html('');
+            p.find('td').eq(6).html(getGroupSelect(d.fieldCategoryId));
             var sstr = '<select class="dataformatselect"><option value="百分比">百分比</option><option value="1位小数">1位小数</option><option value="2位小数">2位小数</option><option value="整数">整数</option><option value="4位小数">4位小数</option></select>';
             sstr = sstr.replace(d.format + '"', d.format + '" selected ');
-            p.find('td').eq(6).html(sstr);
-            p.find('td').eq(7).html('<i class="fa fa-save"></i><i class="fa fa-remove"></i>');
+            p.find('td').eq(7).html(sstr);
+            p.find('td').eq(8).html('<i class="fa fa-save"></i><i class="fa fa-remove"></i>');
         }
     })
     //指标度量保存按钮操作
@@ -1110,6 +1143,7 @@ function baseClick() {
                     if (r.status == 1 && r.msg == 'success') {
                         var ord = '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>';
                         var str = "<tr actionid='" + r.id + "'>";
+                        str += "<td>" + $('.DuliangTable tbody tr').length + "</td>";
                         str += "<td>" + duname + "</td>";
                         str += "<td>" + dugongshi + "</td>";
                         str += "<td>" + dufunc + "</td>";
@@ -1126,7 +1160,7 @@ function baseClick() {
                             $('.DuliangTable tbody tr').eq(0).before(str);
                         }
                         showMessage('指标' + duname, '新增成功');
-                        if(!aod.rk.hasOwnProperty(eo.id)){
+                        if (!aod.rk.hasOwnProperty(eo.id)) {
                             aod.rk[eo.id] = {};
                         }
                         aod.rk[eo.id][r.id] = {};
@@ -1201,24 +1235,28 @@ function baseClick() {
     //添加筛选
     $('.newFilter').on('click', function(e) {
         e.stopPropagation();
-        var str = "";
-        str += '<tr class="newFilterTr">';
-        str += '<td class="filterNameTd"><div class="filterNameE"></div>' + '<div class="filterSelectContainer"><input class="seachFilter" type="text" placeholder="在此输入搜索" />' + '<ul class="fliterUl">' + getFilterUl() + '</ul>' + '<div class="filternameoper"><span  class="savefiln">确定</span><span  class="cancelfiln">取消</span></div></div></td>';
-        str += '<td><input class="tableinput showName" type="text" /></td>';
-        str += '<td><select class="isShow"><option value="0">否</option><option value="1">是</option></select></td>';
-        str += '<td>' + getReportTable() + '</td>';
-        str += '<td><input class="tableinput joinC" type="text" /></td>';
-        str += '<td><select class="joinMax"><option value="0">否</option><option value="1">是</option></select></td>';
-        str += '<td></td>';
-        str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
-        str += '</tr>';
-        if ($('.FilterTable tbody tr').length == 0) {
-            $('.FilterTable tbody').html(str);
+        if (eo.actiontype == '') {
+            var str = "";
+            str += '<tr class="newFilterTr">';
+            str += '<td class="filterNameTd"><div class="filterNameE"></div>' + '<div class="filterSelectContainer"><input class="seachFilter" type="text" placeholder="在此输入搜索" />' + '<div class="fliterInfo">筛选列表:</div>' + '<ul class="fliterUl">' + getFilterUl() + '</ul>' + '<div class="filternameoper"><span  class="savefiln">确定</span><span  class="cancelfiln">取消</span></div></div></td>';
+            str += '<td><input class="tableinput showName" type="text" /></td>';
+            str += '<td><select class="isShow"><option value="0">否</option><option value="1">是</option></select></td>';
+            str += '<td>' + getReportTable() + '</td>';
+            str += '<td><input class="tableinput joinC" type="text" /></td>';
+            str += '<td><select class="joinMax"><option value="0">否</option><option value="1">是</option></select></td>';
+            str += '<td></td>';
+            str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
+            str += '</tr>';
+            if ($('.FilterTable tbody tr').length == 0) {
+                $('.FilterTable tbody').html(str);
+            } else {
+                $('.FilterTable tbody tr').eq(0).before(str);
+            }
+            eo.actiontype = 'new';
+            $('.filterSelectContainer').show();
         } else {
-            $('.FilterTable tbody tr').eq(0).before(str);
+            swalinfo('请先完成当前编辑内容')
         }
-        eo.actiontype = 'new';
-        $('.filterSelectContainer').show();
     })
     $('.FilterTable').on('click', 'li', function(e) {
         e.stopPropagation();
@@ -1438,7 +1476,7 @@ function baseClick() {
                             $('.FilterTable tbody tr').eq(0).before(str);
                         }
                         showMessage('筛选' + filterName, '新增成功');
-                        if(!aod.rf.hasOwnProperty(eo.id)){
+                        if (!aod.rf.hasOwnProperty(eo.id)) {
                             aod.rf[eo.id] = {};
                         }
                         aod.rf[eo.id][r.id] = {};
@@ -1554,10 +1592,10 @@ function baseClick() {
             pa.type = 1;
             q.success = function(r) {
                 if (r.status == 1 && r.msg == 'success') {
-                    $(this).addClass('pubDimSelect');
-                    if(!aod.rd.hasOwnProperty(eo.id)){
-                            aod.rd[eo.id] = {};
-                        }
+                    $(this).addClass('pubSelected');
+                    if (!aod.rd.hasOwnProperty(eo.id)) {
+                        aod.rd[eo.id] = {};
+                    }
                     aod.rd[eo.id][r.id] = {};
                     aod.rd[eo.id][r.id].datasetId = pa.datasetId;
                     aod.rd[eo.id][r.id].columnName = pa.columnName;
@@ -1699,7 +1737,7 @@ function baseClick() {
                 pa.type = type;
                 q.success = function(r) {
                     if (r.status == 1 && r.msg == 'success') {
-                        if(!aod.rd.hasOwnProperty(eo.id)){
+                        if (!aod.rd.hasOwnProperty(eo.id)) {
                             aod.rd[eo.id] = {};
                         }
                         aod.rd[eo.id][r.id] = {};
@@ -1937,17 +1975,20 @@ function getReportDimTable(id) {
 
 function getFilterUl(id, keyword) {
     var str = "";
+    var td = [];
+    for (var i in aod.rf[eo.id]) {
+        td.push(aod.rf[eo.id][i].filterId * 1);
+    }
     for (var i in aod.filterList) {
         var flag = '';
-        if (i * 1 == id) {
-            flag = 'filterliselected';
-        }
-        if (keyword != null && keyword != '') {
-            if (aod.filterList[i].name.indexOf(keyword) > -1) {
+        if ($.inArray(i * 1, td) == -1) {
+            if (keyword != null && keyword != '') {
+                if (aod.filterList[i].name.indexOf(keyword) > -1) {
+                    str += "<li actionid='" + i + "' class='" + flag + "'> " + aod.filterList[i].name + "</li>";
+                }
+            } else {
                 str += "<li actionid='" + i + "' class='" + flag + "'> " + aod.filterList[i].name + "</li>";
             }
-        } else {
-            str += "<li actionid='" + i + "' class='" + flag + "'> " + aod.filterList[i].name + "</li>";
         }
     }
     return str;
@@ -2243,7 +2284,7 @@ function initFolder() {
             }
             refreshfoldmap();
             getReportList();
-        }else{
+        } else {
             refreshfoldmap();
             getReportList();
         }
@@ -2745,7 +2786,7 @@ function getPubDimByTable() {
             var ted = [];
             for (var i in aod.rd[eo.id]) {
                 if (aod.rd[eo.id][i].datasetColumnId != null) {
-                    ted.push(aod.rd[eo.id][i].datasetColumnId);
+                    ted.push(aod.rd[eo.id][i].datasetColumnId * 1);
                 }
             }
             if (r.length > 0) {
@@ -2781,6 +2822,7 @@ function showGroup() {
         aod.rgs[eo.id].push(aod.rg[eo.id][i]);
     }
     aod.rgs[eo.id].sort(compare('sequence'));
+    aod.rgs[eo.id].reverse();
     var d = aod.rgs[eo.id];
     var str = "";
     for (var i = 0; i < d.length; i++) {
@@ -2799,6 +2841,7 @@ function showFilter(id) {
         aod.rfs[eo.id].push(aod.rf[eo.id][i]);
     }
     aod.rfs[eo.id].sort(compare('sequence'));
+    aod.rfs[eo.id].reverse();
     var d = aod.rfs[eo.id];
     var str = '',
         str2 = '';
@@ -2826,6 +2869,7 @@ function showDim(id) {
         aod.rds[eo.id].push(aod.rd[eo.id][i]);
     }
     aod.rds[eo.id].sort(compare('sequence'));
+    aod.rds[eo.id].reverse();
     var td = aod.rds[eo.id];
     var str = '',
         str2 = '';
@@ -2856,13 +2900,14 @@ function showDuliang(id) {
         aod.rks[eo.id].push(aod.rk[eo.id][i]);
     }
     aod.rks[eo.id].sort(compare('sequence'));
+    aod.rks[eo.id].reverse();
     var td = aod.rks[eo.id];
     var str = '',
         str2 = '';
     for (var i = 0; i < td.length; i++) {
         var d = td[i];
         str += "<tr actionid='" + d.id + "'>";
-        str += "<td orderid='"+(td.length - i )+"'>"+ (td.length - i )+"</td>";
+        str += "<td orderid='" + (td.length - i) + "'>" + (td.length - i) + "</td>";
         str += "<td>" + d.displayName + "</td>";
         str += "<td>" + d.columnName + "</td>";
         str += "<td>" + d.aggregateFunction + "</td>";
