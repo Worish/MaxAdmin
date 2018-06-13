@@ -889,103 +889,6 @@ function baseClick() {
             }
         }
     })
-    //添加私有维度
-    $('.newPrivateDimen').on('click', function() {
-        $('.editDimenContainer').attr('active', 'new');
-        var str = "<tr class='newPrivateDimentr'>";
-        str += '<td>' + getTableSelect() + '</td>';
-        str += '<td>独有</td>';
-        str += '<td><input class="tableinput dimensionName" /> </td>';
-        str += '<td><input class="tableinput dimensionid" > </td>';
-        str += '<td><select class="showop"><option value="是">是</option><option value="否">否</option></select></td>';
-        str += '<td><select class="isneed"><option value="是">是</option><option value="否">否</option></select></td>';
-        str += '<td><input class="tableinput dimensionShowName" /> </td>';
-        str += '<td><select class="isgroupby"><option value="是">是</option><option value="否">否</option></select></td>';
-        str += '<td><input class="tableinput dimensionShowColumn" /></td>';
-        str += '<td>' + getDataFormat() + '</td>';
-        str += '<td>-</td>';
-        str += '<td>' + getGroupSelect() + '</td>';
-        str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
-        str += '</str>';
-        if ($('.editDimenTable tbody tr').length == 0) {
-            $('.editDimenTable tbody').html(str);
-        } else {
-            $('.editDimenTable tbody tr').eq(0).before(str);
-        }
-    })
-    //取消保存或者删除
-    $('.editDimenTable').on('click', '.fa-remove', function() {
-        if ($('.editDimenContainer').attr('active') == 'new') {
-            $('tr.newPrivateDimentr').remove();
-            $('.editDimenContainer').attr('active', '');
-        } else if ($('.editDimenContainer').attr('active') == 'edit') {} else if ($('.editDimenContainer').attr('active') == '') {
-            var p = $(this).parent().parent();
-            var did = p.attr('dimensionid');
-            var diname = p.find('td').eq(2).html();;
-            swal({
-                title: "确定删除组",
-                text: diname,
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "确定删除！",
-                cancelButtonText: "取消删除！",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }, function(isConfirm) {
-                if (isConfirm) {
-                    swal.close();
-                    $('tr[dimensionid="' + did + '"]').remove();
-                    showMessage('维度' + diname, '删除成功');
-                } else {
-                    swal.close();
-                }
-            });
-        }
-    })
-    //保存按钮操作
-    $('.editDimenTable').on('click', '.fa-save', function() {
-        var p = $(this).parent().parent();
-        if ($('.editDimenContainer').attr('active') == 'new') {
-            var dt = p.find('select.tableselect option:selected').text();
-            var tp = p.find('td').eq(1).html();
-            var dn = p.find('input.dimensionName').val();
-            var did = p.find('input.dimensionid').val();
-            var showop = p.find('select.showop option:selected').text();
-            var isneed = p.find('select.isneed option:selected').text();
-            var showdn = p.find('.dimensionShowName').val();
-            var isgroupby = p.find('select.isgroupby option:selected').text();
-            var showcol = p.find('input.dimensionShowName').val();
-            var df = p.find('select.dataformatselect option:selected').text();
-            var ord = '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>';
-            var group = p.find('select.groupselect option:selected').text();;
-            var op = '<i class="fa fa-pencil"></i><i class="fa fa-remove"></i>';
-            var gid = (Math.random() * 10000).toFixed(0);
-            var str = "<tr dimensionid='" + gid + "'>";
-            str += "<td>" + dt + "</td>";
-            str += "<td>" + tp + "</td>";
-            str += "<td>" + dn + "</td>";
-            str += "<td>" + did + "</td>";
-            str += "<td>" + showop + "</td>";
-            str += "<td>" + isneed + "</td>";
-            str += "<td>" + showdn + "</td>";
-            str += "<td>" + isgroupby + "</td>";
-            str += "<td>" + showcol + "</td>";
-            str += "<td>" + df + "</td>";
-            str += "<td>" + ord + "</td>";
-            str += "<td>" + group + "</td>";
-            str += "<td>" + op + "</td>";
-            str += "</tr>";
-            $('tr.newPrivateDimentr').remove();
-            if ($('.editDimenTable tbody tr').length == 0) {
-                $('.editDimenTable tbody').html(str);
-            } else {
-                $('.editDimenTable tbody tr').eq(0).before(str);
-            }
-            showMessage('维度' + dn, '新增成功');
-            $('.editDimenContainer').attr('active', '');
-        }
-    })
     //添加指标操作
     $('.newDuliang').on('click', function() {
         if (eo.actiontype == '') {
@@ -1165,7 +1068,7 @@ function baseClick() {
                         } else {
                             $('.DuliangTable tbody tr').eq(0).before(str);
                         }
-                        showMessage('维度' + duname, '新增成功');
+                        showMessage('指标' + duname, '新增成功');
                         aod.rk[eo.id][r.id] = {};
                         aod.rk[eo.id][r.id].reportId = pa.reportId;
                         aod.rk[eo.id][r.id].displayName = pa.displayName;
@@ -1308,7 +1211,6 @@ function baseClick() {
             $('.fliterUl').html(str);
         }, 300)
     })
-
     //筛选取消保存或者删除
     $('.FilterTable').on('click', '.fa-pencil', function() {
         if (eo.actiontype != '') {
@@ -1318,16 +1220,30 @@ function baseClick() {
             eo.actiontype = 'edit';
             eo.actionid = p.attr('actionid') * 1;
             var d = aod.rf[eo.id][eo.actionid];
-            p.find('td').eq(0).html('<input class="tableinput DuliangName" type="text" value="' + d.displayName + '"/>');
-            p.find('td').eq(1).html('<input class="tableinput DuliangGongshi" type="text" value="' + d.columnName + '"/>');
-            p.find('td').eq(2).html('<input class="tableinput func" type="text" value="' + d.aggregateFunction + '"/>');
-            p.find('td').eq(3).html('<textarea class="DuliangInfo">' + d.comment + '</textarea>');
-            p.find('td').eq(4).html('');
-            p.find('td').eq(5).html(getGroupSelect(d.fieldCategoryId));
-            var sstr = '<select class="dataformatselect"><option value="百分比">百分比</option><option value="1位小数">1位小数</option><option value="2位小数">2位小数</option><option value="整数">整数</option><option value="4位小数">4位小数</option></select>';
-            sstr = sstr.replace(d.format + '"', d.format + '" selected ');
-            p.find('td').eq(6).html('');
-            p.find('td').eq(7).html('<i class="fa fa-save"></i><i class="fa fa-remove"></i>');
+            var str = '';
+            str += '<td class="filterNameTd"><div class="filterNameE">' + aod.filterList[d.filterId].name + '</div>' + '<div class="filterSelectContainer"><input class="seachFilter" type="text" placeholder="在此输入搜索" />' + '<ul class="fliterUl">' + getFilterUl(d.filterId) + '</ul>' + '<div class="filternameoper"><span  class="savefiln">确定</span><span  class="cancelfiln">取消</span></div></div></td>';
+            str += '<td><input class="tableinput showName" type="text" value="' + d.showName + '" /></td>';
+            var tempstr = '<select class="isShow"><option value="0">否</option><option value="1">是</option></select>';
+            //tempstr = tempstr.replace('','')
+            str += '<td>' + tempstr + '</td>';
+            str += '<td>' + getReportTable(d.joinDatasetId) + '</td>';
+            str += '<td><input class="tableinput joinC" type="text" value="' + d.joinColumn + '"/></td>';
+            var tempstr2 = '<select class="joinMax"><option value="0">否</option><option value="1">是</option></select>';
+            tempstr2 = tempstr2.replace(d.isAuth + '"', d.isAuth + '" selected');
+            str += '<td>' + tempstr2 + '</td>';
+            str += '<td></td>';
+            str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
+            $('.FilterTable tr[actionid="' + eo.actionid + '"]').html(str);
+            /* p.find('td').eq(0).html('<input class="tableinput DuliangName" type="text" value="' + d.displayName + '"/>');
+             p.find('td').eq(1).html('<input class="tableinput DuliangGongshi" type="text" value="' + d.columnName + '"/>');
+             p.find('td').eq(2).html('<input class="tableinput func" type="text" value="' + d.aggregateFunction + '"/>');
+             p.find('td').eq(3).html('<textarea class="DuliangInfo">' + d.comment + '</textarea>');
+             p.find('td').eq(4).html('');
+             p.find('td').eq(5).html(getGroupSelect(d.fieldCategoryId));
+             var sstr = '<select class="dataformatselect"><option value="百分比">百分比</option><option value="1位小数">1位小数</option><option value="2位小数">2位小数</option><option value="整数">整数</option><option value="4位小数">4位小数</option></select>';
+             sstr = sstr.replace(d.format + '"', d.format + '" selected ');
+             p.find('td').eq(6).html('');
+             p.find('td').eq(7).html('<i class="fa fa-save"></i><i class="fa fa-remove"></i>');*/
         }
     })
     //筛选取消保存或者删除
@@ -1338,6 +1254,7 @@ function baseClick() {
         } else if (eo.actiontype == 'edit') {
             var d = aod.rf[eo.id][eo.actionid];
             var str = '';
+            var ord = '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>';
             str += "<td>" + d.filterName + "</td>";
             str += "<td>" + d.showName + "</td>";
             str += "<td>" + ((d.isShow == 0) ? '否' : '是') + "</td>";
@@ -1401,7 +1318,7 @@ function baseClick() {
         var showName = p.find('.showName').val();
         var isShow = p.find('.isShow option:selected').val();
         var reportId = eo.id;
-        var joinDatasetId =  p.find('.filterJoinTable option:selected').val();
+        var joinDatasetId = p.find('.filterJoinTable option:selected').val();
         var joinColumn = p.find('.joinC').val();
         var isAuth = p.find('.joinMax option:selected').val();
         var sequence = 9999;
@@ -1466,7 +1383,7 @@ function baseClick() {
                         aod.rf[eo.id][r.id].filterName = pa.filterName;
                         aod.rf[eo.id][r.id].showName = pa.showName;
                         aod.rf[eo.id][r.id].isShow = pa.isShow;
-                        aod.rf[eo.id][r.id].joinColumn = pa.cjoinColumnomment;
+                        aod.rf[eo.id][r.id].joinColumn = pa.joinColumn;
                         aod.rf[eo.id][r.id].isAuth = pa.isAuth;
                         aod.rf[eo.id][r.id].format = pa.format;
                         aod.rf[eo.id][r.id].sequence = pa.sequence;
@@ -1487,55 +1404,463 @@ function baseClick() {
                 var pa = {},
                     q = {};
                 q.atype = 'POST';
-                pa.id = p.attr('actionid');
-                pa.reportId = eo.id;
-                pa.displayName = duname;
-                pa.columnName = dugongshi;
-                pa.aggregateFunction = dufunc;
-                pa.fieldCategoryId = aod.rk[eo.id][eo.actionid].fieldCategoryId;
-                pa.comment = duinfo;
-                pa.sequence = aod.rk[eo.id][eo.actionid].sequence;
-                pa.format = df;
-                pa.type = 2;
+                pa.id = eo.actionid;
+                pa.filterId = filterId;
+                pa.filterName = filterName;
+                pa.showName = showName;
+                pa.isShow = isShow;
+                pa.joinDatasetId = joinDatasetId;
+                pa.reportId = reportId;
+                pa.joinColumn = joinColumn;
+                pa.isAuth = isAuth;
+                pa.sequence = sequence;
                 q.success = function(r) {
                     if (r.status == 1 && r.msg == 'success') {
-                        aod.rk[eo.id][eo.actionid]
-                        aod.rk[eo.id][eo.actionid].displayName = pa.displayName;
-                        aod.rk[eo.id][eo.actionid].columnName = pa.columnName;
-                        aod.rk[eo.id][eo.actionid].aggregateFunction = pa.aggregateFunction;
-                        aod.rk[eo.id][eo.actionid].comment = pa.comment;
-                        aod.rk[eo.id][eo.actionid].sequence = pa.sequence;
-                        aod.rk[eo.id][eo.actionid].format = pa.format;
-                        aod.rk[eo.id][eo.actionid].type = pa.type;
                         var ord = '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>';
-                        var str = '';
-                        str += "<td>" + duname + "</td>";
-                        str += "<td>" + dugongshi + "</td>";
-                        str += "<td>" + dufunc + "</td>";
-                        str += "<td>" + duinfo + "</td>";
+                        var str = "";
+                        str += "<td>" + filterName + "</td>";
+                        str += "<td>" + showName + "</td>";
+                        str += "<td>" + ((isShow == 0) ? '否' : '是') + "</td>";
+                        str += "<td>" + aod.datatable[pa.joinDatasetId].datasetName + "</td>";
+                        str += "<td>" + joinColumn + "</td>";
+                        str += "<td>" + ((isAuth == 0) ? '否' : '是') + "</td>";
                         str += "<td>" + ord + "</td>";
-                        str += "<td>" + aod.rg[eo.id][group].categoryName + "</td>";
-                        str += "<td>" + df + "</td>";
                         str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
-                        $('table.DuliangTable tr[actionid="' + eo.actionid + '"]').html(str);
-                        showMessage('指标' + duname, '更新成功');
+                        str += "</tr>";
+                        $('.FilterTable  tr[actionid="' + eo.actionid + '"]').eq(0).html(str);
+                        showMessage('筛选' + filterName, '新增成功');
+                        aod.rf[eo.id][eo.actionid].filterId = pa.filterId;
+                        aod.rf[eo.id][eo.actionid].filterName = pa.filterName;
+                        aod.rf[eo.id][eo.actionid].showName = pa.showName;
+                        aod.rf[eo.id][eo.actionid].isShow = pa.isShow;
+                        aod.rf[eo.id][eo.actionid].joinColumn = pa.joinColumn;
+                        aod.rf[eo.id][eo.actionid].isAuth = pa.isAuth;
+                        aod.rf[eo.id][eo.actionid].format = pa.format;
+                        aod.rf[eo.id][eo.actionid].sequence = pa.sequence;
+                        var str2 = '<div class="showkey " actionid="' + r.id + '">' + pa.showName + '</div>';
+                        $('.showfiltertableContainer div.showkey[actionid="' + eo.actionid + '"]').eq(0).html(str2);
+                        showMessage('筛选' + filterName, '更新成功');
+                        eo.actiontype = '';
+                        eo.actionid = '';
+                    } else {
+                        swalinfo(r.msg + '修改筛选失败,请联系管理员')
+                    }
+                }
+                $.api('report/updateReportFilterRelation', pa, q);
+            }
+        }
+    })
+    //添加公有维度
+    $('.newPublicDimen').on('click', function(e) {
+        e.stopPropagation();
+        if (eo.actiontype == '') {
+            eo.atctiontype = 'new';
+            fullPubSelect();
+            getPubDimByTable();
+            $('.pubDimOutContainer').show();
+        } else {
+            swalinfo('请先完成当前编辑内容');
+        }
+    })
+    $('.pubDimSelect').on('change', function() {
+        getPubDimByTable();
+    })
+    $('.pubDimUl').on('click', 'li', function() {
+        var c = $(this).attr('class');
+        if (c != null && $.inArray('pubSelected', c.split(' ')) == -1) {
+            var pid = $(this).attr('actionid');
+            var pa = {},
+                q = {};
+            q.atype = 'POST';
+            pa.datasetId = $('.pubDimSelect option:selected').val();
+            var d = aod.pubdim[pa.datasetId][pid];
+            pa.columnName = d.columnName;
+            pa.displayName = d.displayName;
+            pa.datasetColumnId = pid;
+            pa.expression = d.expression;
+            pa.isHidden = 0;
+            pa.isRequired = 1;
+            pa.isSubqueryGroup = 1;
+            pa.format = '百分比';
+            pa.sequence = 9999;
+            for (var i in aod.rg[eo.id]) {
+                pa.fieldCategoryId = i;
+                break;
+            }
+            pa.reportId = eo.id;
+            pa.type = 1;
+            q.success = function(r) {
+                if (r.status == 1 && r.msg == 'success') {
+                    $(this).addClass('pubDimSelect');
+                    aod.rd[eo.id][r.id] = {};
+                    aod.rd[eo.id][r.id].datasetId = pa.datasetId;
+                    aod.rd[eo.id][r.id].columnName = pa.columnName;
+                    aod.rd[eo.id][r.id].displayName = pa.displayName;
+                    aod.rd[eo.id][r.id].datasetColumnId = pa.datasetColumnId;
+                    aod.rd[eo.id][r.id].expression = pa.expression;
+                    aod.rd[eo.id][r.id].isHidden = pa.isHidden;
+                    aod.rd[eo.id][r.id].isRequired = pa.isRequired;
+                    aod.rd[eo.id][r.id].isSubqueryGroup = pa.isSubqueryGroup;
+                    aod.rd[eo.id][r.id].format = pa.format;
+                    aod.rd[eo.id][r.id].sequence = pa.sequence;
+                    aod.rd[eo.id][r.id].fieldCategoryId = pa.fieldCategoryId;
+                    aod.rd[eo.id][r.id].reportId = pa.reportId;
+                    aod.rd[eo.id][r.id].type = pa.type;
+                    var ord = '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>';
+                    var str = "<tr actionid='" + r.id + "'>";
+                    str += "<td>" + aod.datatable[pa.datasetId].tableName + "</td>";
+                    str += "<td>" + pa.displayName + "</td>";
+                    str += "<td>" + pa.columnName + "</td>";
+                    str += "<td>" + pa.expression + "</td>";
+                    str += "<td>" + ((pa.isHidden == 0) ? '否' : '是') + "</td>";
+                    str += "<td>" + ((pa.isRequired == 0) ? '否' : '是') + "</td>";
+                    str += "<td>" + ((pa.isSubqueryGroup == 0) ? '否' : '是') + "</td>";
+                    str += "<td>" + pa.format + "</td>";
+                    str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
+                    str += "<td>" + aod.rg[eo.id][pa.fieldCategoryId].categoryName + "</td>";
+                    str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
+                    str += "</tr>";
+                    $('tr.newDimTr').remove();
+                    if ($('.editDimenTable tbody tr').length == 0) {
+                        $('.editDimenTable tbody').html(str);
+                    } else {
+                        $('.editDimenTable tbody tr').eq(0).before(str);
+                    }
+                    showMessage('维度' + pa.columnName, '新增成功');
+                    var str2 = '<div class="showkey " actionid="' + r.id + '">' + pa.displayName + '</div>';
+                    if ($('.showdimensiontableContainer div.showkey').length == 0) {
+                        $('.showdimensiontableContainer').html(str2);
+                    } else {
+                        $('.showdimensiontableContainer div.showkey').eq(0).before(str2);
+                    }
+                } else {
+                    swalinfo(r.msg + '保存指标失败,请联系管理员')
+                }
+            }
+            $.api('report/saveReportField', pa, q);
+        }
+    })
+    //添加公有维度
+    $('.pubDimOutContainer').on('click', '.closePubDimContainer', function(e) {
+        e.stopPropagation();
+        $('.pubDimOutContainer').hide();
+        eo.actiontype = '';
+    })
+    //添加私有维度
+    $('.newPrivateDimen').on('click', function(e) {
+        e.stopPropagation();
+        if (eo.actiontype == '') {
+            var str = "";
+            str += '<tr class="newDimTr">';
+            str += '<td>' + getReportDimTable() + '</td>';
+            str += '<td><textarea class="tableinput dimname" type="text" ></textarea></td>';
+            str += '<td><textarea class="tableinput dimkey" type="text" ></textarea></td>';
+            str += '<td><textarea class="tableinput dimvalue" type="text"></textarea></td>';
+            str += '<td><select class="isShow"><option value="0">否</option><option value="1">是</option></select></td>';
+            str += '<td><select class="isMust"><option value="0">否</option><option value="1">是</option></select></td>';
+            str += '<td><select class="isGroupby"><option value="0">否</option><option value="1">是</option></select></td>';
+            str += '<td><select class="dataformatselect"><option value="百分比">百分比</option><option value="1位小数">1位小数</option><option value="2位小数">2位小数</option><option value="整数">整数</option><option value="4位小数">4位小数</option></select></td>';
+            str += '<td></td>';
+            str += '<td>' + getGroupSelect() + '</td>';
+            str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
+            str += '</tr>';
+            if ($('.editDimenTable tbody tr').length == 0) {
+                $('.editDimenTable tbody').html(str);
+            } else {
+                $('.editDimenTable tbody tr').eq(0).before(str);
+            }
+            eo.actiontype = 'new';
+            $('.filterSelectContainer').show();
+        } else {
+            swalinfo('请先完成当前编辑内容');
+        }
+    })
+    //维度保存按钮操作
+    $('.editDimenTable').on('click', '.fa-save', function() {
+        var p = $(this).parent().parent();
+        var datasetId = p.find('select.dimTableSelect option:selected').val();
+        var displayName = p.find('textarea.dimname').val();
+        var columnName = p.find('textarea.dimkey').val();
+        // var datasetColumnId = p.find('textarea.dimkey').val();
+        var expression = p.find('textarea.dimvalue').val();
+        var isHidden = p.find('select.isShow option:selected').val();
+        var isRequired = p.find('select.isMust option:selected').val();
+        var isSubqueryGroup = p.find('select.isGroupby option:selected').val();
+        var format = p.find('select.dataformatselect option:selected').val();
+        var sequence = 9999;
+        var fieldCategoryId = p.find('select.groupselect option:selected').val();
+        var reportId = eo.id;
+        var type = 1;
+        var flag = true;
+        if (displayName.replace(/\s+/g, '') == '') {
+            flag = false;
+            p.find('textarea.dimname').addClass('inputerror');
+            setTimeout(function() {
+                p.find('textarea.dimname').removeClass('inputerror');
+            }, 2000)
+        }
+        if (columnName.replace(/\s+/g, '') == '') {
+            flag = false;
+            p.find('textarea.dimkey').addClass('inputerror');
+            setTimeout(function() {
+                $('textarea.dimkey').removeClass('inputerror');
+            }, 2000)
+        }
+        if (expression.replace(/\s+/g, '') == '') {
+            flag = false;
+            p.find('textarea.dimvalue').addClass('inputerror');
+            setTimeout(function() {
+                $('textarea.dimvalue').removeClass('inputerror');
+            }, 2000)
+        }
+        if (flag) {
+            if (eo.actiontype == 'new') {
+                var pa = {},
+                    q = {};
+                q.atype = 'POST';
+                pa.datasetId = datasetId;
+                pa.columnName = columnName;
+                pa.displayName = displayName;
+                // pa.datasetColumnId = datasetColumnId ;
+                pa.expression = expression;
+                pa.isHidden = isHidden;
+                pa.isRequired = isRequired;
+                pa.isSubqueryGroup = isSubqueryGroup;
+                pa.format = format;
+                pa.sequence = sequence;
+                pa.fieldCategoryId = fieldCategoryId;
+                pa.reportId = reportId;
+                pa.type = type;
+                q.success = function(r) {
+                    if (r.status == 1 && r.msg == 'success') {
+                        aod.rd[eo.id][r.id] = {};
+                        aod.rd[eo.id][r.id].datasetId = pa.datasetId;
+                        aod.rd[eo.id][r.id].columnName = pa.columnName;
+                        aod.rd[eo.id][r.id].displayName = pa.displayName;
+                        // aod.rd[eo.id][r.id].datasetColumnId = pa.datasetColumnId ;
+                        aod.rd[eo.id][r.id].expression = pa.expression;
+                        aod.rd[eo.id][r.id].isHidden = pa.isHidden;
+                        aod.rd[eo.id][r.id].isRequired = pa.isRequired;
+                        aod.rd[eo.id][r.id].isSubqueryGroup = pa.isSubqueryGroup;
+                        aod.rd[eo.id][r.id].format = pa.format;
+                        aod.rd[eo.id][r.id].sequence = pa.sequence;
+                        aod.rd[eo.id][r.id].fieldCategoryId = pa.fieldCategoryId;
+                        aod.rd[eo.id][r.id].reportId = pa.reportId;
+                        aod.rd[eo.id][r.id].type = pa.type;
+                        var ord = '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>';
+                        var str = "<tr actionid='" + r.id + "'>";
+                        str += "<td>" + aod.datatable[datasetId].tableName + "</td>";
+                        str += "<td>" + displayName + "</td>";
+                        str += "<td>" + columnName + "</td>";
+                        str += "<td>" + expression + "</td>";
+                        str += "<td>" + ((isHidden == 0) ? '否' : '是') + "</td>";
+                        str += "<td>" + ((isRequired == 0) ? '否' : '是') + "</td>";
+                        str += "<td>" + ((isSubqueryGroup == 0) ? '否' : '是') + "</td>";
+                        str += "<td>" + format + "</td>";
+                        str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
+                        str += "<td>" + aod.rg[eo.id][pa.fieldCategoryId].categoryName + "</td>";
+                        str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
+                        str += "</tr>";
+                        $('tr.newDimTr').remove();
+                        if ($('.editDimenTable tbody tr').length == 0) {
+                            $('.editDimenTable tbody').html(str);
+                        } else {
+                            $('.editDimenTable tbody tr').eq(0).before(str);
+                        }
+                        showMessage('维度' + columnName, '新增成功');
+                        var str2 = '<div class="showkey " actionid="' + r.id + '">' + pa.displayName + '</div>';
+                        if ($('.showdimensiontableContainer div.showkey').length == 0) {
+                            $('.showdimensiontableContainer').html(str2);
+                        } else {
+                            $('.showdimensiontableContainer div.showkey').eq(0).before(str2);
+                        }
                         eo.actiontype = '';
                         eo.actionid = '';
                     } else {
                         swalinfo(r.msg + '保存指标失败,请联系管理员')
                     }
                 }
+                $.api('report/saveReportField', pa, q);
+            } else if (eo.actiontype == 'edit') {
+                var pa = {},
+                    q = {};
+                q.atype = 'POST';
+                pa.id = eo.actionid;
+                pa.datasetId = datasetId;
+                pa.columnName = columnName;
+                pa.displayName = displayName;
+                // pa.datasetColumnId = datasetColumnId ;
+                pa.expression = expression;
+                pa.isHidden = isHidden;
+                pa.isRequired = isRequired;
+                pa.isSubqueryGroup = isSubqueryGroup;
+                pa.format = format;
+                pa.sequence = aod.rd[eo.id][eo.actionid].sequence;
+                pa.fieldCategoryId = fieldCategoryId;
+                pa.reportId = eo.id;
+                pa.type = type;
+                q.success = function(r) {
+                    if (r.status == 1 && r.msg == 'success') {
+                        aod.rd[eo.id][eo.actionid].datasetId = pa.datasetId;
+                        aod.rd[eo.id][eo.actionid].columnName = pa.columnName;
+                        aod.rd[eo.id][eo.actionid].displayName = pa.displayName;
+                        aod.rd[eo.id][eo.actionid].expression = pa.expression;
+                        aod.rd[eo.id][eo.actionid].isHidden = pa.isHidden;
+                        aod.rd[eo.id][eo.actionid].isRequired = pa.isRequired;
+                        aod.rd[eo.id][eo.actionid].isSubqueryGroup = pa.isSubqueryGroup;
+                        aod.rd[eo.id][eo.actionid].format = pa.format;
+                        aod.rd[eo.id][eo.actionid].sequence = pa.sequence;
+                        aod.rd[eo.id][eo.actionid].fieldCategoryId = pa.fieldCategoryId;
+                        aod.rd[eo.id][eo.actionid].reportId = pa.reportId;
+                        aod.rd[eo.id][eo.actionid].type = pa.type;
+                        var str = "";
+                        str += "<td>" + aod.datatable[pa.datasetId].tableName + "</td>";
+                        str += "<td>" + displayName + "</td>";
+                        str += "<td>" + columnName + "</td>";
+                        str += "<td>" + expression + "</td>";
+                        str += "<td>" + ((isHidden == 0) ? '否' : '是') + "</td>";
+                        str += "<td>" + ((isRequired == 0) ? '否' : '是') + "</td>";
+                        str += "<td>" + ((isSubqueryGroup == 0) ? '否' : '是') + "</td>";
+                        str += "<td>" + format + "</td>";
+                        str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
+                        str += "<td>" + aod.rg[eo.id][pa.fieldCategoryId].categoryName + "</td>";
+                        str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
+                        $('table.editDimenTable tr[actionid="' + eo.actionid + '"]').html(str);
+                        $('.showdimensiontableContainer div.showkey[actionid="' + eo.actionid + '"]').eq(0).html(pa.displayName + "(" + pa.columnName + ")");
+                        showMessage('维度' + displayName, '更新成功');
+                        eo.actiontype = '';
+                        eo.actionid = '';
+                    } else {
+                        swalinfo(r.msg + '修改维度失败,请联系管理员')
+                    }
+                }
                 $.api('report/updateReportField', pa, q);
             }
         }
     })
+    //维度取消保存或者删除
+    $('.editDimenTable').on('click', '.fa-remove', function() {
+        if (eo.actiontype == 'new') {
+            $('tr.newDimTr').remove();
+            eo.actiontype = '';
+        } else if (eo.actiontype == 'edit') {
+            var d = aod.rd[eo.id][eo.actionid];
+            var str = '';
+            str += "<td>" + aod.datatable[d.datasetId].tableName + "</td>";
+            str += "<td>" + d.displayName + "</td>";
+            str += "<td>" + d.columnName + "</td>";
+            str += "<td>" + d.expression + "</td>";
+            str += "<td>" + ((d.isHidden == 0) ? '否' : '是') + "</td>";
+            str += "<td>" + ((d.isRequired == 0) ? '否' : '是') + "</td>";
+            str += "<td>" + ((d.isSubqueryGroup == 0) ? '否' : '是') + "</td>";
+            str += "<td>" + d.format + "</td>";
+            str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
+            str += "<td>" + aod.rg[eo.id][d.fieldCategoryId].categoryName + "</td>";
+            str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
+            $('table.editDimenTable tr[actionid="' + eo.actionid + '"]').html(str);
+            eo.actiontype = '';
+            eo.actionid = '';
+        } else if (eo.actiontype == '') {
+            var p = $(this).parent().parent();
+            var did = p.attr('actionid') * 1;
+            var duname = p.find('td').eq(1).html();
+            eo.actiontype = 'delete';
+            eo.actionid = did;
+            swal({
+                title: "确定删除维度",
+                text: duname,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定删除！",
+                cancelButtonText: "取消删除！",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    var url = 'report/deleteReportField';
+                    var pa = {},
+                        q = {};
+                    pa.reportFieldId = did;
+                    q.success = function(r) {
+                        if (r.status == 1 && r.msg == 'success') {
+                            swal.close();
+                            $('table.editDimenTable tr[actionid="' + did + '"]').remove();
+                            $('div.showeditDimenTableContainer div.showkey[actionid="' + did + '"]').remove();
+                            delete aod.rd[eo.id][did];
+                            eo.actionid = '';
+                            eo.actiontype = '';
+                            showMessage('维度' + duname, '删除成功');
+                        } else {
+                            swalinfo(r.msg + '删除维度报错,请联系管理员');
+                        }
+                    }
+                    $.api(url, pa, q);
+                } else {
+                    eo.actiontype = '';
+                    eo.actionid = '';
+                    swal.close();
+                }
+            });
+        }
+    })
+    //维度编辑
+    $('.editDimenTable').on('click', '.fa-pencil', function() {
+        if (eo.actiontype != '') {
+            showMessage('请先完成当前编辑内容', '');
+        } else {
+            var p = $(this).parent().parent();
+            eo.actiontype = 'edit';
+            eo.actionid = p.attr('actionid') * 1;
+            var d = aod.rd[eo.id][eo.actionid];
+            var str = '';
+            str += '<td>' + getReportDimTable(d.datasetId) + '</td>';
+            str += '<td><textarea class="tableinput dimname" type="text" >' + d.displayName + '</textarea></td>';
+            str += '<td><textarea class="tableinput dimkey" type="text" >' + d.columnName + '</textarea></td>';
+            str += '<td><textarea class="tableinput dimvalue" type="text">' + d.expression + '</textarea></td>';
+            var str2 = '<select class="isShow"><option value="0">否</option><option value="1">是</option></select>';
+            str2 = str2.replace(d.isHidden + '"', d.isHidden + '" selected');
+            str += '<td>' + str2 + '</td>';
+            str2 = '<select class="isMust"><option value="0">否</option><option value="1">是</option></select>';
+            str2 = str2.replace(d.isRequired + '"', d.isRequired + '" selected');
+            str += '<td>' + str2 + '</td>';
+            str2 = '<select class="isGroupby"><option value="0">否</option><option value="1">是</option></select>';
+            str2 = str2.replace(d.isSubqueryGroup + '"', d.isSubqueryGroup + '" selected');
+            str += '<td>' + str2 + '</td>';
+            str2 = '<select class="dataformatselect"><option value="百分比">百分比</option><option value="1位小数">1位小数</option><option value="2位小数">2位小数</option><option value="整数">整数</option><option value="4位小数">4位小数</option></select>';
+            str2 = str2.replace(d.format + '"', d.format + '" selected');
+            str += '<td>' + str2 + '</td>';
+            str += '<td></td>';
+            str += '<td>' + getGroupSelect(d.fieldCategoryId) + '</td>';
+            str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
+            $('.editDimenTable tr[actionid="' + eo.actionid + '"]').html(str);
+        }
+    })
 }
 
-function getReportTable() {
+function getReportTable(id) {
     var str = "<select class='filterJoinTable'>";
     var d = aod.rt[eo.id];
     for (var i in d) {
-        str += "<option value='" + d[i].datasetId + "'>" + d[i].datasetName + "</option>";
+        var flag = '';
+        if (id == d[i].datasetId) {
+            flag = ' selected ';
+        }
+        str += "<option value='" + d[i].datasetId + "' " + flag + ">" + d[i].datasetName + "</option>";
+    }
+    str += "</select>";
+    return str;
+}
+
+function getReportDimTable(id) {
+    var str = "<select class='dimTableSelect'>";
+    var d = aod.rt[eo.id];
+    for (var i in d) {
+        var flag = '';
+        if (id == d[i].datasetId) {
+            flag = ' selected ';
+        }
+        str += "<option value='" + d[i].datasetId + "' " + flag + ">" + d[i].datasetName + "</option>";
     }
     str += "</select>";
     return str;
@@ -1543,8 +1868,8 @@ function getReportTable() {
 
 function getFilterUl(id, keyword) {
     var str = "";
-    var flag = '';
     for (var i in aod.filterList) {
+        var flag = '';
         if (i * 1 == id) {
             flag = 'filterliselected';
         }
@@ -2122,9 +2447,9 @@ function fullFilter(id) {
         str += "<td>" + d.filterName + "</td>";
         str += "<td>" + d.showName + "</td>";
         str += "<td>" + ((d.isShow == 0) ? '否' : '是') + "</td>";
-        str += "<td>" + aod.datatable[d.joinDatasetId].datasetName  + "</td>";
+        str += "<td>" + aod.datatable[d.joinDatasetId].datasetName + "</td>";
         str += "<td>" + d.joinColumn + "</td>";
-        str += "<td>" + ((d.joinColumn == 0) ? '否' : '是') + "</td>";
+        str += "<td>" + ((d.isAuth == 0) ? '否' : '是') + "</td>";
         str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
         str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
         str += "</tr>";
@@ -2190,6 +2515,33 @@ function fullkey(id) {
     tempb.reverse();
     $('.showfacttableContainer').html(tempb.join(''));
     $('.DuliangTable tbody').html(tempa.join(''));
+    var tempc = [],
+        tempd = [];
+    for (var i in aod.rd[id]) {
+        var d = aod.rd[id][i];
+        var str = "",
+            str2 = "";
+        str2 += "<div class='showkey ' actionid='" + d.id + "'>" + d.displayName + '(' + d.columnName + ')' + "</div>"
+        tempd.push(str2);
+        str += "<tr actionid='" + d.id + "'>";
+        str += "<td>" + aod.datatable[d.datasetId].tableName + "</td>";
+        str += "<td>" + d.displayName + "</td>";
+        str += "<td>" + d.columnName + "</td>";
+        str += "<td>" + d.expression + "</td>";
+        str += "<td>" + ((d.isHidden == 0) ? '否' : '是') + "</td>";
+        str += "<td>" + ((d.isRequired == 0) ? '否' : '是') + "</td>";
+        str += "<td>" + ((d.isSubqueryGroup == 0) ? '否' : '是') + "</td>";
+        str += "<td>" + d.format + "</td>";
+        str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
+        str += "<td>" + aod.rg[id][d.fieldCategoryId].categoryName + "</td>";
+        str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
+        str += "</tr>";
+        tempc.push(str);
+    }
+    tempc.reverse();
+    tempd.reverse();
+    $('.showdimensiontableContainer').html(tempd.join(''));
+    $('.editDimenTable tbody').html(tempc.join(''));
 }
 //获取所有已添加的表
 function getAllTables() {
@@ -2203,6 +2555,10 @@ function getAllTables() {
             for (var i = 0; i < r.length; i++) {
                 aod.datatable[r[i].id] = r[i];
                 aod.datatable[r[i].id].showname = r[i].dbName + '.' + r[i].tableName;
+                if (r[i].type == 1) {
+                    aod.pubdimtable[r[i].id] = r[i];
+                    aod.pubdimtable[r[i].id].showname = r[i].dbName + '.' + r[i].tableName;
+                }
             }
         }
     }
@@ -2276,9 +2632,11 @@ function initAod() {
     aod = {};
     aod.treedata = {}; //目录结构
     aod.foldmap = {}; //目录对应子文件夹内容
-    aod.reportList = {}; //所有报表
+    aod.reportList = {}; //所有报表 
     aod.filterList = {}; //所有筛选
     aod.datatable = {}; //存放系统配置的所有表
+    aod.pubdimtable = {}; //存放系统配置的所有维度表
+    aod.pubdim = {}; //存放系统配置的所有维度表的公共维度
     aod.rt = {}; //存放报表对应数据源的内容
     aod.rg = {}; //存放报表维度指标所在组的内容
     aod.rd = {}; //存放报表对应维度的内容
@@ -2351,4 +2709,69 @@ function getAllFilters() {
         }
     }
     $.api('filter/getFilterList', p, q);
+}
+
+function getAllPubDim() {
+    var p = {},
+        q = {};
+    p.isPrivate = 1;
+    q.success = function(r) {
+        if (r.length > 0) {
+            for (var i = 0; i < r.length; i++) {
+                aod.filterList[r[i].id] = r[i];
+            }
+        }
+    }
+    $.api('filter/getFilterList', p, q);
+}
+
+function fullPubSelect() {
+    var str = "";
+    var d = aod.rt[eo.id];
+    var t = [];
+    for (var i in d) {
+        if (aod.pubdimtable.hasOwnProperty(d[i].datasetId)) {
+            t.push(aod.pubdimtable[d[i].datasetId]);
+        }
+    }
+    for (var i = 0; i < t.length; i++) {
+        str += "<option value='" + t[i].id + "'>" + t[i].datasetName + "</option>"
+    }
+    $('ul.pubDimUl li').remove();
+    $('.pubDimSelect').html(str);
+}
+
+function getPubDimByTable() {
+    var p = {},
+        q = {};
+    p.datasetId = $('.pubDimSelect option:selected').val();
+    if (p.datasetId == null) {
+        swalinfo('暂时没有公共维度哦,请添加公共维表');
+    } else {
+        q.success = function(r) {
+            aod.pubdim[p.datasetId] = {};
+            var str = "";
+            var ted = [];
+            for (var i in aod.rd[eo.id]) {
+                if (aod.rd[eo.id][i].datasetColumnId != null) {
+                    ted.push(aod.rd[eo.id][i].datasetColumnId);
+                }
+            }
+            if (r.length > 0) {
+                for (var i = 0; i < r.length; i++) {
+                    var flag = "";
+                    if ($.inArray(r[i].id, ted) > -1) {
+                        flag = 'pubSelected';
+                    }
+                    aod.pubdim[p.datasetId][r[i].id] = r[i];
+                    str += "<li class='" + flag + "' actionid='" + r[i].id + "'>" + r[i].displayName + '(' + r[i].columnName + ')';
+                    str += "</li>";
+                }
+                $('ul.pubDimUl').html(str);
+            } else {
+                swalinfo('该维表下没有公共维度');
+            }
+        }
+        $.api('dataset/getDimColumnList', p, q);
+    }
 }

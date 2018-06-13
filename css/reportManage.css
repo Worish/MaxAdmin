@@ -299,7 +299,7 @@ span.pagenav {
     left: 241px;
     background: #fff;
     text-align: center;
-    z-index: 9;
+    z-index: 99999999;
     display: none;
     background-color: white;
 }
@@ -913,4 +913,77 @@ ul.fliterUl li.filterliselected {
 
 span.savefiln {
     border-right: solid 1px #ddd;
+}
+table.table.editDimenTable textarea {
+    width: 150px;
+}
+.pubDimOutContainer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 999;
+    display:none;
+}
+
+.pubDimContainer {
+    width: 500px;
+    margin: 0 auto;
+    background: #fff;
+    margin-top: 90px;
+    height: 400px;
+    position: relative;
+}
+
+.closePubDimContainer {}
+
+.closePubDimContainer {
+    position: absolute;
+    right: 0;
+    padding-right: 10px;
+    padding-top: 9px;
+    color: #d66061;
+}
+select.pubDimSelect {
+    width: 250px;
+    height: 30px;
+    margin-left: 20px;
+    margin-top: 30px;
+    /* border-bottom: solid 1px #ddd; */
+    border: none;
+    border-bottom: solid 1px #ddd;
+    outline: none!important;
+    color: #444;
+}
+
+ul.pubDimUl {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+ul.pubDimUl li {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 21px;
+    margin-right: 42px;
+    color: #666;
+    font-size: 14px;
+    border-bottom: solid 1px #ddd;
+    cursor: pointer;
+}
+ul.pubDimUl li:hover,
+ul.pubDimUl li.pubSelected{
+    color: #62ab00;
+}
+.pubSelInfo {
+    margin-left: 20px;
+    margin-top: 22px;
+    color: #444;
+    border-bottom: solid 1px #ddd;
+    margin-right: 42px;
+    padding-bottom: 4px;
+    font-size: 14px;
+    padding-left: 4px;
 }
