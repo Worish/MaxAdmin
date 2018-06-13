@@ -41,7 +41,8 @@ span.logoutInfo ,
 .tableTreeContainer,
 select.tableselect,
 input.tableinput,
-.filterEditContainer
+.filterEditContainer,
+div.filterSelectContainer
 {
     -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
     box-shadow: 2px 0 6px rgba(0,21,41,.35);

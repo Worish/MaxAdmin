@@ -176,7 +176,7 @@ function baseClick() {
                     }
                     $.api('report/save', pa, q);
                 }
-            } else if (eo.type == 'edit') { //修改报表的操作
+            } else if (eo.style == 'edit') { //修改报表的操作
                 var v = p.find('input.reportNameInput').val();
                 if (v == window.updatereportname) {
                     showMessage('', '名称未修改过哦');
@@ -463,6 +463,53 @@ function baseClick() {
         e.stopPropagation();
         e.preventDefault();
     })
+    //保存排序功能
+    $('.editItemContainer').on('click','.saveOrder',function(e){
+        e.stopPropagation();
+        var url = '';
+        var p = {},q= {};
+        if(eo.action == 'editGroup'){
+            url = 'report/updateReportFieldCategorySeq';
+        }else if(eo.action == 'editFilter'){
+           url = '';
+        }else if(eo.action == 'editDuliang'){
+            url = 'updateReportFieldSeq';
+        }else if(eo.action == 'editDimen'){
+            url = 'updateReportFieldSeq';
+        }
+        p.items = [];
+        q.atype = 'POST';
+        var pa = $(this).parent().parent().find('tbody');
+        var length = pa.find('tr').length;
+        pa.find('tr').each(function(i){
+            var o = {};
+            o.itemId = $(this).attr('actionid')*1;
+            o.sequence = length - i;
+            p.items.push(o);
+        })
+        // console.log(p);
+        p = JSON.stringify(p);
+        q.success = function(r){
+            console.log(r);
+        }    
+        $.api(url,p,q);
+    })
+    //取消保存排序功能
+    $('.editItemContainer').on('click','.cancelSaveOrder',function(e){
+        e.stopPropagation();
+        if(eo.action == 'editGroup'){
+            showGroup();
+        }else if(eo.action == 'editFilter'){
+            showFilter(eo.id);
+        }else if(eo.action == 'editDuliang'){
+            showDuliang(eo.id);
+        }else if(eo.action == 'editDimen'){
+            showDim(eo.id);
+        }
+        $('.cancelSaveOrder').hide();
+        $('.saveOrder').hide();
+        $('.speinfo').hide();
+    })
     //添加数据表li的操作
     $('.allTableUl').on('click', 'li', function(e) {
         e.stopPropagation();
@@ -501,6 +548,10 @@ function baseClick() {
     $('.dataTableOper').on('click', '.dataTableOperItem', function() {
         $('.dataTableOper').hide();
         $('.editItemContainer').hide();
+        $('.saveOrder').hide();
+        $('.cancelSaveOrder').hide();
+        $('.speinfo').hide();
+        $('.'+eo.action+ 'Container tbody tr').remove();
         var ac = $(this).attr('active');
         $('.' + ac + 'Container').show();
         eo.action = ac;
@@ -513,6 +564,7 @@ function baseClick() {
             showGroupById(eo.id);
         }
     })
+
     //编辑关联
     $('.joinTable').on('click', '.fa-edit', function() {
         // $('.editJoinContainer').attr('active', 'edit');
@@ -705,26 +757,14 @@ function baseClick() {
             pa.sequence = 9999;
             q.success = function(r) {
                 if (r.status == 1 && r.msg == 'success') {
-                    var str = "<tr actionid='" + r.id + "'>";
-                    str += '<td>' + gn + '</td>';
-                    str += '<td type="' + gs + '">' + gst + '</td>';
-                    str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
-                    str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>'
-                    str += "</tr>";
-                    $('tr.newGroupTr').remove();
-                    if ($('.GroupTable tbody tr').length == 0) {
-                        $('.GroupTable tbody').html(str);
-                    } else {
-                        $('.GroupTable tbody tr').eq(0).before(str);
-                    }
-                    showMessage(gn, '新增成功');
-                    $('.GroupTable').attr('action', '');
                     aod.rg[eo.id][r.id] = {};
                     aod.rg[eo.id][r.id].categoryName = gn;
                     aod.rg[eo.id][r.id].showStyle = gs;
                     aod.rg[eo.id][r.id].sequence = pa.sequence;
                     aod.rg[eo.id][r.id].categoryId = eo.folderid;
                     aod.rg[eo.id][r.id].reportId = eo.id;
+                    showGroup();
+                    showMessage(gn, '新增成功');
                     eo.actiontype = '';
                 } else {
                     swalinfo(r.msg + '新增分组失败,请联系管理员');
@@ -736,19 +776,15 @@ function baseClick() {
             eo.actiontype = 'edit';
             eo.actionid = p.attr('actionid') * 1;
             pa.categoryId = p.attr('actionid');
-            pa.sequence = aod.rg[pa.reportId][p.attr('actionid')].sequence;
+            pa.sequence = aod.rg[eo.id][eo.actionid].sequence;
             q.success = function(r) {
                 if (r.status == 1 && r.msg == 'success') {
                     eo.actiontype = '';
                     eo.actionid = '';
-                    p.find('td').eq(0).html(gn);
-                    p.find('td').eq(1).html(gst);
-                    p.find('td').eq(2).html('<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>');
-                    p.find('td').eq(3).html('<i class="fa fa-pencil" actionid="' + pa.categoryId + '"></i><i class="fa fa-remove"  actionid="' + pa.categoryId + '"></i>');
-                    showMessage(gn, '修改成功');
-                    $('.GroupTable').attr('action', '');
                     aod.rg[pa.reportId][p.attr('actionid')].categoryName = gn;
                     aod.rg[pa.reportId][p.attr('actionid')].showStyle = gs;
+                    showGroup();
+                    showMessage(gn, '修改成功');
                 } else {
                     swalinfo(r.msg + '修改分组失败,请联系管理员');
                 }
@@ -835,6 +871,8 @@ function baseClick() {
                         if (r.status == '1' && r.msg == 'success') {
                             swal.close();
                             $('tr[actionid="' + gid + '"]').remove();
+                            delete aod.rg[eo.id][gid];
+                            showGroup();
                             showMessage('组' + gn, '删除成功');
                             eo.actiontype = '';
                             eo.actionid = '';
@@ -852,40 +890,50 @@ function baseClick() {
         }
     })
     //组顺序上
-    $('.GroupTable').on('click', '.fa-chevron-circle-up', function(e) {
-        if ($('.groupNameInput').length > 0) {
+    $('.table').on('click', '.fa-chevron-circle-up', function(e) {
+        if (eo.actiontype != '') {
             showMessage('', '请先完成当前编辑内容');
-            $('.groupNameInput').focus();
         } else {
             var p = $(this).parent().parent();
             var gn = p.find('td').eq(0).html();
             var index = p.index();
-            var gid = p.attr('groupid');
+            var gid = p.attr('actionid');
             if (index == 0) {
-                showMessage('组' + gn, '已经在最上面哦');
+                showMessage( '不能再往上啦','啊啊啊啊啊啊啊');
             } else {
-                var htmlstr = '<tr groupid="' + gid + '">' + p.html() + '</tr>';
-                $('tr[groupid="' + gid + '"]').remove();
-                $('.GroupTable tbody tr').eq(index - 1).before(htmlstr);
+                p.parent().parent().find('.saveOrder').show();
+                p.parent().parent().find('.cancelSaveOrder').show();
+                p.parent().parent().find('.speinfo').show();
+                var htmlstr = '<tr actionid="' + gid + '">' + p.html() + '</tr>';
+                p.addClass('readyTop');
+                p.prev().before(htmlstr);
+                $('.readyTop').remove();
+                // $('tr[groupid="' + gid + '"]').remove();
+                // $('.GroupTable tbody tr').eq(index - 1).before(htmlstr);
             }
         }
     })
     //组顺序下
-    $('.GroupTable').on('click', '.fa-chevron-circle-down', function(e) {
-        if ($('.groupNameInput').length > 0) {
+    $('.table').on('click', '.fa-chevron-circle-down', function(e) {
+        if (eo.actiontype != '') {
             showMessage('', '请先完成当前编辑内容');
-            $('.groupNameInput').focus();
         } else {
             var p = $(this).parent().parent();
             var gn = p.find('td').eq(0).html();
             var index = p.index();
-            var gid = p.attr('groupid');
-            if (index == $('.GroupTable tbody tr').length - 1) {
-                showMessage('组' + gn, '已经在最下面哦');
+            var gid = p.attr('actionid');
+            if (index == p.parent().find('tr').length -1) {
+                showMessage( '不能再往下啦','啊啊啊啊啊啊啊');
             } else {
-                var htmlstr = '<tr groupid="' + gid + '">' + p.html() + '</tr>';
-                $('tr[groupid="' + gid + '"]').remove();
-                $('.GroupTable tbody tr').eq(index).after(htmlstr);
+                p.parent().parent().find('.saveOrder').show();
+                p.parent().parent().find('.cancelSaveOrder').show();
+                p.parent().parent().find('.speinfo').show();
+                var htmlstr = '<tr actionid="' + gid + '">' + p.html() + '</tr>';
+                p.addClass('readyTop');
+                p.next().after(htmlstr);
+                $('.readyTop').remove();
+                // $('tr[groupid="' + gid + '"]').remove();
+                // $('.GroupTable tbody tr').eq(index - 1).before(htmlstr);
             }
         }
     })
@@ -2351,6 +2399,7 @@ function updateReportBasic(co) {
                 vp.find('.fa-remove').hide();
                 vp.find('input.reportNameInput').attr('disabled', 'disabled');
                 showMessage(vp.find('input.reportNameInput').val(), '修改成功');
+                $('.reportList tr[actionid="' + p.id + '"]').find('td').eq(0).text(p.name);
                 window.updatereportname = null;
             } else if (co == 'isFieldSelect') {
                 $('.reportList tr[actionid="' + p.id + '"]').find('td').eq(2).text(isFieldSelecttext2);
@@ -2370,6 +2419,7 @@ function updateReportBasic(co) {
                 }
                 getReportList($('.subNavUliActive').attr('folderid'));
                 aod.reportList[eo.id].categoryId = eo.folderid;
+                $('.reportList tr[actionid="' + p.id + '"]').find('td').eq(1).text(getPath(p.categoryId));
                 showMessage('路径变更为', getPath(p.categoryId));
             }
         } else {
@@ -2412,7 +2462,7 @@ function editReport(id) {
 }
 //刷新报表对应的筛选
 function refreshAllFilter(id) {
-    if (aod.rk[id] == null) {
+    if (aod.rf[id] == null) {
         var url = 'report/getReportFilterRelationList';
         var p = {};
         var q = {};
@@ -2426,40 +2476,12 @@ function refreshAllFilter(id) {
                     aod.rf[id][r[i].id] = r[i];
                 }
             }
-            fullFilter(id);
+            showFilter(id);
         }
         $.api(url, p, q)
     } else {
-        fullFilter(id);
+        showFilter(id);
     }
-}
-//填充筛选列表
-function fullFilter(id) {
-    var tempa = [],
-        tempb = [];
-    for (var i in aod.rf[id]) {
-        var d = aod.rf[id][i];
-        var str = "",
-            str2 = "";
-        str2 += "<div class='showkey ' actionid='" + d.id + "'>" + d.showName + '(' + d.filterName + ')' + "</div>"
-        tempb.push(str2);
-        var str = "<tr actionid='" + d.id + "'>";
-        str += "<td>" + d.filterName + "</td>";
-        str += "<td>" + d.showName + "</td>";
-        str += "<td>" + ((d.isShow == 0) ? '否' : '是') + "</td>";
-        str += "<td>" + aod.datatable[d.joinDatasetId].datasetName + "</td>";
-        str += "<td>" + d.joinColumn + "</td>";
-        str += "<td>" + ((d.isAuth == 0) ? '否' : '是') + "</td>";
-        str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
-        str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
-        str += "</tr>";
-        str += "</tr>";
-        tempa.push(str);
-    }
-    tempa.reverse();
-    tempb.reverse();
-    $('.showfiltertableContainer').html(tempb.join(''));
-    $('.FilterTable tbody').html(tempa.join(''));
 }
 //刷新报表对应的度量列表
 function refreshAllKey(id) {
@@ -2491,57 +2513,8 @@ function refreshAllKey(id) {
 }
 //填充指标列表
 function fullkey(id) {
-    var tempa = [],
-        tempb = [];
-    for (var i in aod.rk[id]) {
-        var d = aod.rk[id][i];
-        var str = "",
-            str2 = "";
-        str2 += "<div class='showkey ' actionid='" + d.id + "'>" + d.displayName + '(' + d.columnName + ')' + "</div>"
-        tempb.push(str2);
-        str += "<tr actionid='" + d.id + "'>";
-        str += "<td>" + d.displayName + "</td>";
-        str += "<td>" + d.columnName + "</td>";
-        str += "<td>" + d.aggregateFunction + "</td>";
-        str += "<td>" + d.comment + "</td>";
-        str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
-        str += "<td>" + aod.rg[id][d.fieldCategoryId].categoryName + "</td>";
-        str += "<td>" + d.format + "</td>";
-        str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
-        str += "</tr>";
-        tempa.push(str);
-    }
-    tempa.reverse();
-    tempb.reverse();
-    $('.showfacttableContainer').html(tempb.join(''));
-    $('.DuliangTable tbody').html(tempa.join(''));
-    var tempc = [],
-        tempd = [];
-    for (var i in aod.rd[id]) {
-        var d = aod.rd[id][i];
-        var str = "",
-            str2 = "";
-        str2 += "<div class='showkey ' actionid='" + d.id + "'>" + d.displayName + '(' + d.columnName + ')' + "</div>"
-        tempd.push(str2);
-        str += "<tr actionid='" + d.id + "'>";
-        str += "<td>" + aod.datatable[d.datasetId].tableName + "</td>";
-        str += "<td>" + d.displayName + "</td>";
-        str += "<td>" + d.columnName + "</td>";
-        str += "<td>" + d.expression + "</td>";
-        str += "<td>" + ((d.isHidden == 0) ? '否' : '是') + "</td>";
-        str += "<td>" + ((d.isRequired == 0) ? '否' : '是') + "</td>";
-        str += "<td>" + ((d.isSubqueryGroup == 0) ? '否' : '是') + "</td>";
-        str += "<td>" + d.format + "</td>";
-        str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
-        str += "<td>" + aod.rg[id][d.fieldCategoryId].categoryName + "</td>";
-        str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
-        str += "</tr>";
-        tempc.push(str);
-    }
-    tempc.reverse();
-    tempd.reverse();
-    $('.showdimensiontableContainer').html(tempd.join(''));
-    $('.editDimenTable tbody').html(tempc.join(''));
+    showDim(id);
+    showDuliang(id);
 }
 //获取所有已添加的表
 function getAllTables() {
@@ -2639,9 +2612,13 @@ function initAod() {
     aod.pubdim = {}; //存放系统配置的所有维度表的公共维度
     aod.rt = {}; //存放报表对应数据源的内容
     aod.rg = {}; //存放报表维度指标所在组的内容
+    aod.rgs = {}; //排序后 --  存放报表维度指标所在组的内容
     aod.rd = {}; //存放报表对应维度的内容
+    aod.rds = {}; //排序后 --  存放报表对应维度的内容
     aod.rk = {}; //存放报表对应指标的内容
+    aod.rks = {}; //排序后 --  存放报表对应指标的内容
     aod.rf = {}; //存放报表对应筛选的内容
+    aod.rfs = {}; //排序后 --  存放报表对应筛选的内容
 }
 
 function initEo() {
@@ -2660,20 +2637,10 @@ function showGroupById(id) {
     p.reportId = id;
     q.success = function(r) {
         aod.rg[id] = {};
-        var tempa = [];
         for (var i = 0; i < r.length; i++) {
             aod.rg[id][r[i].categoryId] = r[i];
-            var str = "";
-            str += "<tr actionid = '" + r[i].categoryId + "'>";
-            str += "<td>" + r[i].categoryName + "</td>";
-            str += "<td>" + ((r[i].showStyle == 'select') ? '单选' : '多选') + "</td>";
-            str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
-            str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
-            str += "</tr>";
-            tempa.push(str);
         }
-        tempa.reverse();
-        $('.GroupTable tbody').html(tempa.join(''));
+        showGroup();
         //刷新报表对应的度量列表
         refreshAllKey(id);
         refreshAllFilter(id);
@@ -2774,4 +2741,115 @@ function getPubDimByTable() {
         }
         $.api('dataset/getDimColumnList', p, q);
     }
+}
+
+function compare(property) {
+    return function(a, b) {
+        var value1 = a[property];
+        var value2 = b[property];
+        return value1 - value2;
+    }
+}
+
+function showGroup() {
+    aod.rgs[eo.id] = [];
+    for (var i in aod.rg[eo.id]) {
+        aod.rgs[eo.id].push(aod.rg[eo.id][i]);
+    }
+    aod.rgs[eo.id].sort(compare('sequence'));
+    var d = aod.rgs[eo.id];
+    var str = "";
+    for (var i = 0; i < d.length; i++) {
+        str += "<tr actionid='" + d[i].categoryId + "'>";
+        str += '<td>' + d[i].categoryName + '</td>';
+        str += '<td type="' + d[i].showStyle + '">' + ((d[i].showStyle == 'select') ? '单选' : '复选') + '</td>';
+        str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
+        str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td></tr>';
+    }
+    $('.GroupTable tbody').html(str);
+}
+
+function showFilter(id) {
+    aod.rfs[id] = [];
+    for (var i in aod.rf[eo.id]) {
+        aod.rfs[eo.id].push(aod.rf[eo.id][i]);
+    }
+    aod.rfs[eo.id].sort(compare('sequence'));
+    var d = aod.rfs[eo.id];
+    var str = '',
+        str2 = '';
+    for (var i = 0; i < d.length; i++) {
+        str += "<tr actionid='" + d[i].id + "'>";
+        str += "<td>" + d[i].filterName + "</td>";
+        str += "<td>" + d[i].showName + "</td>";
+        str += "<td>" + ((d[i].isShow == 0) ? '否' : '是') + "</td>";
+        str += "<td>" + aod.datatable[d[i].joinDatasetId].datasetName + "</td>";
+        str += "<td>" + d[i].joinColumn + "</td>";
+        str += "<td>" + ((d[i].isAuth == 0) ? '否' : '是') + "</td>";
+        str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
+        str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
+        str += "</tr>";
+        str += "</tr>";
+        str2 += "<div class='showkey ' actionid='" + d[i].id + "'>" + d[i].showName + '(' + d[i].filterName + ')' + "</div>";
+    }
+    $('.FilterTable tbody').html(str);
+    $('.showfiltertableContainer').html(str2);
+}
+
+function showDim(id) {
+    aod.rds[id] = [];
+    for (var i in aod.rd[eo.id]) {
+        aod.rds[eo.id].push(aod.rd[eo.id][i]);
+    }
+    aod.rds[eo.id].sort(compare('sequence'));
+    var td = aod.rds[eo.id];
+    var str = '',
+        str2 = '';
+    for (var i = 0; i < td.length; i++) {
+        var d = td[i];
+        str += "<tr actionid='" + d.id + "'>";
+        str += "<td>" + aod.datatable[d.datasetId].tableName + "</td>";
+        str += "<td>" + d.displayName + "</td>";
+        str += "<td>" + d.columnName + "</td>";
+        str += "<td>" + d.expression + "</td>";
+        str += "<td>" + ((d.isHidden == 0) ? '否' : '是') + "</td>";
+        str += "<td>" + ((d.isRequired == 0) ? '否' : '是') + "</td>";
+        str += "<td>" + ((d.isSubqueryGroup == 0) ? '否' : '是') + "</td>";
+        str += "<td>" + d.format + "</td>";
+        str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
+        str += "<td>" + aod.rg[id][d.fieldCategoryId].categoryName + "</td>";
+        str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
+        str += "</tr>";
+        str2 += "<div class='showkey ' actionid='" + d.id + "'>" + d.displayName + '(' + d.columnName + ')' + "</div>"
+    }
+    $('.editDimenTable tbody').html(str);
+    $('.showdimensiontableContainer').html(str2);
+}
+
+function showDuliang(id) {
+    aod.rks[id] = [];
+    for (var i in aod.rk[eo.id]) {
+        aod.rks[eo.id].push(aod.rk[eo.id][i]);
+    }
+    aod.rks[eo.id].sort(compare('sequence'));
+    var td = aod.rks[eo.id];
+    var str = '',
+        str2 = '';
+    for (var i = 0; i < td.length; i++) {
+        var d = td[i];
+        str += "<tr actionid='" + d.id + "'>";
+        str += "<td orderid='"+(td.length - i )+"'>"+ (td.length - i )+"</td>";
+        str += "<td>" + d.displayName + "</td>";
+        str += "<td>" + d.columnName + "</td>";
+        str += "<td>" + d.aggregateFunction + "</td>";
+        str += "<td>" + d.comment + "</td>";
+        str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
+        str += "<td>" + aod.rg[id][d.fieldCategoryId].categoryName + "</td>";
+        str += "<td>" + d.format + "</td>";
+        str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
+        str += "</tr>";
+        str2 += "<div class='showkey ' actionid='" + d.id + "'>" + d.displayName + '(' + d.columnName + ')' + "</div>"
+    }
+    $('.DuliangTable tbody').html(str);
+    $('.showfacttableContainer').html(str2);
 }
