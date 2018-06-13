@@ -167,6 +167,10 @@ function baseClick() {
                             aod.reportList[r.id].isFieldSelect = 0;
                             getReportList(eo.folderid);
                             showMessage(v, '新增成功,请配置其他内容');
+                            aod.rd[eo.id] = {};
+                            aod.rf[eo.id] = {};
+                            aod.rk[eo.id] = {};
+                            aod.rg[eo.id] = {};
                         } else {
                             swal({
                                 title: r.msg,
@@ -423,6 +427,8 @@ function baseClick() {
         $('.titleNameContainer .fa-save').show();
         $('.titleNameContainer .fa-pencil').hide();
         $ec.show();
+        $('.pathContainer').hide();
+        $('.leftContianer').hide();
         fullFolderPathReport();
         eo.folderid = $('.subNavUliActive').attr('folderid');
         // $('.pathShowContainer').attr('folderid', $('.subNavUliActive').attr('folderid'));
@@ -477,7 +483,7 @@ function baseClick() {
         }else if(eo.action == 'editDimen'){
             url = 'updateReportFieldSeq';
         }
-        p.items = [];
+        p = [];
         q.atype = 'POST';
         var pa = $(this).parent().parent().find('tbody');
         var length = pa.find('tr').length;
@@ -485,10 +491,10 @@ function baseClick() {
             var o = {};
             o.itemId = $(this).attr('actionid')*1;
             o.sequence = length - i;
-            p.items.push(o);
+            p.push(o);
         })
         // console.log(p);
-        p = JSON.stringify(p);
+        // p = JSON.stringify(p);
         q.success = function(r){
             console.log(r);
         }    
@@ -757,11 +763,14 @@ function baseClick() {
             pa.sequence = 9999;
             q.success = function(r) {
                 if (r.status == 1 && r.msg == 'success') {
+                    if(!aod.rg.hasOwnProperty(eo.id)){
+                            aod.rg[eo.id] = {};
+                        }
                     aod.rg[eo.id][r.id] = {};
                     aod.rg[eo.id][r.id].categoryName = gn;
                     aod.rg[eo.id][r.id].showStyle = gs;
                     aod.rg[eo.id][r.id].sequence = pa.sequence;
-                    aod.rg[eo.id][r.id].categoryId = eo.folderid;
+                    aod.rg[eo.id][r.id].categoryId = r.id;
                     aod.rg[eo.id][r.id].reportId = eo.id;
                     showGroup();
                     showMessage(gn, '新增成功');
@@ -1117,6 +1126,9 @@ function baseClick() {
                             $('.DuliangTable tbody tr').eq(0).before(str);
                         }
                         showMessage('指标' + duname, '新增成功');
+                        if(!aod.rk.hasOwnProperty(eo.id)){
+                            aod.rk[eo.id] = {};
+                        }
                         aod.rk[eo.id][r.id] = {};
                         aod.rk[eo.id][r.id].reportId = pa.reportId;
                         aod.rk[eo.id][r.id].displayName = pa.displayName;
@@ -1426,6 +1438,9 @@ function baseClick() {
                             $('.FilterTable tbody tr').eq(0).before(str);
                         }
                         showMessage('筛选' + filterName, '新增成功');
+                        if(!aod.rf.hasOwnProperty(eo.id)){
+                            aod.rf[eo.id] = {};
+                        }
                         aod.rf[eo.id][r.id] = {};
                         aod.rf[eo.id][r.id].filterId = pa.filterId;
                         aod.rf[eo.id][r.id].filterName = pa.filterName;
@@ -1540,6 +1555,9 @@ function baseClick() {
             q.success = function(r) {
                 if (r.status == 1 && r.msg == 'success') {
                     $(this).addClass('pubDimSelect');
+                    if(!aod.rd.hasOwnProperty(eo.id)){
+                            aod.rd[eo.id] = {};
+                        }
                     aod.rd[eo.id][r.id] = {};
                     aod.rd[eo.id][r.id].datasetId = pa.datasetId;
                     aod.rd[eo.id][r.id].columnName = pa.columnName;
@@ -1681,6 +1699,9 @@ function baseClick() {
                 pa.type = type;
                 q.success = function(r) {
                     if (r.status == 1 && r.msg == 'success') {
+                        if(!aod.rd.hasOwnProperty(eo.id)){
+                            aod.rd[eo.id] = {};
+                        }
                         aod.rd[eo.id][r.id] = {};
                         aod.rd[eo.id][r.id].datasetId = pa.datasetId;
                         aod.rd[eo.id][r.id].columnName = pa.columnName;
@@ -1945,7 +1966,7 @@ function getGroupSelect(vid) {
     a.map(function(i, v) {
         if (vid != null) {
             var flag = '';
-            if (vid == i.id) {
+            if (vid == i.categoryId) {
                 flag = 'selected';
             }
             str += '<option value="' + i.id + '" ' + flag + '>' + i.name + '</option>'
@@ -2220,6 +2241,9 @@ function initFolder() {
             if (o[0] != null) {
                 $('.subNavUl').html(loopTree(o, o[0], 1, "", to));
             }
+            refreshfoldmap();
+            getReportList();
+        }else{
             refreshfoldmap();
             getReportList();
         }

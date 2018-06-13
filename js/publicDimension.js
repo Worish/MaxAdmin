@@ -21,7 +21,7 @@ function getAllDataSets() {
     q.success = function(r) {
         var str = "";
         if (r == null || r.length == 0) {
-            str += "<tr class='nodata'><td colspan='4'>还没添加数据源,请按左上角按钮添加</td></tr>";
+            str += "<tr class='nodata'><td class='nodata' colspan='4'>还没添加数据源,请先添加维表</td></tr>";
         } else {
             var df = new DateFormat();
             var da = [];
@@ -142,7 +142,7 @@ function baseClick() {
     })
     //点击数据源表行的事件
     $('.tableContainer tbody').on('click', 'tr', function(e) {
-        if ($(this).find('.notddata').length == 0) {
+        if ($(this).find('.nodata').length == 0) {
             e.stopPropagation();
             e.preventDefault();
             var $container = $ec;

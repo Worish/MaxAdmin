@@ -98,7 +98,7 @@ function baseClick() {
             // str += "<td><input class='tableinput tableinfo'  placeholder='在此处输入备注'/></td>";
             str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
             str += "</tr>";
-            if ($('tr.nodata').length == 1 || $('.datasettable tbody tr').length == 0) {
+            if ($('.dataTables_empty').length == 1 || $('.datasettable tbody tr').length == 0) {
                 $('.datasettable tbody').html(str);
             } else {
                 $('.datasettable tbody tr').eq(0).before(str);
