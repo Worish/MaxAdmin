@@ -601,6 +601,12 @@ function baseClick() {
             getTablesById(eo.id);
         } else if (ac == 'editGroup') { //当点击分组的时候
             showGroupById(eo.id);
+        }else if (ac == 'editDimen') { //当点击分组的时候
+            showDim(eo.id);
+        }else if (ac == 'editDuliang') { //当点击分组的时候
+            showDuliang(eo.id);
+        }else if (ac == 'editFilter') { //当点击分组的时候
+            showFilter(eo.id);
         }
     })
     //编辑关联
