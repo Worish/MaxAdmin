@@ -379,6 +379,7 @@ function baseClick() {
                         if (r.status == 1 && r.msg == 'success') {
                             swal.close();
                             $('.readyDelete').remove();
+                            delete aod.treedata[fid];
                             showMessage('文件夹' + foldname, '删除成功');
                         } else {
                             swal({
@@ -499,11 +500,11 @@ function baseClick() {
         q.success = function(r) {
             if (r.status == 1 && r.msg == 'success') {
                 if (eo.action == 'editGroup') {
-                   for(var i=0;i<p.length;i++){
+                    for (var i = 0; i < p.length; i++) {
                         var o = p[i];
                         aod.rg[eo.id][o.itemId].sequence = o.sequence;
-                   }
-                   showGroup(eo.id);
+                    }
+                    showGroup(eo.id);
                 } else if (eo.action == 'editFilter') {
                     /*for(var i=0;i<p.length;i++){
                         var o = p[i];
@@ -511,22 +512,22 @@ function baseClick() {
                    }
                    showGroup();*/
                 } else if (eo.action == 'editDuliang') {
-                   for(var i=0;i<p.length;i++){
+                    for (var i = 0; i < p.length; i++) {
                         var o = p[i];
                         aod.rk[eo.id][o.itemId].sequence = o.sequence;
-                   }
-                   showDuliang(eo.id);
+                    }
+                    showDuliang(eo.id);
                 } else if (eo.action == 'editDimen') {
-                    for(var i=0;i<p.length;i++){
+                    for (var i = 0; i < p.length; i++) {
                         var o = p[i];
                         aod.rd[eo.id][o.itemId].sequence = o.sequence;
-                   }
-                   showDim(eo.id);
+                    }
+                    showDim(eo.id);
                 }
                 $('.saveOrder').hide();
                 $('.cancelSaveOrder').hide();
                 $('.speinfo').hide();
-                showMessage('保存顺序成功','');
+                showMessage('保存顺序成功', '');
             } else {
                 swalinfo('修改顺序失败,请联系管理员');
             }
@@ -601,11 +602,11 @@ function baseClick() {
             getTablesById(eo.id);
         } else if (ac == 'editGroup') { //当点击分组的时候
             showGroupById(eo.id);
-        }else if (ac == 'editDimen') { //当点击分组的时候
+        } else if (ac == 'editDimen') { //当点击分组的时候
             showDim(eo.id);
-        }else if (ac == 'editDuliang') { //当点击分组的时候
+        } else if (ac == 'editDuliang') { //当点击分组的时候
             showDuliang(eo.id);
-        }else if (ac == 'editFilter') { //当点击分组的时候
+        } else if (ac == 'editFilter') { //当点击分组的时候
             showFilter(eo.id);
         }
     })
@@ -763,26 +764,30 @@ function baseClick() {
     })
     //编辑分组信息
     $('.GroupTable').on('click', '.fa-pencil', function(e) {
-        var p = $(this).parent().parent();
-        eo.actiontype = 'edit';
-        eo.actionid = p.attr('actionid') * 1;
-        var gn = p.find('td').eq(0).html().replace(/[/r/n/ ]/g, '');
-        var gt = p.find('td').eq(1).html().replace(/[/r/n/ ]/g, '');
-        window.gn = gn;
-        window.gt = gt;
-        var inputgn = '<input class="tableinput groupNameInput" type="text" placeholder="在此处输入组名" value="' + gn + '"/>';
-        var fse = '',
-            mse = '';
-        if (gt == '单选') {
-            fse = 'selected'
-        } else if (gt == '多选') {
-            mse = 'selected'
+        if (eo.actiontype != '') {
+            swalinfo('请先完成当前编辑内容');
+        } else {
+            var p = $(this).parent().parent();
+            eo.actiontype = 'edit';
+            eo.actionid = p.attr('actionid') * 1;
+            var gn = p.find('td').eq(0).html().replace(/[/r/n/ ]/g, '');
+            var gt = p.find('td').eq(1).html().replace(/[/r/n/ ]/g, '');
+            window.gn = gn;
+            window.gt = gt;
+            var inputgn = '<input class="tableinput groupNameInput" type="text" placeholder="在此处输入组名" value="' + gn + '"/>';
+            var fse = '',
+                mse = '';
+            if (gt == '单选') {
+                fse = 'selected'
+            } else if (gt == '多选') {
+                mse = 'selected'
+            }
+            var selectgt = '<select><option  value="selectMul" ' + mse + '>多选</option><option value="select" ' + fse + '>单选</option></select>';
+            p.find('td').eq(0).html(inputgn);
+            p.find('td').eq(1).html(selectgt);
+            p.find('td').eq(2).html('保存后可修改顺序');
+            p.find('td').eq(3).html('<i class="fa fa-save"></i><i class="fa fa-remove"></i>');
         }
-        var selectgt = '<select><option  value="selectMul" ' + mse + '>多选</option><option value="select" ' + fse + '>单选</option></select>';
-        p.find('td').eq(0).html(inputgn);
-        p.find('td').eq(1).html(selectgt);
-        p.find('td').eq(2).html('保存后可修改顺序');
-        p.find('td').eq(3).html('<i class="fa fa-save"></i><i class="fa fa-remove"></i>');
     })
     //保存分组信息
     $('.GroupTable').on('click', '.fa-save', function(e) {
@@ -982,7 +987,7 @@ function baseClick() {
                 // $('tr[groupid="' + gid + '"]').remove();
                 // $('.GroupTable tbody tr').eq(index - 1).before(htmlstr);
             }
-        }
+        } 
     })
     //添加指标操作
     $('.newDuliang').on('click', function() {
@@ -993,11 +998,11 @@ function baseClick() {
             str += "<td></td>";
             str += "<td><input class='tableinput DuliangName' type='text' /></td>";
             str += "<td><input class='tableinput DuliangGongshi' type='text' /></td>";
-            str += "<td><input class='tableinput func' type='text' /></td>";
+            str += "<td><select class='func'><option value='sum'>sum</option><option value='avg'>avg</option><option value='max'>max</option><option value='min'>min</option><option value='智能指标'>智能指标</option></select></td>";
             str += "<td><textarea class='DuliangInfo'></textarea></td>";
             str += "<td></td>";
             str += "<td>" + getGroupSelect() + "</td>";
-            str += "<td>" + getDataFormat() + "</td>";
+            str += "<td>" + getFormatSelect() + "</td>";
             str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
             str += "</tr>";
             if ($('.DuliangTable tbody tr').length == 0) {
@@ -1017,13 +1022,14 @@ function baseClick() {
         } else if (eo.actiontype == 'edit') {
             var d = aod.rk[eo.id][eo.actionid];
             var str = '';
+            str += "<td>" + $(this).parent().parent().find('td').eq(0).html()+ "</td>";
             str += "<td>" + d.displayName + "</td>";
             str += "<td>" + d.columnName + "</td>";
             str += "<td>" + d.aggregateFunction + "</td>";
             str += "<td>" + d.comment + "</td>";
             str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
             str += "<td>" + aod.rg[eo.id][d.fieldCategoryId].categoryName + "</td>";
-            str += "<td>" + d.format + "</td>";
+            str += "<td>" + getFormatSelect({"se":d.format}) + "</td>";
             str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
             $('table.DuliangTable tr[actionid="' + eo.actionid + '"]').html(str);
             eo.actiontype = '';
@@ -1031,7 +1037,7 @@ function baseClick() {
         } else if (eo.actiontype == '') {
             var p = $(this).parent().parent();
             var did = p.attr('actionid') * 1;
-            var duname = p.find('td').eq(0).html();
+            var duname = p.find('td').eq(1).html();
             eo.actiontype = 'delete';
             eo.actionid = did;
             swal({
@@ -1083,12 +1089,14 @@ function baseClick() {
             var d = aod.rk[eo.id][eo.actionid];
             p.find('td').eq(1).html('<input class="tableinput DuliangName" type="text" value="' + d.displayName + '"/>');
             p.find('td').eq(2).html('<input class="tableinput DuliangGongshi" type="text" value="' + d.columnName + '"/>');
-            p.find('td').eq(3).html('<input class="tableinput func" type="text" value="' + d.aggregateFunction + '"/>');
+            var str2 = "<select class='func'><option value='sum'>sum</option><option value='avg'>avg</option><option value='max'>max</option><option value='min'>min</option><option value='智能指标'>智能指标</option></select>";
+            str2 =  str2.replace(d.aggregateFunction+'"',d.aggregateFunction+'" selected')
+            p.find('td').eq(3).html(str2);
             p.find('td').eq(4).html('<textarea class="DuliangInfo">' + d.comment + '</textarea>');
             p.find('td').eq(5).html('');
             p.find('td').eq(6).html(getGroupSelect(d.fieldCategoryId));
-            var sstr = '<select class="dataformatselect"><option value="百分比">百分比</option><option value="1位小数">1位小数</option><option value="2位小数">2位小数</option><option value="整数">整数</option><option value="4位小数">4位小数</option></select>';
-            sstr = sstr.replace(d.format + '"', d.format + '" selected ');
+            var sstr = getFormatSelect({"se":d.format});
+            // sstr = sstr.replace(d.format + '"', d.format + '" selected ');
             p.find('td').eq(7).html(sstr);
             p.find('td').eq(8).html('<i class="fa fa-save"></i><i class="fa fa-remove"></i>');
         }
@@ -1098,11 +1106,13 @@ function baseClick() {
         var p = $(this).parent().parent();
         var duname = p.find('input.DuliangName').val();
         var dugongshi = p.find('input.DuliangGongshi').val();
-        var dufunc = p.find('input.func').val();
+        var dufunc = p.find('select.func').val();
         var duinfo = p.find('textarea.DuliangInfo').val();
         var flag = true;
         var group = p.find('select.groupselect option:selected').val();
         var df = p.find('select.dataformatselect option:selected').text();
+        var dfp = formatJson();
+        df = dfp[df];
         if (duname.replace(/\s+/g, '') == '') {
             flag = false;
             p.find('input.DuliangName').addClass('inputerror');
@@ -1156,7 +1166,7 @@ function baseClick() {
                         str += "<td>" + duinfo + "</td>";
                         str += "<td>" + ord + "</td>";
                         str += "<td>" + aod.rg[eo.id][group].categoryName + "</td>";
-                        str += "<td>" + df + "</td>";
+                        str += "<td>" + getFormatName(df) + "</td>";
                         str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
                         str += "</tr>";
                         $('tr.newDuliangtr').remove();
@@ -1208,7 +1218,7 @@ function baseClick() {
                 pa.type = 2;
                 q.success = function(r) {
                     if (r.status == 1 && r.msg == 'success') {
-                        aod.rk[eo.id][eo.actionid]
+                        // aod.rk[eo.id][eo.actionid];
                         aod.rk[eo.id][eo.actionid].displayName = pa.displayName;
                         aod.rk[eo.id][eo.actionid].columnName = pa.columnName;
                         aod.rk[eo.id][eo.actionid].aggregateFunction = pa.aggregateFunction;
@@ -1218,13 +1228,14 @@ function baseClick() {
                         aod.rk[eo.id][eo.actionid].type = pa.type;
                         var ord = '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>';
                         var str = '';
+                        str += "<td>" + p.find('td').eq(0).html() + "</td>";
                         str += "<td>" + duname + "</td>";
                         str += "<td>" + dugongshi + "</td>";
                         str += "<td>" + dufunc + "</td>";
                         str += "<td>" + duinfo + "</td>";
                         str += "<td>" + ord + "</td>";
                         str += "<td>" + aod.rg[eo.id][group].categoryName + "</td>";
-                        str += "<td>" + df + "</td>";
+                        str += "<td>" + getFormatName(df) + "</td>";
                         str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
                         $('table.DuliangTable tr[actionid="' + eo.actionid + '"]').html(str);
                         showMessage('指标' + duname, '更新成功');
@@ -1246,7 +1257,7 @@ function baseClick() {
             str += '<tr class="newFilterTr">';
             str += '<td class="filterNameTd"><div class="filterNameE"></div>' + '<div class="filterSelectContainer"><input class="seachFilter" type="text" placeholder="在此输入搜索" />' + '<div class="fliterInfo">筛选列表:</div>' + '<ul class="fliterUl">' + getFilterUl() + '</ul>' + '<div class="filternameoper"><span  class="savefiln">确定</span><span  class="cancelfiln">取消</span></div></div></td>';
             str += '<td><input class="tableinput showName" type="text" /></td>';
-            str += '<td><select class="isShow"><option value="0">否</option><option value="1">是</option></select></td>';
+            str += '<td><select class="isShow"><option value="1">是</option><option value="0">否</option></select></td>';
             str += '<td>' + getReportTable() + '</td>';
             str += '<td><input class="tableinput joinC" type="text" /></td>';
             str += '<td><select class="joinMax"><option value="0">否</option><option value="1">是</option></select></td>';
@@ -1585,10 +1596,11 @@ function baseClick() {
             pa.displayName = d.displayName;
             pa.datasetColumnId = pid;
             pa.expression = d.expression;
-            pa.isHidden = 0;
-            pa.isRequired = 1;
+            pa.isHidden = 1;
+            pa.isRequired = 0;
             pa.isSubqueryGroup = 1;
-            pa.format = '百分比';
+            var tpa = formatJson()
+            pa.format = tpa['文本'];
             pa.sequence = 9999;
             for (var i in aod.rg[eo.id]) {
                 pa.fieldCategoryId = i;
@@ -1596,9 +1608,10 @@ function baseClick() {
             }
             pa.reportId = eo.id;
             pa.type = 1;
+            var _this = $(this);
             q.success = function(r) {
                 if (r.status == 1 && r.msg == 'success') {
-                    $(this).addClass('pubSelected');
+                    _this.addClass('pubSelected');
                     if (!aod.rd.hasOwnProperty(eo.id)) {
                         aod.rd[eo.id] = {};
                     }
@@ -1625,7 +1638,7 @@ function baseClick() {
                     str += "<td>" + ((pa.isHidden == 0) ? '否' : '是') + "</td>";
                     str += "<td>" + ((pa.isRequired == 0) ? '否' : '是') + "</td>";
                     str += "<td>" + ((pa.isSubqueryGroup == 0) ? '否' : '是') + "</td>";
-                    str += "<td>" + pa.format + "</td>";
+                    str += "<td>" + getFormatName(pa.format) + "</td>";
                     str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
                     str += "<td>" + aod.rg[eo.id][pa.fieldCategoryId].categoryName + "</td>";
                     str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
@@ -1666,10 +1679,10 @@ function baseClick() {
             str += '<td><textarea class="tableinput dimname" type="text" ></textarea></td>';
             str += '<td><textarea class="tableinput dimkey" type="text" ></textarea></td>';
             str += '<td><textarea class="tableinput dimvalue" type="text"></textarea></td>';
-            str += '<td><select class="isShow"><option value="0">否</option><option value="1">是</option></select></td>';
+            str += '<td><select class="isShow"><option value="1">是</option><option value="0">否</option></select></td>';
             str += '<td><select class="isMust"><option value="0">否</option><option value="1">是</option></select></td>';
             str += '<td><select class="isGroupby"><option value="0">否</option><option value="1">是</option></select></td>';
-            str += '<td><select class="dataformatselect"><option value="百分比">百分比</option><option value="1位小数">1位小数</option><option value="2位小数">2位小数</option><option value="整数">整数</option><option value="4位小数">4位小数</option></select></td>';
+            str += '<td>'+getFormatSelect()+'</td>';
             str += '<td></td>';
             str += '<td>' + getGroupSelect() + '</td>';
             str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
@@ -1697,6 +1710,8 @@ function baseClick() {
         var isRequired = p.find('select.isMust option:selected').val();
         var isSubqueryGroup = p.find('select.isGroupby option:selected').val();
         var format = p.find('select.dataformatselect option:selected').val();
+        var tempr = formatJson();
+        format = tempr[format];
         var sequence = 9999;
         var fieldCategoryId = p.find('select.groupselect option:selected').val();
         var reportId = eo.id;
@@ -1716,13 +1731,13 @@ function baseClick() {
                 $('textarea.dimkey').removeClass('inputerror');
             }, 2000)
         }
-        if (expression.replace(/\s+/g, '') == '') {
+        /*if (expression.replace(/\s+/g, '') == '') {
             flag = false;
             p.find('textarea.dimvalue').addClass('inputerror');
             setTimeout(function() {
                 $('textarea.dimvalue').removeClass('inputerror');
             }, 2000)
-        }
+        }*/
         if (flag) {
             if (eo.actiontype == 'new') {
                 var pa = {},
@@ -1747,6 +1762,7 @@ function baseClick() {
                             aod.rd[eo.id] = {};
                         }
                         aod.rd[eo.id][r.id] = {};
+                        aod.rd[eo.id][r.id].id = r.id;
                         aod.rd[eo.id][r.id].datasetId = pa.datasetId;
                         aod.rd[eo.id][r.id].columnName = pa.columnName;
                         aod.rd[eo.id][r.id].displayName = pa.displayName;
@@ -1755,11 +1771,12 @@ function baseClick() {
                         aod.rd[eo.id][r.id].isHidden = pa.isHidden;
                         aod.rd[eo.id][r.id].isRequired = pa.isRequired;
                         aod.rd[eo.id][r.id].isSubqueryGroup = pa.isSubqueryGroup;
-                        aod.rd[eo.id][r.id].format = pa.format;
+                        aod.rd[eo.id][r.id].format = format;
                         aod.rd[eo.id][r.id].sequence = pa.sequence;
                         aod.rd[eo.id][r.id].fieldCategoryId = pa.fieldCategoryId;
                         aod.rd[eo.id][r.id].reportId = pa.reportId;
                         aod.rd[eo.id][r.id].type = pa.type;
+
                         var ord = '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>';
                         var str = "<tr actionid='" + r.id + "'>";
                         str += "<td>" + aod.datatable[datasetId].tableName + "</td>";
@@ -1769,7 +1786,7 @@ function baseClick() {
                         str += "<td>" + ((isHidden == 0) ? '否' : '是') + "</td>";
                         str += "<td>" + ((isRequired == 0) ? '否' : '是') + "</td>";
                         str += "<td>" + ((isSubqueryGroup == 0) ? '否' : '是') + "</td>";
-                        str += "<td>" + format + "</td>";
+                        str += "<td>" + getFormatName(format) + "</td>";
                         str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
                         str += "<td>" + aod.rg[eo.id][pa.fieldCategoryId].categoryName + "</td>";
                         str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
@@ -1834,7 +1851,7 @@ function baseClick() {
                         str += "<td>" + ((isHidden == 0) ? '否' : '是') + "</td>";
                         str += "<td>" + ((isRequired == 0) ? '否' : '是') + "</td>";
                         str += "<td>" + ((isSubqueryGroup == 0) ? '否' : '是') + "</td>";
-                        str += "<td>" + format + "</td>";
+                        str += "<td>" + getFormatName(format) + "</td>";
                         str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
                         str += "<td>" + aod.rg[eo.id][pa.fieldCategoryId].categoryName + "</td>";
                         str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
@@ -1940,9 +1957,7 @@ function baseClick() {
             str2 = '<select class="isGroupby"><option value="0">否</option><option value="1">是</option></select>';
             str2 = str2.replace(d.isSubqueryGroup + '"', d.isSubqueryGroup + '" selected');
             str += '<td>' + str2 + '</td>';
-            str2 = '<select class="dataformatselect"><option value="百分比">百分比</option><option value="1位小数">1位小数</option><option value="2位小数">2位小数</option><option value="整数">整数</option><option value="4位小数">4位小数</option></select>';
-            str2 = str2.replace(d.format + '"', d.format + '" selected');
-            str += '<td>' + str2 + '</td>';
+            str += '<td>' + getFormatSelect({se:d.format}) + '</td>';
             str += '<td></td>';
             str += '<td>' + getGroupSelect(d.fieldCategoryId) + '</td>';
             str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
@@ -2025,7 +2040,7 @@ function getGroupSelect(vid) {
     return str;
 }
 //获取数据格式
-function getDataFormat() {
+/*function getDataFormat() {
     var a = ['百分比', '1位小数', '2位小数', '整数', '4位小数'];
     var str = "<select class='dataformatselect'>";
     a.map(function(i, v) {
@@ -2033,7 +2048,7 @@ function getDataFormat() {
     })
     str += "</select>";
     return str;
-}
+}*/
 //获取表格select
 function getTableSelect() {
     var a = [];
@@ -2063,6 +2078,10 @@ function saveNewFolder(foldername, level, p, pfid) {
                 $('.editFolderLi').remove();
                 p.find('li').eq(0).before(str);
             }
+            aod.treedata[r.id] = {};
+            aod.treedata[r.id].categoryId = r.id;
+            aod.treedata[r.id].categoryName = foldername;
+            aod.treedata[r.id].parentId = pfid;
             refreshfoldmap();
             showMessage(foldername, '新增成功');
         }
@@ -2136,7 +2155,7 @@ function returnEditLi(level, pid) {
 function returnAfterEditLi(id, name, level) {
     var width = 190 - level * 15 - 44 - 24 - 10;
     var str = "";
-    str += '<li actionid="' + id + '" class="subNavUli" keyname="' + name + '" level="' + level + '">';
+    str += '<li folderid="' + id + '" actionid="' + id + '" class="subNavUli" keyname="' + name + '" level="' + level + '">';
     str += '<div class="Center-Container is-Table">';
     str += '<div class="Table-Cell">';
     str += '<i class="folder fa fa-folder">';
@@ -2217,6 +2236,9 @@ function saveUpdateFolder(foldname, width, p, level, folderid) {
             window.updatefoldwidth = null;
             window.updatefoldname = null;
             window.updatelevel = null;
+            aod.treedata[folderid].categoryId = pa.categoryId;
+            aod.treedata[folderid].categoryName = pa.foldname;
+            aod.treedata[folderid].parentId = pa.parentId;
             showMessage(foldname, '更新成功');
         } else {
             swal({
@@ -2641,7 +2663,7 @@ function getTablesById(reportid, needrefresh) {
                 str += "<td><i class='fa fa-edit' actionid='" + r[i].id + "'>" + "</i><i class='fa fa-remove' actionid='" + r[i].id + "'></i></td>";
                 str += "</tr>";
                 tempa.push(str);
-                str2 += "<div class=' showkey reportdataset' actionid='" + r[i].id + "'>" + aod.datatable[r[i].datasetId].showname + "</div>"
+                str2 += "<div class=' showkey reportdataset' actionid='" + r[i].id + "'>" + aod.datatable[r[i].datasetId].showname + '(<span class="aliasname">' + r[i].alias + '</span>)' + "</div>"
                 tempb.push(str2);
             }
             tempa.reverse();
@@ -2808,6 +2830,7 @@ function getPubDimByTable() {
                 $('ul.pubDimUl').html(str);
             } else {
                 swalinfo('该维表下没有公共维度');
+                 $('ul.pubDimUl li').remove();
             }
         }
         $.api('dataset/getDimColumnList', p, q);
@@ -2889,7 +2912,7 @@ function showDim(id) {
         str += "<td>" + ((d.isHidden == 0) ? '否' : '是') + "</td>";
         str += "<td>" + ((d.isRequired == 0) ? '否' : '是') + "</td>";
         str += "<td>" + ((d.isSubqueryGroup == 0) ? '否' : '是') + "</td>";
-        str += "<td>" + d.format + "</td>";
+        str += "<td>" + getFormatName(d.format) + "</td>";
         str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
         str += "<td>" + aod.rg[id][d.fieldCategoryId].categoryName + "</td>";
         str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
@@ -2920,11 +2943,66 @@ function showDuliang(id) {
         str += "<td>" + d.comment + "</td>";
         str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
         str += "<td>" + aod.rg[id][d.fieldCategoryId].categoryName + "</td>";
-        str += "<td>" + d.format + "</td>";
+        str += "<td>" + getFormatName(d.format) + "</td>";
         str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
         str += "</tr>";
         str2 += "<div class='showkey ' actionid='" + d.id + "'>" + d.displayName + '(' + d.columnName + ')' + "</div>"
     }
     $('.DuliangTable tbody').html(str);
     $('.showfacttableContainer').html(str2);
+}
+
+function getFormatSelect(p) {
+    if (p == null) {
+        var p = {};
+        p.classname = 'dataformatselect';
+    }
+    if(p.classname == null){
+        p.classname = 'dataformatselect';
+    }
+    var str = '<select class="' + p.classname + '">'
+        + '<option value="文本">文本</option>'
+        + '<option value="日期">日期</option>'
+        + '<option value="百分比一位">百分比一位</option>' 
+        + '<option value="百分比两位">百分比两位</option>' 
+        + '<option value="整数">整数</option>' 
+        + '<option value="1位小数">1位小数</option>' 
+        + '<option value="2位小数">2位小数</option>' 
+        + '</select>';
+
+    if(p.se != null){
+        // if(p.se == '百分比'){
+        //     p.se = '百分比一位';
+        // }
+        var tsr = ""
+        var q = formatJson();
+        for(var i in q){
+            if(p.se == q[i]){
+                tsr = i;
+                break;
+            }
+        }
+        str = str.replace(tsr+'"',tsr+'" selected');
+    }    
+    return str;
+}
+function formatJson(){
+    return {
+        "文本" : '{"type":"1","franction":"0","thousand":false}',
+        "日期" : '{"type":"2","franction":"0","thousand":false}',
+        "百分比一位" : '{"type":"3","franction":"1","thousand":false}',
+        "百分比两位" : '{"type":"3","franction":"2","thousand":false}',
+        "整数" : '{"type":"4","franction":"0","thousand":true}',
+        "1位小数" : '{"type":"4","franction":"1","thousand":true}',
+        "2位小数" : '{"type":"4","franction":"2","thousand":true}',
+    }
+}
+function getFormatName(v){ 
+    var p = formatJson();
+    for(var i in p){
+        if(p[i]==v){
+            return i ;
+        }
+    }
+    console.log('没匹配到');
 }

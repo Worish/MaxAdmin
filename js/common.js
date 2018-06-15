@@ -652,6 +652,7 @@ class initLoading{
   }
 }
 function swalinfo(title,type){
+    console.log('error error');
     if(type ==null || type =='error'){
         var type = 'error';
     }

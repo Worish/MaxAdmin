@@ -310,8 +310,9 @@ span.pagenav {
     line-height: 21px;
     width: 20px;
     text-align: center;
-    color: #ff1111;
+    color: #ff0000;
     cursor: pointer;
+    font-size: 18px;
 }
 
 .dataTableOperItem {
@@ -1002,4 +1003,8 @@ span.speinfo {
 .fliterInfo {
     padding-left: 15px;
     color: #999;
+}
+span.aliasname {
+    font-size: 12px;
+    color: #d66061;
 }
