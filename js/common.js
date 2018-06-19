@@ -661,3 +661,14 @@ function swalinfo(title,type){
         type:type,
     })
 }
+function showSwalLoading(text){
+    swal({
+        title: text,
+        type: 'info',
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+    }, function() {})
+    setTimeout(function(){
+        $('button.confirm').click(); 
+    },520)
+}

@@ -473,6 +473,7 @@ function baseClick() {
     //保存排序功能
     $('.editItemContainer').on('click', '.saveOrder', function(e) {
         e.stopPropagation();
+        showSwalLoading('正在保存,请稍候');
         var url = '';
         var p = {},
             q = {};
@@ -527,6 +528,7 @@ function baseClick() {
                 $('.saveOrder').hide();
                 $('.cancelSaveOrder').hide();
                 $('.speinfo').hide();
+                swal.close();
                 showMessage('保存顺序成功', '');
             } else {
                 swalinfo('修改顺序失败,请联系管理员');
@@ -1031,10 +1033,12 @@ function baseClick() {
             str += "<td>" + d.aggregateFunction + "</td>";
             str += "<td>" + d.comment + "</td>";
             str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
-            str += "<td>" + aod.rg[eo.id][d.fieldCategoryId].categoryName + "</td>";
-            str += "<td>" + getFormatSelect({
-                "se": d.format
-            }) + "</td>";
+            if (d.fieldCategoryId == null) {
+                str += "<td>" + "</td>";
+            } else {
+                str += "<td>" + aod.rg[eo.id][d.fieldCategoryId].categoryName + "</td>";
+            }
+            str += "<td>" + getFormatName(d.format) + "</td>";
             str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
             $('table.DuliangTable tr[actionid="' + eo.actionid + '"]').html(str);
             eo.actiontype = '';
@@ -1172,7 +1176,12 @@ function baseClick() {
                         str += "<td>" + dufunc + "</td>";
                         str += "<td>" + duinfo + "</td>";
                         str += "<td>" + ord + "</td>";
-                        str += "<td>" + aod.rg[eo.id][group].categoryName + "</td>";
+                        var cgna = '';
+                        if (group != null) {
+                            cgna = aod.rg[eo.id][group].categoryName;
+                        }
+                        str += "<td>" + cgna + "</td>";
+                        // str += "<td>" + aod.rg[eo.id][group].categoryName + "</td>";
                         str += "<td>" + getFormatName(df) + "</td>";
                         str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
                         str += "</tr>";
@@ -1241,7 +1250,11 @@ function baseClick() {
                         str += "<td>" + dufunc + "</td>";
                         str += "<td>" + duinfo + "</td>";
                         str += "<td>" + ord + "</td>";
-                        str += "<td>" + aod.rg[eo.id][group].categoryName + "</td>";
+                        if (group == null) {
+                            str += "<td></td>";
+                        } else {
+                            str += "<td>" + aod.rg[eo.id][group].categoryName + "</td>";
+                        }
                         str += "<td>" + getFormatName(df) + "</td>";
                         str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
                         $('table.DuliangTable tr[actionid="' + eo.actionid + '"]').html(str);
@@ -1351,7 +1364,7 @@ function baseClick() {
             str += '<td>' + getReportTable(d.joinDatasetId) + '</td>';
             str += '<td><input class="tableinput joinC" type="text" value="' + d.joinColumn + '"/></td>';
             var tempstr2 = '<select class="joinMax"><option value="0">否</option><option value="1">是</option></select>';
-            tempstr2 = tempstr2.replace(d.isAuth + '"', d.isAuth + '" selected');
+            tempstr2 = tempstr2.replace(d.isAuth + '"', d.isAuth + '" selected ');
             str += '<td>' + tempstr2 + '</td>';
             str += '<td></td>';
             str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
@@ -1647,7 +1660,11 @@ function baseClick() {
                     str += "<td>" + ((pa.isSubqueryGroup == 0) ? '否' : '是') + "</td>";
                     str += "<td>" + getFormatName(pa.format) + "</td>";
                     str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
-                    str += "<td>" + aod.rg[eo.id][pa.fieldCategoryId].categoryName + "</td>";
+                    var cgna = '';
+                    if (pa.fieldCategoryId != null) {
+                        cgna = aod.rg[eo.id][pa.fieldCategoryId].categoryName;
+                    }
+                    str += "<td>" + cgna + "</td>";
                     str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
                     str += "</tr>";
                     $('tr.newDimTr').remove();
@@ -1794,7 +1811,12 @@ function baseClick() {
                         str += "<td>" + ((isSubqueryGroup == 0) ? '否' : '是') + "</td>";
                         str += "<td>" + getFormatName(format) + "</td>";
                         str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
-                        str += "<td>" + aod.rg[eo.id][pa.fieldCategoryId].categoryName + "</td>";
+                        var cgna = '';
+                        if (pa.fieldCategoryId != null) {
+                            cgna = aod.rg[eo.id][pa.fieldCategoryId].categoryName;
+                        }
+                        str += "<td>" + cgna + "</td>";
+                        // str += "<td>" + aod.rg[eo.id][pa.fieldCategoryId].categoryName + "</td>";
                         str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
                         str += "</tr>";
                         $('tr.newDimTr').remove();
@@ -1859,7 +1881,12 @@ function baseClick() {
                         str += "<td>" + ((isSubqueryGroup == 0) ? '否' : '是') + "</td>";
                         str += "<td>" + getFormatName(format) + "</td>";
                         str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
-                        str += "<td>" + aod.rg[eo.id][pa.fieldCategoryId].categoryName + "</td>";
+                        var cgna = '';
+                        if (pa.fieldCategoryId != null) {
+                            cgna = aod.rg[eo.id][pa.fieldCategoryId].categoryName;
+                        }
+                        str += "<td>" + cgna + "</td>";
+                        // str += "<td>" + aod.rg[eo.id][pa.fieldCategoryId].categoryName + "</td>";
                         str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
                         $('table.editDimenTable tr[actionid="' + eo.actionid + '"]').html(str);
                         $('.showdimensiontableContainer div.showkey[actionid="' + eo.actionid + '"]').eq(0).html(pa.displayName + "(" + pa.columnName + ")");
@@ -1891,7 +1918,12 @@ function baseClick() {
             str += "<td>" + ((d.isSubqueryGroup == 0) ? '否' : '是') + "</td>";
             str += "<td>" + d.format + "</td>";
             str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
-            str += "<td>" + aod.rg[eo.id][d.fieldCategoryId].categoryName + "</td>";
+            var cgna = '';
+            if (d.fieldCategoryId != null) {
+                cgna = aod.rg[eo.id][d.fieldCategoryId].categoryName;
+            }
+            str += "<td>" + cgna + "</td>";
+            // str += "<td>" + aod.rg[eo.id][d.fieldCategoryId].categoryName + "</td>";
             str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
             $('table.editDimenTable tr[actionid="' + eo.actionid + '"]').html(str);
             eo.actiontype = '';
@@ -2929,7 +2961,12 @@ function showDim(id) {
         str += "<td>" + ((d.isSubqueryGroup == 0) ? '否' : '是') + "</td>";
         str += "<td>" + getFormatName(d.format) + "</td>";
         str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
-        str += "<td>" + aod.rg[id][d.fieldCategoryId].categoryName + "</td>";
+        var cgna = '';
+        if (d.fieldCategoryId != null) {
+            cgna = aod.rg[id][d.fieldCategoryId].categoryName;
+        }
+        str += "<td>" + cgna + "</td>";
+        // str += "<td>" + aod.rg[id][d.fieldCategoryId].categoryName + "</td>";
         str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
         str += "</tr>";
         str2 += "<div class='showkey ' actionid='" + d.id + "'>" + d.displayName + '(' + d.columnName + ')' + "</div>"
@@ -2957,7 +2994,11 @@ function showDuliang(id) {
         str += "<td>" + d.aggregateFunction + "</td>";
         str += "<td>" + d.comment + "</td>";
         str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
-        str += "<td>" + aod.rg[id][d.fieldCategoryId].categoryName + "</td>";
+        if (d.fieldCategoryId == null) {
+            str += "<td>" + "</td>";
+        } else {
+            str += "<td>" + aod.rg[id][d.fieldCategoryId].categoryName + "</td>";
+        }
         str += "<td>" + getFormatName(d.format) + "</td>";
         str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
         str += "</tr>";
@@ -2988,7 +3029,7 @@ function getFormatSelect(p) {
                 break;
             }
         }
-        str = str.replace(tsr + '"', tsr + '" selected');
+        str = str.replace(tsr + '"', tsr + '" selected ');
     }
     return str;
 }
@@ -3006,16 +3047,31 @@ function formatJson() {
 }
 
 function getFormatName(v) {
+    if(v == null){
+        console.log('数据格式为空');
+        return '';
+    }
     var p = formatJson();
     for (var i in p) {
         if (p[i] == v) {
             return i;
         }
     }
-    console.log('没匹配到');
+    console.log('未匹配到相关数据格式');
 }
 
 function addReportKey(reportid, datasetId) {
+    showSwalLoading('正在添加相应指标,请稍候');
+    /*
+    swal({
+        title: '正在添加相应指标,请稍候',
+        type: 'info',
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+    }, function() {})
+    setTimeout(function(){
+        $('button.confirm').click(); 
+    },520)*/
     var p = {},
         q = {};
     var o = aod.datatable[datasetId];
@@ -3025,6 +3081,7 @@ function addReportKey(reportid, datasetId) {
         var d = r.columns;
         if (d.length == 0) {
             swalinfo('未获取到该表字段!不能自动添加指标');
+            swal.close();
         } else {
             var hasC = [];
             if (!aod.rk.hasOwnProperty(reportid)) {
@@ -3043,7 +3100,8 @@ function addReportKey(reportid, datasetId) {
                 }
             }
             for (var i = 0; i < d.length; i++) {
-                var columnName = alt + '.' + d[i];
+                // var columnName = alt + '.' + d[i];
+                var columnName =  d[i];
                 if ($.inArray(columnName, hasC) == -1) {
                     var to = {};
                     to.columnName = columnName;
@@ -3064,8 +3122,9 @@ function saveReportFieldList(reportId, datasetId, ds) {
     q.atype = 'POST';
     q.success = function(r) {
         if (r.length == ds.length) {
-            showMessage('新增了',ds.length+'个指标');
+            showMessage('新增了', ds.length + '个指标');
             refreshAllKey(reportId, true);
+            swal.close();
         } else {
             swalinfo(r.msg + '自动保存指标失败')
         }
@@ -3076,3 +3135,4 @@ function saveReportFieldList(reportId, datasetId, ds) {
         swalinfo('该表没有需要保存的字段');
     }
 }
+
