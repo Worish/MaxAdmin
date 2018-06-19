@@ -462,7 +462,7 @@ function baseClick() {
     $('.newDataSource').on('click', function(e) {
         e.stopPropagation();
         e.preventDefault();
-        refreshAllTable();
+        refreshAllTable(eo.id);
         $('.allTableUlContainer').addClass('allTableUlContainerShow');
     })
     //禁用向上冒泡事件
@@ -476,10 +476,10 @@ function baseClick() {
         var url = '';
         var p = {},
             q = {};
-        if (eo.action == 'editGroup') {
+        if (eo.action == 'editG roup') {
             url = 'report/updateReportFieldCategorySeq';
         } else if (eo.action == 'editFilter') {
-            url = '';
+            url = 'report/updateReportFilterRelationSeq';
         } else if (eo.action == 'editDuliang') {
             url = 'report/updateReportFieldSeq';
         } else if (eo.action == 'editDimen') {
@@ -578,6 +578,9 @@ function baseClick() {
                     var tname = _this.text();
                     _this.addClass('hasSelectTable');
                     getTablesById(p.reportId, true);
+                    if (aod.datatable[p.datasetId].type == 2) {
+                        addReportKey(p.reportId, p.datasetId);
+                    }
                     showMessage(tname, '添加成功');
                 }
             }
@@ -672,7 +675,7 @@ function baseClick() {
             eo.actiontype = 'delete';
             var tb = p.find('td').eq(0).html();
             p.addClass('readyremovetable');
-            var actionid = $(this).attr('actionid');
+            var actionid = eo.actionid;
             swal({
                 title: "确定删除吗?",
                 text: tb,
@@ -687,7 +690,7 @@ function baseClick() {
                 if (isConfirm) {
                     var p = {},
                         q = {};
-                    p.reportDatasetId = actionid;
+                    p.reportDatasetId = eo.actionid;
                     q.success = function(r) {
                         if (r.status == '1' && r.msg == 'success') {
                             eo.actionid = '';
@@ -987,7 +990,7 @@ function baseClick() {
                 // $('tr[groupid="' + gid + '"]').remove();
                 // $('.GroupTable tbody tr').eq(index - 1).before(htmlstr);
             }
-        } 
+        }
     })
     //添加指标操作
     $('.newDuliang').on('click', function() {
@@ -1022,14 +1025,16 @@ function baseClick() {
         } else if (eo.actiontype == 'edit') {
             var d = aod.rk[eo.id][eo.actionid];
             var str = '';
-            str += "<td>" + $(this).parent().parent().find('td').eq(0).html()+ "</td>";
+            str += "<td>" + $(this).parent().parent().find('td').eq(0).html() + "</td>";
             str += "<td>" + d.displayName + "</td>";
             str += "<td>" + d.columnName + "</td>";
             str += "<td>" + d.aggregateFunction + "</td>";
             str += "<td>" + d.comment + "</td>";
             str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
             str += "<td>" + aod.rg[eo.id][d.fieldCategoryId].categoryName + "</td>";
-            str += "<td>" + getFormatSelect({"se":d.format}) + "</td>";
+            str += "<td>" + getFormatSelect({
+                "se": d.format
+            }) + "</td>";
             str += '<td><i class="fa fa-pencil"></i><i class="fa fa-remove"></i></td>';
             $('table.DuliangTable tr[actionid="' + eo.actionid + '"]').html(str);
             eo.actiontype = '';
@@ -1090,12 +1095,14 @@ function baseClick() {
             p.find('td').eq(1).html('<input class="tableinput DuliangName" type="text" value="' + d.displayName + '"/>');
             p.find('td').eq(2).html('<input class="tableinput DuliangGongshi" type="text" value="' + d.columnName + '"/>');
             var str2 = "<select class='func'><option value='sum'>sum</option><option value='avg'>avg</option><option value='max'>max</option><option value='min'>min</option><option value='智能指标'>智能指标</option></select>";
-            str2 =  str2.replace(d.aggregateFunction+'"',d.aggregateFunction+'" selected')
+            str2 = str2.replace(d.aggregateFunction + '"', d.aggregateFunction + '" selected')
             p.find('td').eq(3).html(str2);
             p.find('td').eq(4).html('<textarea class="DuliangInfo">' + d.comment + '</textarea>');
             p.find('td').eq(5).html('');
             p.find('td').eq(6).html(getGroupSelect(d.fieldCategoryId));
-            var sstr = getFormatSelect({"se":d.format});
+            var sstr = getFormatSelect({
+                "se": d.format
+            });
             // sstr = sstr.replace(d.format + '"', d.format + '" selected ');
             p.find('td').eq(7).html(sstr);
             p.find('td').eq(8).html('<i class="fa fa-save"></i><i class="fa fa-remove"></i>');
@@ -1682,7 +1689,7 @@ function baseClick() {
             str += '<td><select class="isShow"><option value="1">是</option><option value="0">否</option></select></td>';
             str += '<td><select class="isMust"><option value="0">否</option><option value="1">是</option></select></td>';
             str += '<td><select class="isGroupby"><option value="0">否</option><option value="1">是</option></select></td>';
-            str += '<td>'+getFormatSelect()+'</td>';
+            str += '<td>' + getFormatSelect() + '</td>';
             str += '<td></td>';
             str += '<td>' + getGroupSelect() + '</td>';
             str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
@@ -1776,7 +1783,6 @@ function baseClick() {
                         aod.rd[eo.id][r.id].fieldCategoryId = pa.fieldCategoryId;
                         aod.rd[eo.id][r.id].reportId = pa.reportId;
                         aod.rd[eo.id][r.id].type = pa.type;
-
                         var ord = '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>';
                         var str = "<tr actionid='" + r.id + "'>";
                         str += "<td>" + aod.datatable[datasetId].tableName + "</td>";
@@ -1957,7 +1963,9 @@ function baseClick() {
             str2 = '<select class="isGroupby"><option value="0">否</option><option value="1">是</option></select>';
             str2 = str2.replace(d.isSubqueryGroup + '"', d.isSubqueryGroup + '" selected');
             str += '<td>' + str2 + '</td>';
-            str += '<td>' + getFormatSelect({se:d.format}) + '</td>';
+            str += '<td>' + getFormatSelect({
+                se: d.format
+            }) + '</td>';
             str += '<td></td>';
             str += '<td>' + getGroupSelect(d.fieldCategoryId) + '</td>';
             str += '<td><i class="fa fa-save"></i><i class="fa fa-remove"></i></td>';
@@ -2577,8 +2585,15 @@ function refreshAllFilter(id) {
     }
 }
 //刷新报表对应的度量列表
-function refreshAllKey(id) {
+function refreshAllKey(id, mustrefresh) {
+    var flag = false;
     if (aod.rk[id] == null) {
+        flag = true;
+    }
+    if (mustrefresh) {
+        flag = mustrefresh;
+    }
+    if (flag) {
         var url = 'report/getReportFieldList';
         var p = {};
         var q = {};
@@ -2830,7 +2845,7 @@ function getPubDimByTable() {
                 $('ul.pubDimUl').html(str);
             } else {
                 swalinfo('该维表下没有公共维度');
-                 $('ul.pubDimUl li').remove();
+                $('ul.pubDimUl li').remove();
             }
         }
         $.api('dataset/getDimColumnList', p, q);
@@ -2957,52 +2972,107 @@ function getFormatSelect(p) {
         var p = {};
         p.classname = 'dataformatselect';
     }
-    if(p.classname == null){
+    if (p.classname == null) {
         p.classname = 'dataformatselect';
     }
-    var str = '<select class="' + p.classname + '">'
-        + '<option value="文本">文本</option>'
-        + '<option value="日期">日期</option>'
-        + '<option value="百分比一位">百分比一位</option>' 
-        + '<option value="百分比两位">百分比两位</option>' 
-        + '<option value="整数">整数</option>' 
-        + '<option value="1位小数">1位小数</option>' 
-        + '<option value="2位小数">2位小数</option>' 
-        + '</select>';
-
-    if(p.se != null){
+    var str = '<select class="' + p.classname + '">' + '<option value="文本">文本</option>' + '<option value="日期">日期</option>' + '<option value="百分比一位">百分比一位</option>' + '<option value="百分比两位">百分比两位</option>' + '<option value="整数">整数</option>' + '<option value="1位小数">1位小数</option>' + '<option value="2位小数">2位小数</option>' + '</select>';
+    if (p.se != null) {
         // if(p.se == '百分比'){
         //     p.se = '百分比一位';
         // }
         var tsr = ""
         var q = formatJson();
-        for(var i in q){
-            if(p.se == q[i]){
+        for (var i in q) {
+            if (p.se == q[i]) {
                 tsr = i;
                 break;
             }
         }
-        str = str.replace(tsr+'"',tsr+'" selected');
-    }    
+        str = str.replace(tsr + '"', tsr + '" selected');
+    }
     return str;
 }
-function formatJson(){
+
+function formatJson() {
     return {
-        "文本" : '{"type":"1","franction":"0","thousand":false}',
-        "日期" : '{"type":"2","franction":"0","thousand":false}',
-        "百分比一位" : '{"type":"3","franction":"1","thousand":false}',
-        "百分比两位" : '{"type":"3","franction":"2","thousand":false}',
-        "整数" : '{"type":"4","franction":"0","thousand":true}',
-        "1位小数" : '{"type":"4","franction":"1","thousand":true}',
-        "2位小数" : '{"type":"4","franction":"2","thousand":true}',
+        "文本": '{"type":"1","franction":"0","thousand":false}',
+        "日期": '{"type":"2","franction":"0","thousand":false}',
+        "百分比一位": '{"type":"3","franction":"1","thousand":false}',
+        "百分比两位": '{"type":"3","franction":"2","thousand":false}',
+        "整数": '{"type":"4","franction":"0","thousand":true}',
+        "1位小数": '{"type":"4","franction":"1","thousand":true}',
+        "2位小数": '{"type":"4","franction":"2","thousand":true}',
     }
 }
-function getFormatName(v){ 
+
+function getFormatName(v) {
     var p = formatJson();
-    for(var i in p){
-        if(p[i]==v){
-            return i ;
+    for (var i in p) {
+        if (p[i] == v) {
+            return i;
         }
     }
     console.log('没匹配到');
+}
+
+function addReportKey(reportid, datasetId) {
+    var p = {},
+        q = {};
+    var o = aod.datatable[datasetId];
+    p.datasourceId = o.datasourceId;
+    p.tableName = o.tableName;
+    q.success = function(r) {
+        var d = r.columns;
+        if (d.length == 0) {
+            swalinfo('未获取到该表字段!不能自动添加指标');
+        } else {
+            var hasC = [];
+            if (!aod.rk.hasOwnProperty(reportid)) {
+                aod.rk[reportid] = {};
+            }
+            var len = 0;
+            for (var i in aod.rk[reportid]) {
+                hasC.push(aod.rk[reportid][i].columnName);
+                len++;
+            }
+            var ds = [];
+            var alt = "";
+            for (var i in aod.rt[reportid]) {
+                if (aod.rt[reportid][i].datasetId == datasetId) {
+                    alt = aod.rt[reportid][i].alias;
+                }
+            }
+            for (var i = 0; i < d.length; i++) {
+                var columnName = alt + '.' + d[i];
+                if ($.inArray(columnName, hasC) == -1) {
+                    var to = {};
+                    to.columnName = columnName;
+                    to.sequence = len + i * 1 + 1;
+                    to.reportId = reportid;
+                    to.datasetId = datasetId;
+                    ds.push(to);
+                }
+            }
+            saveReportFieldList(reportid, datasetId, ds);
+        }
+    }
+    $.api('datasource/getTableColumns', p, q);
+}
+
+function saveReportFieldList(reportId, datasetId, ds) {
+    var q = {};
+    q.atype = 'POST';
+    q.success = function(r) {
+        if (r.length == ds.length) {
+            showMessage('新增了',ds.length+'个指标');
+            refreshAllKey(reportId, true);
+        } else {
+            swalinfo(r.msg + '自动保存指标失败')
+        }
+    }
+    if (ds.length > 0) {
+        $.api('report/saveReportFieldList', ds, q);
+    } else {
+        swalinfo('该表没有需要保存的字段');
+    }
 }
