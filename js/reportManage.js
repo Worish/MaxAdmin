@@ -1003,7 +1003,7 @@ function baseClick() {
             str += "<td></td>";
             str += "<td><input class='tableinput DuliangName' type='text' /></td>";
             str += "<td><input class='tableinput DuliangGongshi' type='text' /></td>";
-            str += "<td><select class='func'><option value='sum'>sum</option><option value='avg'>avg</option><option value='max'>max</option><option value='min'>min</option><option value='智能指标'>智能指标</option></select></td>";
+            str += "<td><select class='func'><option value='sum'>sum</option><option value='avg'>avg</option><option value='max'>max</option><option value='min'>min</option><option value='smart'>智能指标</option></select></td>";
             str += "<td><textarea class='DuliangInfo'></textarea></td>";
             str += "<td></td>";
             str += "<td>" + getGroupSelect() + "</td>";
@@ -1098,7 +1098,7 @@ function baseClick() {
             var d = aod.rk[eo.id][eo.actionid];
             p.find('td').eq(1).html('<input class="tableinput DuliangName" type="text" value="' + d.displayName + '"/>');
             p.find('td').eq(2).html('<input class="tableinput DuliangGongshi" type="text" value="' + d.columnName + '"/>');
-            var str2 = "<select class='func'><option value='sum'>sum</option><option value='avg'>avg</option><option value='max'>max</option><option value='min'>min</option><option value='智能指标'>智能指标</option></select>";
+            var str2 = "<select class='func'><option value='sum'>sum</option><option value='avg'>avg</option><option value='max'>max</option><option value='min'>min</option><option value='smart'>智能指标</option></select>";
             str2 = str2.replace(d.aggregateFunction + '"', d.aggregateFunction + '" selected')
             p.find('td').eq(3).html(str2);
             p.find('td').eq(4).html('<textarea class="DuliangInfo">' + d.comment + '</textarea>');
@@ -1247,7 +1247,7 @@ function baseClick() {
                         str += "<td>" + p.find('td').eq(0).html() + "</td>";
                         str += "<td>" + duname + "</td>";
                         str += "<td>" + dugongshi + "</td>";
-                        str += "<td>" + dufunc + "</td>";
+                        str += "<td>" + ((dufunc=='smart')?"智能指标":dufunc) + "</td>";
                         str += "<td>" + duinfo + "</td>";
                         str += "<td>" + ord + "</td>";
                         if (group == null) {
@@ -2991,7 +2991,7 @@ function showDuliang(id) {
         str += "<td orderid='" + (td.length - i) + "'>" + (td.length - i) + "</td>";
         str += "<td>" + d.displayName + "</td>";
         str += "<td>" + d.columnName + "</td>";
-        str += "<td>" + d.aggregateFunction + "</td>";
+        str += "<td>" + ((d.aggregateFunction =='smart')?'智能指标':d.aggregateFunction) + "</td>";
         str += "<td>" + d.comment + "</td>";
         str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
         if (d.fieldCategoryId == null) {
