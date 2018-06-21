@@ -477,7 +477,9 @@ function baseClick() {
         var url = '';
         var p = {},
             q = {};
-        if (eo.action == 'editG roup') {
+        if (eo.action == 'editJoin') {
+            url = '';
+        } else if (eo.action == 'editGroup') {
             url = 'report/updateReportFieldCategorySeq';
         } else if (eo.action == 'editFilter') {
             url = 'report/updateReportFilterRelationSeq';
@@ -500,7 +502,13 @@ function baseClick() {
         // p = JSON.stringify(p);
         q.success = function(r) {
             if (r.status == 1 && r.msg == 'success') {
-                if (eo.action == 'editGroup') {
+                if (eo.action == 'editJoin') {
+                    for (var i = 0; i < p.length; i++) {
+                        var o = p[i];
+                        aod.rt[eo.id][o.itemId].sequence = o.sequence;
+                    }
+                    showJoinTable(eo.id);
+                } else if (eo.action == 'editGroup') {
                     for (var i = 0; i < p.length; i++) {
                         var o = p[i];
                         aod.rg[eo.id][o.itemId].sequence = o.sequence;
@@ -622,22 +630,31 @@ function baseClick() {
         eo.actiontype = 'edit';
         eo.actionid = p.attr('actionid') * 1;
         var jointext = p.find('td').eq(2).text();
+        var alias = p.find('td').eq(1).text();
         window.jointext = jointext;
+        window.alias = alias;
         var str = '<textarea class="tablejoinedit"></textarea>';
+        var str1 = '<textarea class="tablealiasjoinedit">' + alias + '</textarea>';
+        p.find('td').eq(1).html(str1);
         p.find('td').eq(2).html(str);
         $('textarea.tablejoinedit').val(jointext);
-        p.find('td').eq(3).html('<i class="fa fa-save"></i><i class="fa fa-remove"></i>');
+        p.find('td').eq(3).html('');
+        p.find('td').eq(4).html('<i class="fa fa-save"></i><i class="fa fa-remove"></i>');
     })
     //保存关联
     $('.joinTable').on('click', '.fa-save', function() {
         var jointext = $('textarea.tablejoinedit').val();
+        var alias = $('textarea.tablealiasjoinedit').val();
         if (jointext.replace(/\s+/g, '') == '') {
             swalinfo('关联关系为空哦');
+        } else if (alias.replace(/\s+/g, '') == '') {
+            swalinfo('别名为空哦');
         } else {
             var p = $(this).parent().parent();
             var pa = {},
                 q = {};
             pa.reportId = eo.id;
+            pa.alias = alias;
             pa.relation = jointext;
             pa.sequence = 9999;
             pa.id = p.attr('actionid');
@@ -652,10 +669,16 @@ function baseClick() {
                     eo.actiontype = '';
                     eo.actionid = '';
                     var db = p.find('td').eq(0).html();
+                    p.find('td').eq(1).html(alias);
                     p.find('td').eq(2).html(jointext);
-                    p.find('td').eq(3).html('<i class="fa fa-edit" actionid="' + pa.id + '"></i><i class="fa fa-remove" actionid="' + pa.id + '"></i>');
+                    p.find('td').eq(3).html('<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>');
+                    p.find('td').eq(4).html('<i class="fa fa-edit" actionid="' + pa.id + '"></i><i class="fa fa-remove" actionid="' + pa.id + '"></i>');
                     aod.rt[pa.reportId][pa.id].relation = jointext;
+                    aod.rt[pa.reportId][pa.id].alias = alias;
+                    $('.showdatatableContainer').find('.reportdataset[actionid="' + pa.id + '"]').find('.aliasname').text(alias);
                     showMessage(db, '修改成功');
+                    window.jointext = null;
+                    window.alias = null;
                 } else {
                     swalinfo(r.msg + '修改失败哦,请联系管理员');
                 }
@@ -669,9 +692,12 @@ function baseClick() {
         if ($('textarea.tablejoinedit').length > 0) {
             $('.editJoinContainer').attr('active', '');
             $('textarea.tablejoinedit').remove();
+            p.find('td').eq(1).html(window.alias);
             p.find('td').eq(2).html(window.jointext);
             window.jointext = null;
-            p.find('td').eq(3).html('<i class="fa fa-edit"></i><i class="fa fa-remove"></i>');
+            window.alias = null;
+            p.find('td').eq(3).html('<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>');
+            p.find('td').eq(4).html('<i class="fa fa-edit"></i><i class="fa fa-remove"></i>');
         } else {
             eo.actionid = p.attr('actionid') * 1;
             eo.actiontype = 'delete';
@@ -1247,7 +1273,7 @@ function baseClick() {
                         str += "<td>" + p.find('td').eq(0).html() + "</td>";
                         str += "<td>" + duname + "</td>";
                         str += "<td>" + dugongshi + "</td>";
-                        str += "<td>" + ((dufunc=='smart')?"智能指标":dufunc) + "</td>";
+                        str += "<td>" + ((dufunc == 'smart') ? "智能指标" : dufunc) + "</td>";
                         str += "<td>" + duinfo + "</td>";
                         str += "<td>" + ord + "</td>";
                         if (group == null) {
@@ -2697,26 +2723,10 @@ function getTablesById(reportid, needrefresh) {
         p.reportId = reportid;
         q.success = function(r) {
             aod.rt[reportid] = {};
-            var tempa = [];
-            var tempb = [];
             for (var i = 0; i < r.length; i++) {
-                var str = "";
-                var str2 = "";
                 aod.rt[reportid][r[i].id] = r[i];
-                str += "<tr actionid ='" + r[i].id + "'>";
-                str += "<td>" + aod.datatable[r[i].datasetId].showname + "</td>";
-                str += "<td>" + r[i].alias + "</td>";
-                str += "<td>" + r[i].relation + "</td>";
-                str += "<td><i class='fa fa-edit' actionid='" + r[i].id + "'>" + "</i><i class='fa fa-remove' actionid='" + r[i].id + "'></i></td>";
-                str += "</tr>";
-                tempa.push(str);
-                str2 += "<div class=' showkey reportdataset' actionid='" + r[i].id + "'>" + aod.datatable[r[i].datasetId].showname + '(<span class="aliasname">' + r[i].alias + '</span>)' + "</div>"
-                tempb.push(str2);
             }
-            tempa.reverse();
-            tempb.reverse();
-            $('.joinTable tbody').html(tempa.join(''));
-            $('.showdatatableContainer').html(tempb.join(''));
+            showJoinTable();
         }
         $.api(url, p, q);
     } else {}
@@ -2751,6 +2761,7 @@ function initAod() {
     aod.pubdimtable = {}; //存放系统配置的所有维度表
     aod.pubdim = {}; //存放系统配置的所有维度表的公共维度
     aod.rt = {}; //存放报表对应数据源的内容
+    aod.rts = {}; //存放报表对应数据源数组的内容
     aod.rg = {}; //存放报表维度指标所在组的内容
     aod.rgs = {}; //排序后 --  存放报表维度指标所在组的内容
     aod.rd = {}; //存放报表对应维度的内容
@@ -2892,6 +2903,30 @@ function compare(property) {
     }
 }
 
+function showJoinTable() {
+    aod.rts[eo.id] = [];
+    for (var i in aod.rt[eo.id]) {
+        aod.rts[eo.id].push(aod.rt[eo.id][i]);
+    }
+    aod.rts[eo.id].sort(compare('sequence'));
+    aod.rts[eo.id].reverse();
+    var d = aod.rts[eo.id];
+    var str = "";
+    var str1 = "";
+    for (var i = 0; i < d.length; i++) {
+        str += "<tr actionid ='" + d[i].id + "'>";
+        str += "<td>" + aod.datatable[d[i].datasetId].showname + "</td>";
+        str += "<td>" + d[i].alias + "</td>";
+        str += "<td>" + d[i].relation + "</td>";
+        str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
+        str += "<td><i class='fa fa-edit' actionid='" + d[i].id + "'>" + "</i><i class='fa fa-remove' actionid='" + d[i].id + "'></i></td>";
+        str += "</tr>";
+        str1 += '<div class=" showkey reportdataset" actionid="'+d[i].id+'">'+aod.datatable[d[i].datasetId].showname+'(<span class="aliasname">'+d[i].alias+'</span>)</div>';
+    }
+    $('.joinTable tbody').html(str);
+    $('.showdatatableContainer').html(str1);
+}
+
 function showGroup() {
     aod.rgs[eo.id] = [];
     for (var i in aod.rg[eo.id]) {
@@ -2991,7 +3026,7 @@ function showDuliang(id) {
         str += "<td orderid='" + (td.length - i) + "'>" + (td.length - i) + "</td>";
         str += "<td>" + d.displayName + "</td>";
         str += "<td>" + d.columnName + "</td>";
-        str += "<td>" + ((d.aggregateFunction =='smart')?'智能指标':d.aggregateFunction) + "</td>";
+        str += "<td>" + ((d.aggregateFunction == 'smart') ? '智能指标' : d.aggregateFunction) + "</td>";
         str += "<td>" + d.comment + "</td>";
         str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
         if (d.fieldCategoryId == null) {
@@ -3047,7 +3082,7 @@ function formatJson() {
 }
 
 function getFormatName(v) {
-    if(v == null){
+    if (v == null) {
         console.log('数据格式为空');
         return '';
     }
@@ -3101,7 +3136,7 @@ function addReportKey(reportid, datasetId) {
             }
             for (var i = 0; i < d.length; i++) {
                 // var columnName = alt + '.' + d[i];
-                var columnName =  d[i];
+                var columnName = d[i];
                 if ($.inArray(columnName, hasC) == -1) {
                     var to = {};
                     to.columnName = columnName;
@@ -3135,4 +3170,3 @@ function saveReportFieldList(reportId, datasetId, ds) {
         swalinfo('该表没有需要保存的字段');
     }
 }
-
