@@ -578,6 +578,7 @@ function baseClick() {
             p.relation = '';
             p.sequence = 9999;
             p.datasetId = $(this).attr('actionid');
+            p.alias = '';
             p.datasetName = aod.datatable[p.datasetId].datasetName;
             var url = "report/saveReportDataset";
             q.atype = 'POST';

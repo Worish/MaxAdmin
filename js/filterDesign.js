@@ -1,3 +1,4 @@
+/* 如果是父筛选是空的话,parentId设置为0 */
 $(document).ready(function() {
     $fe = $('.filterEditOutContainer');
     aod = {};
@@ -246,6 +247,10 @@ function bck() {
             } else if (st == '单选') {
                 p.type = 'select';
             }
+            if(pid == null || pid ==''){
+                pid = 0;
+                jc = '';
+            }
             p.parentId = pid;
             p.pathName = $('#pathnamespan').attr('pathName');
             tp.joinColumn = jc;
@@ -340,6 +345,8 @@ function showData(pathid) {
     var to = {
         "selectMul": "复选",
         "select": "单选",
+        "textBox": "输入框",
+        "dateRangeBox": "时间范围",
     }
     var df = new DateFormat();
     var tda = [];
@@ -399,7 +406,7 @@ function fullEditContent(p) {
             pathna.push($('.rootNavUl').find('li[folderid="' + pathname[i] + '"]').find('.foldName').eq(0).text().replace(/\s+/g, ''));
         }
         fullParentList(p);
-        if (d.parentId != null && d.parentId != '') {
+        if (d.parentId != null && d.parentId != ''&& d.parentId != 0) {
             $('.parentFilterListUl li[actionid="' + d.parentId + '"]').addClass('selected');
             $('.parentFilterName').text(aod.data[d.parentId].name);
             $('.parentFilterName').attr('pid', d.parentId);
