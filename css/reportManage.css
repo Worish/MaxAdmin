@@ -917,7 +917,8 @@ span.savefiln {
     border-right: solid 1px #ddd;
 }
 table.table.editDimenTable textarea {
-    width: 150px;
+    width: 120px;
+    height: 150px;
 }
 .pubDimOutContainer {
     position: absolute;
@@ -1007,4 +1008,11 @@ span.speinfo {
 span.aliasname {
     font-size: 12px;
     color: #d66061;
+}
+table.table.editDimenTable th:nth-child(3),
+table.table.editDimenTable th:nth-child(4),
+table.table.editDimenTable tr td:nth-child(3),
+table.table.editDimenTable tr td:nth-child(4) {
+    width: 175px!important;
+    word-break: break-word!important;
 }

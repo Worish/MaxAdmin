@@ -478,7 +478,7 @@ function baseClick() {
         var p = {},
             q = {};
         if (eo.action == 'editJoin') {
-            url = '';
+            url = 'report/updateReportDatasetSeq';
         } else if (eo.action == 'editGroup') {
             url = 'report/updateReportFieldCategorySeq';
         } else if (eo.action == 'editFilter') {
@@ -515,11 +515,11 @@ function baseClick() {
                     }
                     showGroup(eo.id);
                 } else if (eo.action == 'editFilter') {
-                    /*for(var i=0;i<p.length;i++){
+                    for(var i=0;i<p.length;i++){
                         var o = p[i];
-                        aod.rg[eo.id][o.itemId].sequence = o.sequence;
+                        aod.rf[eo.id][o.itemId].sequence = o.sequence;
                    }
-                   showGroup();*/
+                   showFilter(eo.id);
                 } else if (eo.action == 'editDuliang') {
                     for (var i = 0; i < p.length; i++) {
                         var o = p[i];
@@ -646,9 +646,9 @@ function baseClick() {
     $('.joinTable').on('click', '.fa-save', function() {
         var jointext = $('textarea.tablejoinedit').val();
         var alias = $('textarea.tablealiasjoinedit').val();
-        if (jointext.replace(/\s+/g, '') == '') {
+        /*if (jointext.replace(/\s+/g, '') == '') {
             swalinfo('关联关系为空哦');
-        } else if (alias.replace(/\s+/g, '') == '') {
+        } else */if (alias.replace(/\s+/g, '') == '') {
             swalinfo('别名为空哦');
         } else {
             var p = $(this).parent().parent();
@@ -1057,7 +1057,7 @@ function baseClick() {
             str += "<td>" + $(this).parent().parent().find('td').eq(0).html() + "</td>";
             str += "<td>" + d.displayName + "</td>";
             str += "<td>" + d.columnName + "</td>";
-            str += "<td>" + d.aggregateFunction + "</td>";
+            str += "<td>" + ((d.aggregateFunction=='smart')?'智能指标':d.aggregateFunction) + "</td>";
             str += "<td>" + d.comment + "</td>";
             str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
             if (d.fieldCategoryId == null) {
@@ -1200,7 +1200,7 @@ function baseClick() {
                         str += "<td>" + $('.DuliangTable tbody tr').length + "</td>";
                         str += "<td>" + duname + "</td>";
                         str += "<td>" + dugongshi + "</td>";
-                        str += "<td>" + dufunc + "</td>";
+                        str += "<td>" + ((dufunc=='smart')?'智能指标':dufunc) + "</td>";
                         str += "<td>" + duinfo + "</td>";
                         str += "<td>" + ord + "</td>";
                         var cgna = '';
@@ -1254,7 +1254,7 @@ function baseClick() {
                 pa.displayName = duname;
                 pa.columnName = dugongshi;
                 pa.aggregateFunction = dufunc;
-                pa.fieldCategoryId = aod.rk[eo.id][eo.actionid].fieldCategoryId;
+                pa.fieldCategoryId = group;
                 pa.comment = duinfo;
                 pa.sequence = aod.rk[eo.id][eo.actionid].sequence;
                 pa.format = df;
@@ -1943,7 +1943,7 @@ function baseClick() {
             str += "<td>" + ((d.isHidden == 0) ? '否' : '是') + "</td>";
             str += "<td>" + ((d.isRequired == 0) ? '否' : '是') + "</td>";
             str += "<td>" + ((d.isSubqueryGroup == 0) ? '否' : '是') + "</td>";
-            str += "<td>" + d.format + "</td>";
+            str += "<td>" + getFormatName(d.format) + "</td>";
             str += "<td>" + '<i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i>' + "</td>";
             var cgna = '';
             if (d.fieldCategoryId != null) {
@@ -2095,7 +2095,7 @@ function getGroupSelect(vid) {
     a.map(function(i, v) {
         if (vid != null) {
             var flag = '';
-            if (vid == i.categoryId) {
+            if (vid == i.id) {
                 flag = 'selected';
             }
             str += '<option value="' + i.id + '" ' + flag + '>' + i.name + '</option>'
