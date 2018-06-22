@@ -453,7 +453,7 @@ function baseClick() {
         $('.dataTableOper').hide();
     })
     //编辑报表事件
-    $('.reportList').on('click', '.fa-edit', function(e) {
+    $('.reportList').on('click', 'tbody tr', function(e) {
         e.stopPropagation();
         e.preventDefault();
         editReport($(this).attr('actionid'));
@@ -2456,6 +2456,7 @@ function getReportList(id) {
                     var str = "";
                     aod.reportList[r[i].id] = r[i];
                     str += '<tr actionid="' + r[i].id + '">';
+                    str += '<td>' + r[i].id + '</td>';
                     str += '<td>' + r[i].name + '</td>';
                     str += '<td>' + getPath(r[i].categoryId) + '</td>';
                     str += '<td>' + ((r[i].isFieldSelect == 1) ? '是' : '否') + '</td>';
