@@ -1720,6 +1720,27 @@ function baseClick() {
         $('.pubDimOutContainer').hide();
         eo.actiontype = '';
     })
+    //维度是否显示和是否必选互斥
+    $('.editDimenTable').on('mouseover','select.isShow',function(){
+        $('.isMust').off('change');
+        $('select.isShow').on('change',function(){
+            var sv = $(this).find('option:selected').val();
+            var str = '<select class="isMust">'
+            +'<option value="0" '+((sv==1)?'selected':'')+'>否</option>'
+            +'<option value="1" '+((sv==0)?'selected':'')+'>是</option></select>';
+            $(this).parent().next().html(str);
+        })
+    })//维度是否显示和是否必选互斥
+    $('.editDimenTable').on('mouseover','select.isMust',function(){
+        $('.isShow').off('change');
+        $('select.isMust').on('change',function(){
+            var rv = $(this).find('option:selected').val();
+            var str = '<select class="isShow">'
+            +'<option value="0" '+((rv==1)?'selected':'')+'>否</option>'
+            +'<option value="1" '+((rv==0)?'selected':'')+'>是</option></select>';
+            $(this).parent().prev().html(str);
+        })
+    })
     //添加私有维度
     $('.newPrivateDimen').on('click', function(e) {
         e.stopPropagation();
