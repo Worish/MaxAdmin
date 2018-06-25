@@ -3096,13 +3096,13 @@ function getFormatSelect(p) {
 
 function formatJson() {
     return {
-        "文本": '{"type":"1","franction":"0","thousand":false}',
-        "日期": '{"type":"2","franction":"0","thousand":false}',
-        "百分比一位": '{"type":"3","franction":"1","thousand":false}',
-        "百分比两位": '{"type":"3","franction":"2","thousand":false}',
-        "整数": '{"type":"4","franction":"0","thousand":true}',
-        "1位小数": '{"type":"4","franction":"1","thousand":true}',
-        "2位小数": '{"type":"4","franction":"2","thousand":true}',
+        "文本": '{"type":"1","fraction":"0","thousand":false}',
+        "日期": '{"type":"2","fraction":"0","thousand":false}',
+        "百分比一位": '{"type":"3","fraction":"1","thousand":false}',
+        "百分比两位": '{"type":"3","fraction":"2","thousand":false}',
+        "整数": '{"type":"4","fraction":"0","thousand":true}',
+        "1位小数": '{"type":"4","fraction":"1","thousand":true}',
+        "2位小数": '{"type":"4","fraction":"2","thousand":true}',
     }
 }
 
