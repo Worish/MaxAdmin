@@ -1305,7 +1305,7 @@ function baseClick() {
             str += '<td class="filterNameTd"><div class="filterNameE"></div>' + '<div class="filterSelectContainer"><input class="seachFilter" type="text" placeholder="在此输入搜索" />' + '<div class="fliterInfo">筛选列表:</div>' + '<ul class="fliterUl">' + getFilterUl() + '</ul>' + '<div class="filternameoper"><span  class="savefiln">确定</span><span  class="cancelfiln">取消</span></div></div></td>';
             str += '<td><input class="tableinput showName" type="text" /></td>';
             str += '<td><select class="isShow"><option value="1">是</option><option value="0">否</option></select></td>';
-            str += '<td>' + getReportTable() + '</td>';
+            // str += '<td>' + getReportTable() + '</td>';
             str += '<td><input class="tableinput joinC" type="text" /></td>';
             str += '<td><select class="joinMax"><option value="0">否</option><option value="1">是</option></select></td>';
             str += '<td></td>';
@@ -1373,7 +1373,7 @@ function baseClick() {
             $('.fliterUl').html(str);
         }, 300)
     })
-    //筛选取消保存或者删除
+    //筛选编辑
     $('.FilterTable').on('click', '.fa-pencil', function() {
         if (eo.actiontype != '') {
             showMessage('请先完成当前编辑内容', '');
@@ -1383,12 +1383,12 @@ function baseClick() {
             eo.actionid = p.attr('actionid') * 1;
             var d = aod.rf[eo.id][eo.actionid];
             var str = '';
-            str += '<td class="filterNameTd"><div class="filterNameE">' + aod.filterList[d.filterId].name + '</div>' + '<div class="filterSelectContainer"><input class="seachFilter" type="text" placeholder="在此输入搜索" />' + '<ul class="fliterUl">' + getFilterUl(d.filterId) + '</ul>' + '<div class="filternameoper"><span  class="savefiln">确定</span><span  class="cancelfiln">取消</span></div></div></td>';
+            str += '<td class="filterNameTd"><div class="filterNameE" filterid="'+d.filterId+'">' + aod.filterList[d.filterId].name + '</div>' + '<div class="filterSelectContainer"><input class="seachFilter" type="text" placeholder="在此输入搜索" />' + '<ul class="fliterUl">' + getFilterUl(d.filterId) + '</ul>' + '<div class="filternameoper"><span  class="savefiln">确定</span><span  class="cancelfiln">取消</span></div></div></td>';
             str += '<td><input class="tableinput showName" type="text" value="' + d.showName + '" /></td>';
             var tempstr = '<select class="isShow"><option value="0">否</option><option value="1">是</option></select>';
             //tempstr = tempstr.replace('','')
             str += '<td>' + tempstr + '</td>';
-            str += '<td>' + getReportTable(d.joinDatasetId) + '</td>';
+            // str += '<td>' + getReportTable(d.joinDatasetId) + '</td>';
             str += '<td><input class="tableinput joinC" type="text" value="' + d.joinColumn + '"/></td>';
             var tempstr2 = '<select class="joinMax"><option value="0">否</option><option value="1">是</option></select>';
             tempstr2 = tempstr2.replace(d.isAuth + '"', d.isAuth + '" selected ');
@@ -1420,7 +1420,7 @@ function baseClick() {
             str += "<td>" + d.filterName + "</td>";
             str += "<td>" + d.showName + "</td>";
             str += "<td>" + ((d.isShow == 0) ? '否' : '是') + "</td>";
-            str += "<td>" + '' + "</td>";
+            // str += "<td>" + '' + "</td>";
             str += "<td>" + d.joinColumn + "</td>";
             str += "<td>" + ((d.isAuth == 0) ? '否' : '是') + "</td>";
             str += "<td>" + ord + "</td>";
@@ -1480,7 +1480,7 @@ function baseClick() {
         var showName = p.find('.showName').val();
         var isShow = p.find('.isShow option:selected').val();
         var reportId = eo.id;
-        var joinDatasetId = p.find('.filterJoinTable option:selected').val();
+        // var joinDatasetId = p.find('.filterJoinTable option:selected').val();
         var joinColumn = p.find('.joinC').val();
         var isAuth = p.find('.joinMax option:selected').val();
         var sequence = 9999;
@@ -1515,7 +1515,7 @@ function baseClick() {
                 pa.filterName = filterName;
                 pa.showName = showName;
                 pa.isShow = isShow;
-                pa.joinDatasetId = joinDatasetId;
+                // pa.joinDatasetId = joinDatasetId;
                 pa.reportId = reportId;
                 pa.joinColumn = joinColumn;
                 pa.isAuth = isAuth;
@@ -1527,7 +1527,7 @@ function baseClick() {
                         str += "<td>" + filterName + "</td>";
                         str += "<td>" + showName + "</td>";
                         str += "<td>" + ((isShow == 0) ? '否' : '是') + "</td>";
-                        str += "<td>" + aod.datatable[pa.joinDatasetId].datasetName + "</td>";
+                        // str += "<td>" + aod.datatable[pa.joinDatasetId].datasetName + "</td>";
                         str += "<td>" + joinColumn + "</td>";
                         str += "<td>" + ((isAuth == 0) ? '否' : '是') + "</td>";
                         str += "<td>" + ord + "</td>";
@@ -1574,7 +1574,7 @@ function baseClick() {
                 pa.filterName = filterName;
                 pa.showName = showName;
                 pa.isShow = isShow;
-                pa.joinDatasetId = joinDatasetId;
+                // pa.joinDatasetId = joinDatasetId;
                 pa.reportId = reportId;
                 pa.joinColumn = joinColumn;
                 pa.isAuth = isAuth;
@@ -1586,7 +1586,7 @@ function baseClick() {
                         str += "<td>" + filterName + "</td>";
                         str += "<td>" + showName + "</td>";
                         str += "<td>" + ((isShow == 0) ? '否' : '是') + "</td>";
-                        str += "<td>" + aod.datatable[pa.joinDatasetId].datasetName + "</td>";
+                        // str += "<td>" + aod.datatable[pa.joinDatasetId].datasetName + "</td>";
                         str += "<td>" + joinColumn + "</td>";
                         str += "<td>" + ((isAuth == 0) ? '否' : '是') + "</td>";
                         str += "<td>" + ord + "</td>";
@@ -2413,6 +2413,7 @@ function getReportList(id) {
                 var str = "";
                 var d = aod.reportList[i];
                 str += '<tr actionid="' + d.id + '">';
+                str += '<td>' + d.id + '</td>';
                 str += '<td>' + d.name + '</td>';
                 str += '<td>' + getPath(d.categoryId) + '</td>';
                 str += '<td></td>';
@@ -2427,6 +2428,7 @@ function getReportList(id) {
                 var str = "";
                 var d = aod.reportList[i];
                 str += '<tr actionid="' + d.id + '">';
+                str += '<td>' + d.id + '</td>';
                 str += '<td>' + d.name + '</td>';
                 str += '<td>' + getPath(d.categoryId) + '</td>';
                 str += '<td></td>';
@@ -2963,7 +2965,7 @@ function showFilter(id) {
         str += "<td>" + d[i].filterName + "</td>";
         str += "<td>" + d[i].showName + "</td>";
         str += "<td>" + ((d[i].isShow == 0) ? '否' : '是') + "</td>";
-        str += "<td>" + aod.datatable[d[i].joinDatasetId].datasetName + "</td>";
+        // str += "<td>" + aod.datatable[d[i].joinDatasetId].datasetName + "</td>";
         str += "<td>" + d[i].joinColumn + "</td>";
         str += "<td>" + ((d[i].isAuth == 0) ? '否' : '是') + "</td>";
         str += '<td><i class="fa fa-chevron-circle-up"></i><i class="fa fa-chevron-circle-down"></i></td>';
