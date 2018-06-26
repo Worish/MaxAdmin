@@ -1643,7 +1643,7 @@ function baseClick() {
             pa.displayName = d.displayName;
             pa.datasetColumnId = pid;
             pa.expression = d.expression;
-            pa.isHidden = 1;
+            pa.isShow = 1;
             pa.isRequired = 0;
             pa.isSubqueryGroup = 1;
             var tpa = formatJson()
@@ -1668,7 +1668,7 @@ function baseClick() {
                     aod.rd[eo.id][r.id].displayName = pa.displayName;
                     aod.rd[eo.id][r.id].datasetColumnId = pa.datasetColumnId;
                     aod.rd[eo.id][r.id].expression = pa.expression;
-                    aod.rd[eo.id][r.id].isHidden = pa.isHidden;
+                    aod.rd[eo.id][r.id].isShow = pa.isShow;
                     aod.rd[eo.id][r.id].isRequired = pa.isRequired;
                     aod.rd[eo.id][r.id].isSubqueryGroup = pa.isSubqueryGroup;
                     aod.rd[eo.id][r.id].format = pa.format;
@@ -1682,7 +1682,7 @@ function baseClick() {
                     str += "<td>" + pa.displayName + "</td>";
                     str += "<td>" + pa.columnName + "</td>";
                     str += "<td>" + pa.expression + "</td>";
-                    str += "<td>" + ((pa.isHidden == 0) ? '否' : '是') + "</td>";
+                    str += "<td>" + ((pa.isShow == 0) ? '否' : '是') + "</td>";
                     str += "<td>" + ((pa.isRequired == 0) ? '否' : '是') + "</td>";
                     str += "<td>" + ((pa.isSubqueryGroup == 0) ? '否' : '是') + "</td>";
                     str += "<td>" + getFormatName(pa.format) + "</td>";
@@ -1778,7 +1778,7 @@ function baseClick() {
         var columnName = p.find('textarea.dimkey').val();
         // var datasetColumnId = p.find('textarea.dimkey').val();
         var expression = p.find('textarea.dimvalue').val();
-        var isHidden = p.find('select.isShow option:selected').val();
+        var isShow = p.find('select.isShow option:selected').val();
         var isRequired = p.find('select.isMust option:selected').val();
         var isSubqueryGroup = p.find('select.isGroupby option:selected').val();
         var format = p.find('select.dataformatselect option:selected').val();
@@ -1820,7 +1820,7 @@ function baseClick() {
                 pa.displayName = displayName;
                 // pa.datasetColumnId = datasetColumnId ;
                 pa.expression = expression;
-                pa.isHidden = isHidden;
+                pa.isShow = isShow;
                 pa.isRequired = isRequired;
                 pa.isSubqueryGroup = isSubqueryGroup;
                 pa.format = format;
@@ -1840,7 +1840,7 @@ function baseClick() {
                         aod.rd[eo.id][r.id].displayName = pa.displayName;
                         // aod.rd[eo.id][r.id].datasetColumnId = pa.datasetColumnId ;
                         aod.rd[eo.id][r.id].expression = pa.expression;
-                        aod.rd[eo.id][r.id].isHidden = pa.isHidden;
+                        aod.rd[eo.id][r.id].isShow = pa.isShow;
                         aod.rd[eo.id][r.id].isRequired = pa.isRequired;
                         aod.rd[eo.id][r.id].isSubqueryGroup = pa.isSubqueryGroup;
                         aod.rd[eo.id][r.id].format = format;
@@ -1854,7 +1854,7 @@ function baseClick() {
                         str += "<td>" + displayName + "</td>";
                         str += "<td>" + columnName + "</td>";
                         str += "<td>" + expression + "</td>";
-                        str += "<td>" + ((isHidden == 0) ? '否' : '是') + "</td>";
+                        str += "<td>" + ((isShow == 0) ? '否' : '是') + "</td>";
                         str += "<td>" + ((isRequired == 0) ? '否' : '是') + "</td>";
                         str += "<td>" + ((isSubqueryGroup == 0) ? '否' : '是') + "</td>";
                         str += "<td>" + getFormatName(format) + "</td>";
@@ -1897,7 +1897,7 @@ function baseClick() {
                 pa.displayName = displayName;
                 // pa.datasetColumnId = datasetColumnId ;
                 pa.expression = expression;
-                pa.isHidden = isHidden;
+                pa.isShow = isShow;
                 pa.isRequired = isRequired;
                 pa.isSubqueryGroup = isSubqueryGroup;
                 pa.format = format;
@@ -1911,7 +1911,7 @@ function baseClick() {
                         aod.rd[eo.id][eo.actionid].columnName = pa.columnName;
                         aod.rd[eo.id][eo.actionid].displayName = pa.displayName;
                         aod.rd[eo.id][eo.actionid].expression = pa.expression;
-                        aod.rd[eo.id][eo.actionid].isHidden = pa.isHidden;
+                        aod.rd[eo.id][eo.actionid].isShow = pa.isShow;
                         aod.rd[eo.id][eo.actionid].isRequired = pa.isRequired;
                         aod.rd[eo.id][eo.actionid].isSubqueryGroup = pa.isSubqueryGroup;
                         aod.rd[eo.id][eo.actionid].format = pa.format;
@@ -1924,7 +1924,7 @@ function baseClick() {
                         str += "<td>" + displayName + "</td>";
                         str += "<td>" + columnName + "</td>";
                         str += "<td>" + expression + "</td>";
-                        str += "<td>" + ((isHidden == 0) ? '否' : '是') + "</td>";
+                        str += "<td>" + ((isShow == 0) ? '否' : '是') + "</td>";
                         str += "<td>" + ((isRequired == 0) ? '否' : '是') + "</td>";
                         str += "<td>" + ((isSubqueryGroup == 0) ? '否' : '是') + "</td>";
                         str += "<td>" + getFormatName(format) + "</td>";
@@ -1961,7 +1961,7 @@ function baseClick() {
             str += "<td>" + d.displayName + "</td>";
             str += "<td>" + d.columnName + "</td>";
             str += "<td>" + d.expression + "</td>";
-            str += "<td>" + ((d.isHidden == 0) ? '否' : '是') + "</td>";
+            str += "<td>" + ((d.isShow == 0) ? '否' : '是') + "</td>";
             str += "<td>" + ((d.isRequired == 0) ? '否' : '是') + "</td>";
             str += "<td>" + ((d.isSubqueryGroup == 0) ? '否' : '是') + "</td>";
             str += "<td>" + getFormatName(d.format) + "</td>";
@@ -2035,7 +2035,7 @@ function baseClick() {
             str += '<td><textarea class="tableinput dimkey" type="text" >' + d.columnName + '</textarea></td>';
             str += '<td><textarea class="tableinput dimvalue" type="text">' + d.expression + '</textarea></td>';
             var str2 = '<select class="isShow"><option value="0">否</option><option value="1">是</option></select>';
-            str2 = str2.replace(d.isHidden + '"', d.isHidden + '" selected');
+            str2 = str2.replace(d.isShow + '"', d.isShow + '" selected');
             str += '<td>' + str2 + '</td>';
             str2 = '<select class="isMust"><option value="0">否</option><option value="1">是</option></select>';
             str2 = str2.replace(d.isRequired + '"', d.isRequired + '" selected');
@@ -3016,7 +3016,7 @@ function showDim(id) {
         str += "<td>" + d.displayName + "</td>";
         str += "<td>" + d.columnName + "</td>";
         str += "<td>" + d.expression + "</td>";
-        str += "<td>" + ((d.isHidden == 0) ? '否' : '是') + "</td>";
+        str += "<td>" + ((d.isShow == 0) ? '否' : '是') + "</td>";
         str += "<td>" + ((d.isRequired == 0) ? '否' : '是') + "</td>";
         str += "<td>" + ((d.isSubqueryGroup == 0) ? '否' : '是') + "</td>";
         str += "<td>" + getFormatName(d.format) + "</td>";
