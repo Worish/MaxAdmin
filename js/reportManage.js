@@ -576,7 +576,7 @@ function baseClick() {
                 q = {};
             p.reportId = eo.id;
             p.relation = '';
-            p.sequence = 9999;
+            p.sequence = $('table.joinTable tbody tr').length + 1;
             p.datasetId = $(this).attr('actionid');
             p.alias = '';
             p.datasetName = aod.datatable[p.datasetId].datasetName;
