@@ -1172,13 +1172,13 @@ function baseClick() {
                 $('input.func').removeClass('inputerror');
             }, 2000)
         }
-        if (duinfo.replace(/\s+/g, '') == '') {
-            flag = false;
-            p.find('textarea.DuliangInfo').addClass('inputerror');
-            setTimeout(function() {
-                $('textarea.DuliangInfo').removeClass('inputerror');
-            }, 2000)
-        }
+        // if (duinfo.replace(/\s+/g, '') == '') {
+        //     flag = false;
+        //     p.find('textarea.DuliangInfo').addClass('inputerror');
+        //     setTimeout(function() {
+        //         $('textarea.DuliangInfo').removeClass('inputerror');
+        //     }, 2000)
+        // }
         if (flag) {
             if (eo.actiontype == 'new') {
                 var pa = {},
