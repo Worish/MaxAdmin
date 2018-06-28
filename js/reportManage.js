@@ -1645,7 +1645,7 @@ function baseClick() {
             pa.expression = d.expression;
             pa.isShow = 1;
             pa.isRequired = 0;
-            pa.isSubqueryGroup = 1;
+            pa.isSubqueryGroup = 0;
             var tpa = formatJson()
             pa.format = tpa['文本'];
             pa.sequence = 9999;
